@@ -23,7 +23,9 @@ Next.js 16 (App Router, TypeScript) on Vercel, reading published content from th
 - **Measured:** on 2026-10-08 a published headline change appeared on the live site 2.9 seconds after publishing.
 - Set up the webhook with `npm run webhook:setup`. It is filtered to the sandbox environment, so nothing in `master` ever triggers it.
 
-## Draft preview
+## Draft preview and Live preview
+
+Draft preview pages (and only those) may be embedded by `https://app.contentful.com`, so Contentful's Live preview pane can show the site next to the editor. Every other page sends `frame-ancestors 'none'` and `X-Frame-Options: DENY`. Live preview relies on a cross-site cookie inside the frame, so it works in Chrome and Edge; Safari blocks those cookies by default.
 
 Draft preview reads the Preview API, is never cached (`Cache-Control: no-store`), and shows a yellow banner with an exit button.
 

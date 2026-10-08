@@ -4,11 +4,16 @@ import { NextResponse, type NextRequest } from "next/server";
  * Sets a fresh nonce and a strict Content Security Policy on every page.
  * Next.js reads the nonce from the request header and applies it to its own
  * scripts and styles. No 'unsafe-inline' for scripts or styles; images only
- * from this site and Contentful's image CDN; no framing.
+ * from this site and Contentful's image CDN; no framing except draft preview
+ * pages inside Contentful's Live preview.
  */
 export function proxy(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const isDev = process.env.NODE_ENV === "development";
+  // Draft preview pages may be embedded by Contentful's Live preview pane, and nothing else.
+  // The cookie only widens framing; Next.js still verifies it before showing any draft content.
+  const inPreview = request.cookies.has("__prerender_bypass");
+  const frameAncestors = inPreview ? "'self' https://app.contentful.com" : "'none'";
   const csp = [
     "default-src 'self'",
     `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""}`,
@@ -19,7 +24,7 @@ export function proxy(request: NextRequest) {
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",
-    "frame-ancestors 'none'",
+    `frame-ancestors ${frameAncestors}`,
     ...(isDev ? [] : ["upgrade-insecure-requests"]),
   ].join("; ");
 
@@ -30,6 +35,7 @@ export function proxy(request: NextRequest) {
   const response = NextResponse.next({ request: { headers: requestHeaders } });
   response.headers.set("Content-Security-Policy", csp);
   response.headers.set("Strict-Transport-Security", "max-age=63072000; includeSubDomains");
+  if (!inPreview) response.headers.set("X-Frame-Options", "DENY");
   return response;
 }
 
