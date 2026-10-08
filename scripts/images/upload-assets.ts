@@ -102,6 +102,7 @@ async function main(): Promise<void> {
   const existing = await existingAssetIds(client);
   let created = 0;
   let skipped = 0;
+  const unavailable: string[] = [];
 
   for (const image of manifest.images) {
     const assetId = `img-${image.key}`;
@@ -109,7 +110,15 @@ async function main(): Promise<void> {
       skipped++;
       continue;
     }
-    const upload = await pixabayDownloadUrl(pixabayKey, image.pixabayId);
+    let upload: string;
+    try {
+      upload = await pixabayDownloadUrl(pixabayKey, image.pixabayId);
+    } catch {
+      // The image may have been removed from Pixabay. Report it and continue.
+      unavailable.push(image.key);
+      console.log(`missing   ${image.key} (no longer available on Pixabay)`);
+      continue;
+    }
     await client.asset.createWithId({ assetId }, {
       fields: {
         title: { [LOCALE]: image.altText },
@@ -152,6 +161,10 @@ async function main(): Promise<void> {
     }
   }
   console.log(`\nDone. Uploaded ${created}, skipped ${skipped} already present.`);
+  if (unavailable.length > 0) {
+    console.log(`Not available on Pixabay (replace in the manifest): ${unavailable.join(", ")}`);
+    process.exitCode = 1;
+  }
 }
 
 main().catch((error: unknown) => {

@@ -1,9 +1,10 @@
 {
   "generatedAt": "2026-10-08",
-  "status": "awaiting review",
+  "status": "approved and uploaded",
   "notes": [
     "Download links from Pixabay expire after 24 hours, so this manifest stores each image page (sourcePage) and Pixabay ID. The upload script fetches a fresh download link (about 1280px wide) at upload time.",
-    "On upload, altText becomes the asset title and the credit line (photographer, Pixabay, source page) becomes the asset description. Each asset is tagged seed and brand-<slug>."
+    "On upload, altText becomes the asset title and the credit line (photographer, Pixabay, source page) becomes the asset description. Each asset is tagged seed and brand-<slug>.",
+    "lumenwork-07 was replaced on upload day because the original image was removed from Pixabay."
   ],
   "counts": {
     "lumenwork": 11,
@@ -108,16 +109,16 @@
       "key": "lumenwork-07",
       "brand": "lumenwork",
       "intendedUse": "Pricing hero",
-      "altText": "Person working on a laptop at a bright desk with a notebook and coffee",
+      "altText": "Person typing on a laptop at a wooden table, seen from over the shoulder",
       "source": "Pixabay",
-      "pixabayId": 2386034,
-      "sourcePage": "https://pixabay.com/photos/notebook-work-girl-computer-woman-2386034/",
-      "photographer": "hamonazaryan1",
-      "photographerPage": "https://pixabay.com/users/hamonazaryan1-5589371/",
+      "pixabayId": 1185626,
+      "sourcePage": "https://pixabay.com/photos/computer-pc-workplace-home-office-1185626/",
+      "photographer": "janeb13",
+      "photographerPage": "https://pixabay.com/users/janeb13-725943/",
       "license": "Pixabay Content License",
       "licenseUrl": "https://pixabay.com/service/license-summary/",
-      "originalWidth": 4000,
-      "originalHeight": 2667
+      "originalWidth": 2048,
+      "originalHeight": 1365
     },
     {
       "key": "lumenwork-08",

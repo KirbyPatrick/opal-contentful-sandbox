@@ -13,8 +13,9 @@ A demo sandbox that shows Optimizely Opal creating, updating, and publishing con
 | 2 | Sandbox environment `opal-sandbox` and cleanup of inherited content | Done |
 | 3 | Brand kits and name conflict check ([docs/brand-kits.md](docs/brand-kits.md)) | Done |
 | 4 | Content model and migrations ([docs/content-model.md](docs/content-model.md)) | Done |
-| 5 | Images (Pixabay manifest), logos, favicons | In review |
-| 6 | Seed content and funnel verification | Planned |
+| 5 | Images (Pixabay manifest), logos, favicons | Done |
+
+| 6 | Seed content and funnel verification | Next |
 | 7 | Front end, Vercel deploy, revalidation, preview | Planned |
 | 8 | Opal API | Planned |
 | 9 | Reset script, baseline export, runbook | Planned |
@@ -106,3 +107,7 @@ Seed and reset scripts are added in later phases.
 - Dependencies are pinned to exact versions, the lockfile is committed, and third-party install scripts are disabled in `.npmrc`. New releases are adopted once they have been public for at least 7 days.
 - `eslint-config-next` is not used because its plugin depends on a glob library with an unpatched advisory (GHSA-vfj7-8cjw-p6xm). The project lints with `typescript-eslint` and `eslint-plugin-react-hooks` instead.
 - Token rotation steps for the Opal API are documented in Phase 8.
+
+## Logos
+
+The SVG logos and favicons in `assets/brand/` are generated placeholders. Final logos will be supplied later. To swap one, replace `assets/brand/<slug>/logo.svg` or `favicon.svg` and update the existing asset (`logo-<slug>` or `favicon-<slug>`) in the sandbox so every reference stays intact.
