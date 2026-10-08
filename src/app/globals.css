@@ -1,0 +1,22 @@
+/* Site-wide defaults. Brand themes (Phase 7) override these variables per brand. */
+:root {
+  --background: #ffffff;
+  --foreground: #1c1c1c;
+  --muted: #5c5c5c;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
