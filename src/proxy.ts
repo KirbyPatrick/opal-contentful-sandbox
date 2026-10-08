@@ -36,7 +36,8 @@ export function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     {
-      source: "/((?!api|_next/static|_next/image|favicon.ico|icon.svg).*)",
+      // Anchored so only /api/... and exact file names are skipped (a brand slug like "apiary" still gets the CSP).
+      source: "/((?!api/|api$|_next/static/|_next/image|favicon\\.ico$|icon\\.svg$).*)",
       missing: [
         { type: "header", key: "next-router-prefetch" },
         { type: "header", key: "purpose", value: "prefetch" },
