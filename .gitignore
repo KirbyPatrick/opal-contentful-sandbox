@@ -48,3 +48,6 @@ next-env.d.ts
 
 # macOS folder icon file (named "Icon" plus a carriage return)
 /Icon?
+
+# local-only reports (may describe master, which is not ours)
+/.local/

@@ -13,7 +13,8 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test \"tests/**/*.test.ts\"",
-    "check": "npm run lint && npm run typecheck && npm test"
+    "check": "npm run lint && npm run typecheck && npm test",
+    "preflight": "tsx --env-file=.env scripts/preflight.ts"
   },
   "dependencies": {
     "contentful-management": "12.19.0",
