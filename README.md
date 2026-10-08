@@ -9,9 +9,9 @@ A demo sandbox that shows Optimizely Opal creating, updating, and publishing con
 | Phase | Scope | Status |
 |---|---|---|
 | 0 | Setup: scaffold, master guard, config, README | Done |
-| 1 | Preflight (read-only): tooling, space, role, environments, master inventory | Next |
-| 2 | Sandbox environment `opal-sandbox` and cleanup of inherited content | Planned |
-| 3 | Brand kits and name conflict check | Planned |
+| 1 | Preflight (read-only): tooling, space, role, environments, master inventory | Done |
+| 2 | Sandbox environment `opal-sandbox` and cleanup of inherited content | Done |
+| 3 | Brand kits and name conflict check | Next |
 | 4 | Content model and migrations | Planned |
 | 5 | Images (Pexels manifest), logos, favicons | Planned |
 | 6 | Seed content and funnel verification | Planned |
@@ -74,7 +74,11 @@ npm run check
 | `npm test` | Unit tests and repo rules (master guard, import boundary, no em dashes) |
 | `npm run check` | All of the above except the build |
 
-Contentful scripts (preflight, migrations, seed, reset) are added in later phases.
+| `npm run preflight` | Read-only checks: token, space, Admin role, environments, master inventory |
+| `npm run sandbox:create` | Create the sandbox as a copy of master (idempotent) |
+| `npm run sandbox:cleanup` | Dry run listing inherited content; add `-- --confirm` to delete exactly the reviewed list |
+
+Migrations, seed, and reset scripts are added in later phases.
 
 ## Repository layout
 

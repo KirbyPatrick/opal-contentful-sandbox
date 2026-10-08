@@ -81,9 +81,14 @@ async function main(): Promise<number> {
     report("INFO", "Aliases", aliases.items.map((a) => `${a.sys.id} -> ${a.environment.sys.id}`).join(", ") || "none");
   }
   const sandboxExists = envSummary.some((e) => e.id.toLowerCase() === SANDBOX_ID.toLowerCase());
-  report(sandboxExists ? "FAIL" : "PASS", `"${SANDBOX_ID}" absent`, sandboxExists ? "already exists" : "does not exist yet");
-  const slotFree = environments.items.length < FREE_PLAN_ENVIRONMENT_LIMIT;
-  report(slotFree ? "PASS" : "FAIL", "Spare environment slot", `${environments.items.length} of ${FREE_PLAN_ENVIRONMENT_LIMIT} used`);
+  if (sandboxExists) {
+    // After Phase 2 the sandbox is expected to exist and use the second slot.
+    report("PASS", `"${SANDBOX_ID}"`, `exists; ${environments.items.length} of ${FREE_PLAN_ENVIRONMENT_LIMIT} environment slots used`);
+  } else {
+    const slotFree = environments.items.length < FREE_PLAN_ENVIRONMENT_LIMIT;
+    report("PASS", `"${SANDBOX_ID}"`, "does not exist yet");
+    report(slotFree ? "PASS" : "FAIL", "Spare environment slot", `${environments.items.length} of ${FREE_PLAN_ENVIRONMENT_LIMIT} used`);
+  }
 
   // 5. Read-only inventory of master.
   const environmentId = PROTECTED_ENVIRONMENT_ID;
