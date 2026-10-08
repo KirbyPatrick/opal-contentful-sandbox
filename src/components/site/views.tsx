@@ -8,6 +8,22 @@ import { Avatar, CtaButton, Img, Paragraphs, RichText, Section } from "./primiti
 
 /** A regular page, or a template page's index view. */
 export function PageView({ page, ctx }: { page: SiteEntry; ctx: BlockContext }) {
+  const sections = ctx.g.entries(page.fields.sections);
+  const forms = sections.filter((s) => s.type === "form");
+  if (forms.length > 0) {
+    // Goal and quote pages put the form above the fold: a short title instead of a full hero.
+    const hero = ctx.g.entry(page.fields.hero);
+    return (
+      <>
+        <div className="container narrow form-page-intro" data-block="form-intro" data-entry-id={hero?.id}>
+          {text(hero, "eyebrow") && <p className="eyebrow">{text(hero, "eyebrow")}</p>}
+          <h1>{text(hero, "headline") ?? text(page, "title")}</h1>
+          {text(hero, "subheadline") && <p className="lede">{text(hero, "subheadline")}</p>}
+        </div>
+        <Sections entries={[...forms, ...sections.filter((s) => s.type !== "form")]} ctx={ctx} />
+      </>
+    );
+  }
   return (
     <>
       <Hero hero={ctx.g.entry(page.fields.hero)} ctx={ctx} />
