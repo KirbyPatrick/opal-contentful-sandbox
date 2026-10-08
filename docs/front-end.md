@@ -25,7 +25,7 @@ Next.js 16 (App Router, TypeScript) on Vercel, reading published content from th
 
 ## Draft preview and Live preview
 
-Draft preview pages (and only those) may be embedded by `https://app.contentful.com`, so Contentful's Live preview pane can show the site next to the editor. Every other page sends `frame-ancestors 'none'` and `X-Frame-Options: DENY`. Live preview relies on a cross-site cookie inside the frame, so it works in Chrome and Edge; Safari blocks those cookies by default.
+Every page may be embedded by `https://app.contentful.com` (Contentful's Live preview pane) and by no other site (`frame-ancestors 'self' https://app.contentful.com`). The draft cookie is also set as a partitioned cookie (CHIPS), so drafts show inside the Live preview frame even when the browser blocks ordinary third-party cookies. Use Chrome or Edge; Safari does not support this.
 
 Draft preview reads the Preview API, is never cached (`Cache-Control: no-store`), and shows a yellow banner with an exit button.
 
