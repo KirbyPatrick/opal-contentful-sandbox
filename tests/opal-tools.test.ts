@@ -380,6 +380,24 @@ describe("publish_entry and unpublish_entry", () => {
     assert.equal(error.code, "rejected");
   });
 
+  it("never leaks the Contentful URL, space, or submitted values through a rejection", async () => {
+    const { cma, ctx } = setup();
+    const draft = await createArticle(ctx, article);
+    cma.failNextPublish.value = true;
+    const error = await toolError(publishEntry(next(cma), { brand: "harborline-mutual", entry_id: draft.entry_id, version: draft.version }));
+    assert.ok(!/api\.contentful\.com|spaces\/|request id/i.test(error.message), error.message);
+  });
+
+  it("reports an unexpected publish failure on create_article generically", async () => {
+    const { cma, ctx } = setup();
+    cma.failNextPublish.value = true;
+    cma.failNextPublish.error = new Error("kaboom Authorization: Bearer super-secret");
+    const created = await createArticle(ctx, { ...article, publish: true });
+    assert.equal(created.status, "draft");
+    assert.match(created.publish_error ?? "", /failed unexpectedly/);
+    assert.ok(!JSON.stringify(created).includes("super-secret") && !JSON.stringify(created).includes("kaboom"));
+  });
+
   it("unpublishes an article back to draft and keeps it", async () => {
     const { cma, ctx } = setup();
     const result = await unpublishEntry(ctx, { brand: "harborline-mutual", entry_id: "article-hl-seed", version: 6 });

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { MAX_API_MARKDOWN_LENGTH, markdownIssues, richTextToMarkdown } from "../src/lib/opal/markdown";
+import { MAX_API_MARKDOWN_LENGTH, MAX_EMPHASIS_MARKERS, MAX_QUOTE_DEPTH, markdownIssues, richTextToMarkdown } from "../src/lib/opal/markdown";
 import { isSafeHttpUrl, markdownToRichText } from "../src/lib/richtext/markdown";
 
 const EM_DASH = String.fromCharCode(0x2014);
@@ -49,12 +49,36 @@ describe("markdownIssues", () => {
     }
   });
 
-  it("keeps the worst case at the size limit well under a few seconds", () => {
-    for (const unit of ["*a ", "**a_", "[a]("]) {
-      const started = Date.now();
-      markdownIssues(unit.repeat(Math.floor(MAX_API_MARKDOWN_LENGTH / unit.length)));
-      assert.ok(Date.now() - started < 3000, `${JSON.stringify(unit)} took ${Date.now() - started} ms`);
+  it("caps emphasis markers so the tokenizer's worst case stays in milliseconds", () => {
+    for (const unit of ["*a ", "**a_", "_a ", "~~a "]) {
+      const markersPerUnit = (unit.match(/[*_~]/g) ?? []).length;
+      // Just inside the budget: must be fast.
+      let started = Date.now();
+      markdownIssues(unit.repeat(Math.floor(MAX_EMPHASIS_MARKERS / markersPerUnit)));
+      assert.ok(Date.now() - started < 100, `${JSON.stringify(unit)} inside the budget took ${Date.now() - started} ms`);
+      // Over the budget at the full length limit: refused before tokenizing.
+      started = Date.now();
+      const issues = markdownIssues(unit.repeat(Math.floor(MAX_API_MARKDOWN_LENGTH / unit.length)));
+      assert.ok(Date.now() - started < 50);
+      assert.match(issues[0] ?? "", /emphasis characters/);
     }
+  });
+
+  it("accepts ordinary formatted articles within the budget", () => {
+    const article = Array.from({ length: 20 }, (_, i) => `Paragraph ${i} with **bold**, *italic*, and a [link](https://example.com/p_${i}).`).join("\n\n");
+    assert.deepEqual(markdownIssues(article), []);
+  });
+
+  it("refuses deeply nested quotes and lists with a clear message instead of crashing", () => {
+    const deepQuote = `${"> ".repeat(MAX_QUOTE_DEPTH + 1)}text that is nested`;
+    assert.match(markdownIssues(deepQuote)[0] ?? "", /nested more than/);
+    assert.deepEqual(markdownIssues(`${"> ".repeat(MAX_QUOTE_DEPTH)}text that is nested`), []);
+    const started = Date.now();
+    assert.match(markdownIssues(`${">".repeat(9000)} x`)[0] ?? "", /nested more than/);
+    assert.ok(Date.now() - started < 200);
+    // Deep list nesting must never throw, whatever the tokenizer does with it.
+    const deepList = Array.from({ length: 400 }, (_, i) => `${"  ".repeat(i)}- item ${i}`).join("\n");
+    assert.doesNotThrow(() => markdownIssues(deepList));
   });
 });
 

@@ -71,11 +71,24 @@ Every response that describes an entry includes `entry_id`, `content_type`, `bra
 
 `tests/opal-fields.test.ts` compares every limit above with the content model in `migrations/0001-content-model.ts`, so the two cannot drift apart.
 
+## Deployment
+
+The API ships with the site. These Vercel environment variables must be set for Production (all as Secret except the two IDs and `SITE_URL`), then redeploy:
+
+| Variable | Used for |
+|---|---|
+| `OPAL_API_TOKEN` | The bearer token Opal sends. 32 or more characters, no spaces. |
+| `CONTENTFUL_MANAGEMENT_TOKEN` | Lets the API read and write the sandbox. Production only. |
+| `CONTENTFUL_SPACE_ID`, `CONTENTFUL_ENVIRONMENT_ID` | Pin every call to the sandbox. Master is refused. |
+| `SITE_URL`, `PREVIEW_SECRET` | Live and signed preview links. |
+
+If a deployed tool call answers `server_misconfigured`, one of these is missing or invalid. If it answers `internal_error` for tools that read Contentful, check `CONTENTFUL_MANAGEMENT_TOKEN`.
+
 ## Rules the code enforces
 
-- **Brand must be named, and must match.** The agent passes the brand slug (or exact name). An unknown brand returns an error telling the agent to ask the user. Writes also require the entry to belong to that brand.
+- **Brand must be named, and must match.** The agent passes the brand slug (or exact name). An unknown brand returns an error telling the agent to ask the user. Writes also require the entry to belong to that brand. This is a guard against mix-ups, not an access boundary: one token covers all six brands, and `get_entry` without a brand can read any brand's public demo content.
 - **Strict input.** Every parameter is validated. Unknown parameters are rejected. Text limits, patterns, and dates follow the content model. No em dashes anywhere.
-- **Markdown only.** Bodies are Markdown (at most 10,000 characters) (headings 2 to 4, paragraphs, bold, italic, lists, quotes, tables, links). Raw HTML, images, and any link that is not a full http or https URL are refused, not silently dropped.
+- **Markdown only.** Bodies are Markdown (at most 10,000 characters, at most 300 emphasis characters `* _ ~`, quotes nested at most 6 deep) (headings 2 to 4, paragraphs, bold, italic, lists, quotes, tables, links). Raw HTML, images, and any link that is not a full http or https URL are refused, not silently dropped.
 - **Images by asset ID only,** and only from the same brand's pool. URLs, other brands' images, and non-images are refused.
 - **Version locking.** `update_entry`, `publish_entry`, and `unpublish_entry` require the `version` the agent last read. A stale version returns a `version_conflict` error and nothing is written. Contentful checks the version again on its side.
 - **Draft first.** New articles and edits are drafts. A live page changes only after `publish_entry`.
@@ -85,7 +98,7 @@ Every response that describes an entry includes `entry_id`, `content_type`, `bra
 
 - The token is checked in constant time before anything else. A wrong or missing token returns 401 with no detail, and the tool name is not revealed.
 - Only `src/lib/contentful/management.ts` creates Contentful clients. The API uses `getOpalClient()`, which runs the same static and live master checks as `getSandboxClient()`, then exposes only: entries (get, getMany, create, update, publish, unpublish) and assets (get, getMany). The methods for deleting and archiving do not exist on it. Tests check this against the real SDK.
-- The Contentful management token is never sent to Opal and never appears in a response or a log.
+- The Contentful management token is never sent to Opal and never appears in a response or a log. When Contentful rejects a change, the agent sees only its message and the validation problems (field and rule), never the request URL, space ID, request ID, headers, or submitted values.
 
 ## Responses and errors
 
@@ -103,7 +116,7 @@ Agent-fixable errors use 200 on purpose, so Opal always shows the agent the mess
 
 ## Limits
 
-- 256 KB per request. Markdown bodies up to 10,000 characters (longer text is refused before it is parsed, because the Markdown parser slows down sharply on adversarial input).
+- 256 KB per request. Markdown bodies up to 10,000 characters and 300 emphasis characters (`* _ ~`), checked before parsing because the Markdown parser slows down sharply on adversarial input. Real seed articles use at most 3,600 characters and 48 emphasis characters.
 - 60 calls per minute per server instance, 20 of them writes. This is a best effort guard against a runaway agent loop (each serverless instance keeps its own count). The Contentful client also stays under 5 requests per second.
 - Free plan Contentful quotas still apply (7 requests per second, monthly call quota).
 

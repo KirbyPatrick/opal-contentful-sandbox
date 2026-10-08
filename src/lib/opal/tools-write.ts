@@ -10,7 +10,6 @@
  * - nothing here can delete or archive (the client policy has no such methods)
  */
 import { z } from "zod";
-import { describeError } from "../contentful/errors";
 import type { RichTextDocument } from "../richtext/markdown";
 import {
   LOCALE,
@@ -162,7 +161,8 @@ export async function createArticle(ctx: ToolContext, input: z.infer<typeof crea
       created = await ctx.client.entry.publish({ entryId: created.sys.id }, created);
     } catch (error) {
       const mapped = upstreamToToolError(error, "The article");
-      publishError = mapped instanceof ToolError ? mapped.message : describeError(error);
+      // Never pass raw error text through: only a ToolError message is safe for the agent.
+      publishError = mapped instanceof ToolError ? mapped.message : "Publishing failed unexpectedly. Try publish_entry again.";
     }
   }
 

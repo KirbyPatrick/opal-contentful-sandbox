@@ -51,7 +51,7 @@ The site checks the secret in constant time, enables draft mode with a cookie, a
   - images only from this site and `images.ctfassets.net`
   - `frame-ancestors 'none'`
 - HSTS, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `X-Frame-Options`, and `X-Robots-Tag: noindex` on every page.
-- The site only holds Delivery and Preview tokens. The management token is never deployed with the front end and never reaches the browser.
+- The pages only use the Delivery and Preview tokens. Since Phase 8 the Contentful management token is also set in Vercel (Production only, as a Secret), because the Opal API under `/api/opal` writes content with it. Only `src/lib/contentful/management.ts` reads it, the front end never imports it, and it never reaches the browser or a response. Rotate it like the other secrets (see below).
 - Brand theme values are validated again before they are written into the page (hex colors, known fonts, fixed radii only).
 - Rich text links render only for http and https URLs. Embedded entries and assets are ignored.
 - **Mock forms** never send or store anything:

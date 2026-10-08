@@ -19,6 +19,15 @@ const EM_DASH = String.fromCharCode(0x2014);
  */
 export const MAX_API_MARKDOWN_LENGTH = 10_000;
 
+/**
+ * Emphasis markers (* _ ~) allowed in one body. The tokenizer's cost is roughly the square of the
+ * number of unmatched markers, so this keeps the worst case in milliseconds. Real seed articles
+ * use at most 48; 300 leaves wide headroom.
+ */
+export const MAX_EMPHASIS_MARKERS = 300;
+/** Quote levels allowed. Very deep nesting overflows the tokenizer's call stack. */
+export const MAX_QUOTE_DEPTH = 6;
+
 function walk(tokens: Token[] | undefined, issues: Set<string>): void {
   for (const token of tokens ?? []) {
     if (token.type === "html") {
@@ -40,9 +49,23 @@ function walk(tokens: Token[] | undefined, issues: Set<string>): void {
 /** Problems that make the text unacceptable. An empty list means it is fine to convert. */
 export function markdownIssues(markdown: string): string[] {
   if (markdown.length > MAX_API_MARKDOWN_LENGTH) return [`longer than ${MAX_API_MARKDOWN_LENGTH} characters`];
+  const markers = (markdown.match(/[*_~]/g) ?? []).length;
+  if (markers > MAX_EMPHASIS_MARKERS) {
+    return [`has ${markers} emphasis characters (* _ ~); the limit is ${MAX_EMPHASIS_MARKERS}. Simplify the formatting`];
+  }
+  for (const line of markdown.split("\n")) {
+    const quotes = /^(?:\s*>)+/.exec(line)?.[0].match(/>/g)?.length ?? 0;
+    if (quotes > MAX_QUOTE_DEPTH) return [`has quotes nested more than ${MAX_QUOTE_DEPTH} levels deep`];
+  }
   const issues = new Set<string>();
   if (markdown.includes(EM_DASH)) issues.add("contains an em dash; use a hyphen");
-  walk(lexer(markdown, { gfm: true }), issues);
+  try {
+    walk(lexer(markdown, { gfm: true }), issues);
+  } catch (error) {
+    // Anything else that overflows the parser's stack is also nesting that is too deep.
+    if (error instanceof RangeError) return ["is nested too deeply (lists or quotes); flatten the structure"];
+    throw error;
+  }
   return [...issues];
 }
 

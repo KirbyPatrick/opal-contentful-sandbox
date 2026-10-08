@@ -128,7 +128,7 @@ export interface FakeCma {
   /** Every call, as "namespace.method". */
   calls: string[];
   /** Makes the next publish fail with a 422. */
-  failNextPublish: { value: boolean };
+  failNextPublish: { value: boolean; error?: Error };
   /** Runs inside update before the version check, to simulate another editor saving first. */
   hooks: { beforeUpdate?: (entryId: string) => void };
 }
@@ -137,7 +137,7 @@ export function fakeCma(seed = seedData()): FakeCma {
   const entries = new Map(seed.entries.map((e) => [e.sys.id, structuredClone(e)]));
   const assets = new Map(seed.assets.map((a) => [a.sys.id, structuredClone(a)]));
   const calls: string[] = [];
-  const failNextPublish = { value: false };
+  const failNextPublish: FakeCma["failNextPublish"] = { value: false };
   const hooks: FakeCma["hooks"] = {};
   let counter = 0;
 
@@ -179,7 +179,7 @@ export function fakeCma(seed = seedData()): FakeCma {
         if (body.sys.version !== stored.sys.version) throw new FakeSdkError(409, "Version mismatch");
         if (failNextPublish.value) {
           failNextPublish.value = false;
-          throw new FakeSdkError(422, "Validation error");
+          throw failNextPublish.error ?? new FakeSdkError(422, "Validation error");
         }
         stored.sys.publishedVersion = stored.sys.version;
         stored.sys.version += 1;
