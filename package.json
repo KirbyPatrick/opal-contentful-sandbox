@@ -24,7 +24,8 @@
     "assets:upload": "tsx --env-file=.env scripts/images/upload-assets.ts",
     "seed": "tsx --env-file=.env scripts/seed.ts",
     "seed:check": "tsx scripts/seed.ts --dry-run",
-    "verify:funnels": "tsx --env-file=.env scripts/verify-funnels.ts"
+    "verify:funnels": "tsx --env-file=.env scripts/verify-funnels.ts",
+    "webhook:setup": "tsx --env-file=.env scripts/setup-webhook.ts"
   },
   "dependencies": {
     "@contentful/rich-text-react-renderer": "16.2.2",
