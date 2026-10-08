@@ -8,65 +8,19 @@
  * Idempotent: entry IDs are deterministic, unchanged entries are skipped, and
  * changed ones are updated in place. Everything is tagged seed.
  */
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import { describeError } from "../src/lib/contentful/errors";
 import { getSandboxClient } from "../src/lib/contentful/management";
 import { readSandboxTarget } from "../src/lib/contentful/config";
-import { markdownToRichText } from "../src/lib/richtext/markdown";
-import type { BrandSlug, SeedEntry } from "../seed/lib/builders";
+import type { BrandSlug } from "../seed/lib/builders";
+import { BRANDS, knownAssetIds, loadSeedEntries, stable, toContentfulFields } from "../seed/lib/sync";
 import { validateGraph } from "../seed/lib/validate";
 
-const LOCALE = "en-US";
-const BRANDS: BrandSlug[] = ["lumenwork", "stuchberys", "harborline-mutual", "clearwater-health", "ledgerwood-bank", "tidewater-journeys"];
 const BULK_LIMIT = 200;
 const POLL_MS = 2_000;
 
 function arg(name: string): string | undefined {
   const index = process.argv.indexOf(name);
   return index >= 0 ? process.argv[index + 1] : undefined;
-}
-
-export async function loadSeedEntries(slugs: readonly BrandSlug[]): Promise<SeedEntry[]> {
-  const all: SeedEntry[] = [];
-  for (const slug of slugs) {
-    const module = (await import(`../seed/brands/${slug}.ts`)) as { default?: SeedEntry[] };
-    if (!Array.isArray(module.default)) throw new Error(`seed/brands/${slug}.ts must export default an array of entries (s.entries).`);
-    all.push(...module.default);
-  }
-  return all;
-}
-
-/** Asset IDs the seed may reference: photos from the manifest plus logos and favicons. */
-export function knownAssetIds(): Set<string> {
-  const manifest = JSON.parse(readFileSync(join("assets", "manifest.json"), "utf8")) as { images: Array<{ key: string }> };
-  const ids = new Set(manifest.images.map((image) => `img-${image.key}`));
-  for (const slug of BRANDS) {
-    ids.add(`logo-${slug}`);
-    ids.add(`favicon-${slug}`);
-  }
-  return ids;
-}
-
-function toContentfulFields(entry: SeedEntry): Record<string, Record<string, unknown>> {
-  const fields: Record<string, Record<string, unknown>> = {};
-  for (const [key, value] of Object.entries(entry.fields)) {
-    if (value === undefined) continue;
-    const converted = typeof value === "object" && value !== null && "markdown" in value
-      ? markdownToRichText((value as { markdown: string }).markdown)
-      : value;
-    fields[key] = { [LOCALE]: converted };
-  }
-  return fields;
-}
-
-/** JSON with sorted keys, for comparing field values. */
-function stable(value: unknown): string {
-  if (Array.isArray(value)) return `[${value.map(stable).join(",")}]`;
-  if (value && typeof value === "object") {
-    return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stable((value as Record<string, unknown>)[key])}`).join(",")}}`;
-  }
-  return JSON.stringify(value);
 }
 
 function report(errors: string[], warnings: string[]): void {

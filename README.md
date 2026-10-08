@@ -17,8 +17,8 @@ A demo sandbox that shows Optimizely Opal creating, updating, and publishing con
 
 | 6 | Seed content and funnel verification | Done |
 | 7 | Front end, Vercel deploy, revalidation, preview ([docs/front-end.md](docs/front-end.md)) | Done |
-| 8 | Opal API ([docs/opal-api.md](docs/opal-api.md)) | Built and tested; deploy and Opal registration pending |
-| 9 | Reset script, baseline export, runbook | Planned |
+| 8 | Opal API ([docs/opal-api.md](docs/opal-api.md)) and the `@contentful` Opal agent ([docs/opal-agent.md](docs/opal-agent.md)) | Done: deployed, registered in Opal, tested end to end |
+| 9 | Reset script, baseline export, runbook ([RUNBOOK.md](RUNBOOK.md)) | Done |
 
 ## Brands
 
@@ -92,8 +92,11 @@ npm run check
 | `npm run webhook:setup` | Create or update the Contentful webhook that refreshes the live site (sandbox only) |
 | `npm run verify:funnels` | Check live sandbox content and print each brand's funnel URLs |
 | `npm run opal:smoke` | Read-only smoke test of the Opal API, local or deployed (`-- <site URL>`) |
+| `npm run baseline:export` | Record the baseline of the seed content (read only; refuses if seed content is edited) |
+| `npm run baseline:check` | Compare the live sandbox with the baseline and list what differs (read only) |
+| `npm run reset` | Dry run: lists Opal-created entries to delete and seed entries to restore. Add `-- --confirm` to do exactly that plan |
 
-The reset script is added in Phase 9.
+After a demo, `npm run reset` puts the sandbox back (see [RUNBOOK.md](RUNBOOK.md)).
 
 **Rebuild the sandbox from scratch:** `npm run sandbox:create`, then `npm run migrate`, then `npm run tags:setup` then `npm run seed`.
 
@@ -104,7 +107,9 @@ The reset script is added in Phase 9.
 | `src/app/` | Next.js routes |
 | `src/lib/contentful/` | Config, master guard, client allowlists, and the client factory |
 | `src/lib/opal/` | The Opal API: tools, field allowlist, Markdown checks, HTTP layer |
-| `scripts/` | Preflight, seed, and reset scripts |
+| `scripts/` | Preflight, seed, baseline, reset, and smoke test scripts |
+| `baseline/` | `baseline.json`, a fingerprint of the seed content in the sandbox |
+| `RUNBOOK.md` | How to run the demo, the tested Opal prompts, and how to reset |
 | `migrations/` | Numbered contentful-migration scripts |
 | `docs/` | Content model and other documentation |
 | `assets/` | Image manifest, logos, favicons |
