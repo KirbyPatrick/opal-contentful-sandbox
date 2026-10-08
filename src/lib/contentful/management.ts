@@ -12,7 +12,7 @@
 import { createClient, type PlainClientAPI } from "contentful-management";
 import { readManagementToken, readOptionalSpaceId, readSandboxTarget, type SandboxTarget } from "./config";
 import { describeError, redactSecrets } from "./errors";
-import { assertDoesNotResolveToMaster } from "./guard";
+import { PROTECTED_ENVIRONMENT_ID, assertDoesNotResolveToMaster, assertSafeEnvironmentId } from "./guard";
 import {
   READ_ONLY_ALLOW,
   SANDBOX_ALLOW,
@@ -80,4 +80,41 @@ export function getReadOnlyClient(): ReadOnlyClient {
     allow: READ_ONLY_ALLOW,
     pin: spaceId ? { spaceId } : {},
   });
+}
+
+const ENVIRONMENT_READY_TIMEOUT_MS = 10 * 60_000;
+const ENVIRONMENT_POLL_MS = 5_000;
+
+/**
+ * Creates the sandbox environment as a copy of master. Copying only reads
+ * master. Does nothing if the environment already exists. Waits until the
+ * copy is ready, then runs the full live guard through getSandboxClient().
+ */
+export async function createSandboxEnvironment(): Promise<"created" | "exists"> {
+  const target = readSandboxTarget();
+  const raw = createRawClient(readManagementToken());
+  const existing = await raw.environment.getMany({ spaceId: target.spaceId, query: { limit: 100 } });
+  if (existing.items.some((environment) => environment.sys.id === target.environmentId)) {
+    await getSandboxClient();
+    return "exists";
+  }
+
+  // Checked again right before the only space-level write in this module.
+  const environmentId = assertSafeEnvironmentId(target.environmentId);
+  await raw.environment.createWithId(
+    { spaceId: target.spaceId, environmentId, sourceEnvironmentId: PROTECTED_ENVIRONMENT_ID },
+    { name: environmentId },
+  );
+
+  const deadline = Date.now() + ENVIRONMENT_READY_TIMEOUT_MS;
+  for (;;) {
+    const environment = await raw.environment.get({ spaceId: target.spaceId, environmentId });
+    const status = environment.sys.status.sys.id;
+    if (status === "ready") break;
+    if (status === "failed") throw new Error(`Environment "${environmentId}" failed to copy.`);
+    if (Date.now() > deadline) throw new Error(`Environment "${environmentId}" is still "${status}" after 10 minutes.`);
+    await new Promise((resolve) => setTimeout(resolve, ENVIRONMENT_POLL_MS));
+  }
+  await getSandboxClient();
+  return "created";
 }

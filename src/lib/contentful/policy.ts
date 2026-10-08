@@ -53,7 +53,8 @@ export const SANDBOX_ALLOW = {
   ],
   editorInterface: ["get", "getMany", "update"],
   tag: ["get", "getMany", "createWithId", "update", "delete"],
-  locale: ["get", "getMany"],
+  // Delete is for removing inherited locales; this sandbox is en-US only.
+  locale: ["get", "getMany", "delete"],
   environment: ["get"],
   bulkAction: ["get", "getV2", "validate", "validateV2", "publish", "publishV2", "unpublish", "unpublishV2"],
   appInstallation: ["get", "getMany"],

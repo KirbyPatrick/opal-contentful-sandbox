@@ -14,7 +14,9 @@
     "typecheck": "tsc --noEmit",
     "test": "tsx --test \"tests/**/*.test.ts\"",
     "check": "npm run lint && npm run typecheck && npm test",
-    "preflight": "tsx --env-file=.env scripts/preflight.ts"
+    "preflight": "tsx --env-file=.env scripts/preflight.ts",
+    "sandbox:create": "tsx --env-file=.env scripts/create-sandbox.ts",
+    "sandbox:cleanup": "tsx --env-file=.env scripts/sandbox-cleanup.ts"
   },
   "dependencies": {
     "contentful-management": "12.19.0",
