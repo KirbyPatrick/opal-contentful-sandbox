@@ -20,6 +20,7 @@ Next.js 16 (App Router, TypeScript) on Vercel, reading published content from th
 - Contentful data is cached per brand (one cached read per brand) and tagged `brand:<slug>`.
 - **Webhook:** publishing, unpublishing, or deleting in `opal-sandbox` calls `/api/revalidate`, which expires that brand's cache at once. The next page view fetches fresh content.
 - **Fallback:** if a webhook is missed, cached content refreshes after 30 seconds anyway.
+- **Measured:** on 2026-10-08 a published headline change appeared on the live site 2.9 seconds after publishing.
 - Set up the webhook with `npm run webhook:setup`. It is filtered to the sandbox environment, so nothing in `master` ever triggers it.
 
 ## Draft preview

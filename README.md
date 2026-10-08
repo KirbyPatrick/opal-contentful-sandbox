@@ -16,8 +16,8 @@ A demo sandbox that shows Optimizely Opal creating, updating, and publishing con
 | 5 | Images (Pixabay manifest), logos, favicons | Done |
 
 | 6 | Seed content and funnel verification | Done |
-| 7 | Front end, Vercel deploy, revalidation, preview | Next |
-| 8 | Opal API | Planned |
+| 7 | Front end, Vercel deploy, revalidation, preview ([docs/front-end.md](docs/front-end.md)) | Done |
+| 8 | Opal API | Next |
 | 9 | Reset script, baseline export, runbook | Planned |
 
 ## Brands
@@ -30,6 +30,8 @@ A demo sandbox that shows Optimizely Opal creating, updating, and publishing con
 | Clearwater Health | Medical | Home, specialty page, provider profile, book an appointment |
 | Ledgerwood Bank | Financial services | Home, product detail, rates or comparison, start an application |
 | Tidewater Journeys | Travel | Home, destination, package detail, request a booking |
+
+**Live site:** https://opal-contentful-sandbox.vercel.app (noindex). A publish in `opal-sandbox` appears in about 3 seconds.
 
 ## How it fits together
 
@@ -86,6 +88,7 @@ npm run check
 
 | `npm run seed:check` | Validate all seed content offline (no network) |
 | `npm run seed` | Create or update seed content in the sandbox and publish it (idempotent) |
+| `npm run webhook:setup` | Create or update the Contentful webhook that refreshes the live site (sandbox only) |
 | `npm run verify:funnels` | Check live sandbox content and print each brand's funnel URLs |
 
 The reset script is added in Phase 9.
