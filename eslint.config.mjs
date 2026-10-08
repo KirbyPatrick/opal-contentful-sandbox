@@ -32,13 +32,18 @@ export default defineConfig([
                 "Get clients from src/lib/contentful/management.ts so the master guard always runs.",
               allowTypeImports: true,
             },
+            {
+              name: "contentful-migration",
+              message: "Run migrations through src/lib/contentful/migration-runner.ts so the master guard always runs.",
+              allowTypeImports: true,
+            },
           ],
         },
       ],
     },
   },
   {
-    files: ["src/lib/contentful/management.ts", "tests/**"],
+    files: ["src/lib/contentful/management.ts", "src/lib/contentful/migration-runner.ts", "tests/**"],
     rules: { "@typescript-eslint/no-restricted-imports": "off" },
   },
 ]);

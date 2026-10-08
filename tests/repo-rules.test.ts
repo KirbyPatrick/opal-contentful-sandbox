@@ -31,11 +31,13 @@ function listFiles(dir: string): string[] {
 const repoFiles = listFiles(ROOT).filter((file) => !BINARY_EXTENSIONS.has(extname(file)));
 
 describe("import boundary", () => {
-  // Only management.ts may load contentful-management at runtime. Type-only imports are fine.
-  const ALLOWED = new Set(["src/lib/contentful/management.ts"]);
-  const RESTRICTED = "contentful-management";
+  // Each SDK may only be loaded at runtime by its guarded module. Type-only imports are fine.
+  const BOUNDARIES: Record<string, string> = {
+    "contentful-management": "src/lib/contentful/management.ts",
+    "contentful-migration": "src/lib/contentful/migration-runner.ts",
+  };
 
-  function runtimeImportsOfRestricted(file: string): number {
+  function runtimeImportsOfRestricted(file: string, RESTRICTED: string): number {
     const source = ts.createSourceFile(file, readFileSync(file, "utf8"), ts.ScriptTarget.Latest, true);
     let count = 0;
     const visit = (node: ts.Node) => {
@@ -67,22 +69,25 @@ describe("import boundary", () => {
     return count;
   }
 
-  it("contentful-management is only loaded by management.ts", () => {
-    const appCode = repoFiles.filter((file) => {
-      const path = relative(ROOT, file);
-      return CODE_EXTENSIONS.has(extname(file)) && /^(src|scripts|migrations)\//.test(path);
-    });
-    const offenders = appCode
-      .filter((file) => !ALLOWED.has(relative(ROOT, file)))
-      .filter((file) => runtimeImportsOfRestricted(file) > 0)
-      .map((file) => relative(ROOT, file));
-    assert.deepEqual(offenders, []);
+  const appCode = repoFiles.filter((file) => {
+    const path = relative(ROOT, file);
+    return CODE_EXTENSIONS.has(extname(file)) && /^(src|scripts|migrations)\//.test(path);
   });
 
-  it("management.ts itself is found by the scan", () => {
-    const managementFile = repoFiles.find((file) => relative(ROOT, file) === "src/lib/contentful/management.ts");
-    assert.ok(managementFile && runtimeImportsOfRestricted(managementFile) > 0);
-  });
+  for (const [restricted, allowed] of Object.entries(BOUNDARIES)) {
+    it(`${restricted} is only loaded by ${allowed}`, () => {
+      const offenders = appCode
+        .filter((file) => relative(ROOT, file) !== allowed)
+        .filter((file) => runtimeImportsOfRestricted(file, restricted) > 0)
+        .map((file) => relative(ROOT, file));
+      assert.deepEqual(offenders, []);
+    });
+
+    it(`${allowed} is found by the scan`, () => {
+      const allowedFile = repoFiles.find((file) => relative(ROOT, file) === allowed);
+      assert.ok(allowedFile && runtimeImportsOfRestricted(allowedFile, restricted) > 0);
+    });
+  }
 });
 
 describe("copy rules", () => {

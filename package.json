@@ -16,7 +16,9 @@
     "check": "npm run lint && npm run typecheck && npm test",
     "preflight": "tsx --env-file=.env scripts/preflight.ts",
     "sandbox:create": "tsx --env-file=.env scripts/create-sandbox.ts",
-    "sandbox:cleanup": "tsx --env-file=.env scripts/sandbox-cleanup.ts"
+    "sandbox:cleanup": "tsx --env-file=.env scripts/sandbox-cleanup.ts",
+    "migrate": "tsx --env-file=.env scripts/migrate.ts",
+    "tags:setup": "tsx --env-file=.env scripts/setup-tags.ts"
   },
   "dependencies": {
     "contentful-management": "12.19.0",
@@ -30,6 +32,7 @@
     "@types/node": "22.20.4",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.7",
+    "contentful-migration": "5.1.1",
     "eslint": "9.39.5",
     "eslint-plugin-react-hooks": "7.1.1",
     "tsx": "4.23.15",

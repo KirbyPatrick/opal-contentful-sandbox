@@ -12,8 +12,8 @@ A demo sandbox that shows Optimizely Opal creating, updating, and publishing con
 | 1 | Preflight (read-only): tooling, space, role, environments, master inventory | Done |
 | 2 | Sandbox environment `opal-sandbox` and cleanup of inherited content | Done |
 | 3 | Brand kits and name conflict check ([docs/brand-kits.md](docs/brand-kits.md)) | Done |
-| 4 | Content model and migrations | In review |
-| 5 | Images (Pexels manifest), logos, favicons | Planned |
+| 4 | Content model and migrations ([docs/content-model.md](docs/content-model.md)) | Done |
+| 5 | Images (Pexels manifest), logos, favicons | Next |
 | 6 | Seed content and funnel verification | Planned |
 | 7 | Front end, Vercel deploy, revalidation, preview | Planned |
 | 8 | Opal API | Planned |
@@ -77,8 +77,12 @@ npm run check
 | `npm run preflight` | Read-only checks: token, space, Admin role, environments, master inventory |
 | `npm run sandbox:create` | Create the sandbox as a copy of master (idempotent) |
 | `npm run sandbox:cleanup` | Dry run listing inherited content; add `-- --confirm` to delete exactly the reviewed list |
+| `npm run migrate` | Apply numbered migrations to the sandbox (skips ones already applied) |
+| `npm run tags:setup` | Create the seed, opal, and brand image pool tags (idempotent) |
 
-Migrations, seed, and reset scripts are added in later phases.
+Seed and reset scripts are added in later phases.
+
+**Rebuild the sandbox from scratch:** `npm run sandbox:create`, then `npm run migrate`, then `npm run tags:setup` (seed comes in Phase 6).
 
 ## Repository layout
 
