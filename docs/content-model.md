@@ -246,10 +246,12 @@ Form fields themselves are defined in code for each `formKind`, so validation li
 ### Stuchbery's cart
 
 The cart uses the same blocks as everything else:
-- **Cart page sections:** a `form` block (checkout copy, mock confirmation), a `richTextSection` for shipping and returns, and a `logoStrip` for trust badges.
+- **Cart page sections:** a `form` block (checkout copy, mock confirmation), a `richTextSection` for shipping and returns, and a `cardGrid` with the `icons` layout for trust badges (items with a title and short text).
 - **Shipping threshold:** `brand.freeShippingThreshold`.
 - **Promo code text:** the checkout form's intro.
 - **Cart state:** kept in the browser only.
+
+`logoStrip` is in the model but not used by the seed yet, because there are no logo images for fictional customers.
 
 ---
 

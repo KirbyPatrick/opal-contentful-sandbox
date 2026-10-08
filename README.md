@@ -15,8 +15,8 @@ A demo sandbox that shows Optimizely Opal creating, updating, and publishing con
 | 4 | Content model and migrations ([docs/content-model.md](docs/content-model.md)) | Done |
 | 5 | Images (Pixabay manifest), logos, favicons | Done |
 
-| 6 | Seed content and funnel verification | Next |
-| 7 | Front end, Vercel deploy, revalidation, preview | Planned |
+| 6 | Seed content and funnel verification | Done |
+| 7 | Front end, Vercel deploy, revalidation, preview | Next |
 | 8 | Opal API | Planned |
 | 9 | Reset script, baseline export, runbook | Planned |
 
@@ -84,9 +84,13 @@ npm run check
 | `npm run logos:generate` | Regenerate the SVG logos and favicons in `assets/brand/` |
 | `npm run assets:upload` | Upload the reviewed photos in `assets/manifest.json` and the logos to the sandbox (idempotent) |
 
-Seed and reset scripts are added in later phases.
+| `npm run seed:check` | Validate all seed content offline (no network) |
+| `npm run seed` | Create or update seed content in the sandbox and publish it (idempotent) |
+| `npm run verify:funnels` | Check live sandbox content and print each brand's funnel URLs |
 
-**Rebuild the sandbox from scratch:** `npm run sandbox:create`, then `npm run migrate`, then `npm run tags:setup` (seed comes in Phase 6).
+The reset script is added in Phase 9.
+
+**Rebuild the sandbox from scratch:** `npm run sandbox:create`, then `npm run migrate`, then `npm run tags:setup` then `npm run seed`.
 
 ## Repository layout
 
