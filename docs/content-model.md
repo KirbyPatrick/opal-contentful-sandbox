@@ -60,20 +60,20 @@ URLs live under the brand slug:
 - `/{page}/{slug}` shows one offering, collection, person, or article, followed by the template's `detailSections`.
 - Its `funnelStep`, `nextStep`, and `primaryCta` apply to every detail view.
 
-There is one page per step, not one per product. The 12 Stuchbery's products need no page entries. When Opal edits a product, it edits one entry. Pricing plans (`saas_plan`) never get detail pages; they appear on the pricing page.
+There is one page per step, not one per product. The 12 Stuchbery Acres products need no page entries. When Opal edits a product, it edits one entry. Pricing plans (`saas_plan`) never get detail pages; they appear on the pricing page.
 
 ### Funnel map
 
 | Brand | Step 1 | Step 2 | Step 3 | Step 4 (goal) |
 |---|---|---|---|---|
-| Lumenwork | `/lumenwork` | `/lumenwork/solutions/{solution}` (offering template) | `/lumenwork/customers` (case study page) | `/lumenwork/book-a-demo` |
-| Stuchbery's | `/stuchberys` | `/stuchberys/fieldstone-collection` (page with the collection grid) | `/stuchberys/shop/{product}` (offering template) | `/stuchberys/cart` (cart drawer, then cart page) |
-| Harborline Mutual | `/harborline-mutual` | `/harborline-mutual/coverage/{coverage}` (offering template) | `/harborline-mutual/start-a-quote` | `/harborline-mutual/get-a-quote` |
-| Clearwater Health | `/clearwater-health` | `/clearwater-health/specialties/{specialty}` (collection template) | `/clearwater-health/providers/{provider}` (person template) | `/clearwater-health/book-an-appointment` |
+| StoutWare | `/stoutware` | `/stoutware/solutions/{solution}` (offering template) | `/stoutware/customers` (case study page) | `/stoutware/book-a-demo` |
+| Stuchbery Acres | `/stuchbery-acres` | `/stuchbery-acres/fieldstone-collection` (page with the collection grid) | `/stuchbery-acres/shop/{product}` (offering template) | `/stuchbery-acres/cart` (cart drawer, then cart page) |
+| DeFeo Mutual | `/defeo-mutual` | `/defeo-mutual/coverage/{coverage}` (offering template) | `/defeo-mutual/start-a-quote` | `/defeo-mutual/get-a-quote` |
+| St. Isaac's Health | `/st-isaacs-health` | `/st-isaacs-health/specialties/{specialty}` (collection template) | `/st-isaacs-health/providers/{provider}` (person template) | `/st-isaacs-health/book-an-appointment` |
 | Ledgerwood Bank | `/ledgerwood-bank` | `/ledgerwood-bank/products/{product}` (offering template) | `/ledgerwood-bank/rates` (comparison page) | `/ledgerwood-bank/apply` |
 | Tidewater Journeys | `/tidewater-journeys` | `/tidewater-journeys/destinations/{destination}` (collection template) | `/tidewater-journeys/trips/{trip}` (offering template) | `/tidewater-journeys/request-a-booking` |
 
-Off-funnel pages (step 0): article indexes (`resources`, `journal`, `learn`, `health-library`, `insights`, `travel-notes`), Lumenwork pricing, the Stuchbery's size guide, Clearwater locations, and Tidewater private journeys. About 34 pages in total.
+Off-funnel pages (step 0): article indexes (`resources`, `journal`, `learn`, `health-library`, `insights`, `travel-notes`), StoutWare pricing, the Stuchbery Acres size guide, St. Isaac's locations, and Tidewater private journeys. About 34 pages in total.
 
 Goal pages can be prefilled from the previous step, for example `?trip=` or `?provider=`. The value is only checked against known slugs and used for display. Nothing submitted is sent or stored.
 
@@ -208,7 +208,7 @@ Section blocks: richTextSection, mediaText, cardGrid, cta, faq, testimonial, sta
 
 ### Blocks
 
-Every block has `internalName` (req, max 80, for example "Lumenwork - Home - Hero") and `brand` (req).
+Every block has `internalName` (req, max 80, for example "StoutWare - Home - Hero") and `brand` (req).
 
 | Type | Fields |
 |---|---|
@@ -243,7 +243,7 @@ Form fields themselves are defined in code for each `formKind`, so validation li
 | image | Media | image or icon |
 | link | Reference: page, article, offering, collection, or person | internal links only |
 
-### Stuchbery's cart
+### Stuchbery Acres cart
 
 The cart uses the same blocks as everything else:
 - **Cart page sections:** a `form` block (checkout copy, mock confirmation), a `richTextSection` for shipping and returns, and a `cardGrid` with the `icons` layout for trust badges (items with a title and short text).

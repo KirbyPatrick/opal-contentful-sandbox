@@ -9,13 +9,12 @@
  */
 import { describeError } from "../src/lib/contentful/errors";
 import { getSandboxClient } from "../src/lib/contentful/management";
-
-const BRAND_SLUGS = ["lumenwork", "stuchberys", "harborline-mutual", "clearwater-health", "ledgerwood-bank", "tidewater-journeys"];
+import { BRAND_INFO } from "../seed/lib/brands";
 
 const TAGS: Array<{ id: string; name: string }> = [
   { id: "seed", name: "seed" },
   { id: "opal", name: "opal" },
-  ...BRAND_SLUGS.map((slug) => ({ id: `brand-${slug}`, name: `brand: ${slug}` })),
+  ...BRAND_INFO.map(({ slug }) => ({ id: `brand-${slug}`, name: `brand: ${slug}` })),
 ];
 
 async function main(): Promise<void> {

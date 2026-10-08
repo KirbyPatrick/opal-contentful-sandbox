@@ -3,7 +3,7 @@
  * uses the returned helpers. Every entry gets a deterministic ID
  * (<prefix>-<type code>-<key>) and an automatic brand reference.
  *
- *   const s = defineBrand("lumenwork", "lw");
+ *   const s = defineBrand("lumenwork", "lw");   // the brand key, see brands.ts
  *   const demo = s.page("book-a-demo", { title: "Book a demo", ... });
  *   s.cta("book-demo", { label: "Book a demo", goalType: "book_demo", destinationPage: demo, ... });
  *   export default s.entries;
@@ -12,8 +12,8 @@
  * other entries' reference fields. Rich text fields take md("Markdown").
  */
 
-export type BrandSlug =
-  | "lumenwork" | "stuchberys" | "harborline-mutual" | "clearwater-health" | "ledgerwood-bank" | "tidewater-journeys";
+import type { BrandKey } from "./brands";
+export type { BrandKey };
 
 export interface EntryLink { sys: { type: "Link"; linkType: "Entry"; id: string } }
 export interface AssetLink { sys: { type: "Link"; linkType: "Asset"; id: string } }
@@ -30,7 +30,8 @@ export type Font =
 
 export interface BrandFields {
   name: string;
-  slug: BrandSlug;
+  /** The URL part, for example stoutware. Not the brand key used in IDs (see brands.ts). */
+  slug: string;
   vertical: "b2b_saas" | "apparel_retail" | "insurance" | "healthcare" | "financial_services" | "travel";
   shortDescription: string;
   tagline?: string;
@@ -244,15 +245,15 @@ export const TYPE_CODES: Record<Exclude<ContentTypeId, "brand">, string> = {
 export interface SeedEntry {
   id: string;
   contentType: ContentTypeId;
-  brand: BrandSlug;
+  brand: BrandKey;
   fields: Record<string, unknown>;
 }
 
 const KEY_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
-export function defineBrand(slug: BrandSlug, prefix: string) {
+export function defineBrand(brandKey: BrandKey, prefix: string) {
   const entries: SeedEntry[] = [];
-  const brandId = `brand-${slug}`;
+  const brandId = `brand-${brandKey}`;
   const ids = new Set<string>();
 
   function add<T extends Exclude<ContentTypeId, "brand">>(type: T, key: string, fields: FieldsByType[T]): EntryLink {
@@ -261,7 +262,7 @@ export function defineBrand(slug: BrandSlug, prefix: string) {
     if (id.length > 64) throw new Error(`Entry ID "${id}" is longer than 64 characters.`);
     if (ids.has(id)) throw new Error(`Duplicate seed entry "${id}".`);
     ids.add(id);
-    entries.push({ id, contentType: type, brand: slug, fields: { ...fields, brand: entryLink(brandId) } });
+    entries.push({ id, contentType: type, brand: brandKey, fields: { ...fields, brand: entryLink(brandId) } });
     return entryLink(id);
   }
 
@@ -269,14 +270,14 @@ export function defineBrand(slug: BrandSlug, prefix: string) {
     entries,
     /** Links to entries created later in the file (for nextStep or homePage). */
     ref: (type: Exclude<ContentTypeId, "brand">, key: string) => entryLink(`${prefix}-${TYPE_CODES[type]}-${key}`),
-    /** Photo n from this brand's pool in assets/manifest.json, for example img(3) for <slug>-03. */
-    img: (n: number) => assetLink(`img-${slug}-${String(n).padStart(2, "0")}`),
-    logo: assetLink(`logo-${slug}`),
-    favicon: assetLink(`favicon-${slug}`),
+    /** Photo n from this brand's pool in assets/manifest.json, for example img(3) for <key>-03. */
+    img: (n: number) => assetLink(`img-${brandKey}-${String(n).padStart(2, "0")}`),
+    logo: assetLink(`logo-${brandKey}`),
+    favicon: assetLink(`favicon-${brandKey}`),
     brand(fields: BrandFields): EntryLink {
       if (ids.has(brandId)) throw new Error("Brand entry defined twice.");
       ids.add(brandId);
-      entries.push({ id: brandId, contentType: "brand", brand: slug, fields: { ...fields } });
+      entries.push({ id: brandId, contentType: "brand", brand: brandKey, fields: { ...fields } });
       return entryLink(brandId);
     },
     page: (key: string, f: PageFields) => add("page", key, f),

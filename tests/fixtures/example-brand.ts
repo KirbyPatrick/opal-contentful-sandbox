@@ -23,35 +23,35 @@ const intake = s.offering("intake", {
 });
 
 // CTAs
-const bookDemo = s.cta("book-demo", { internalName: "Lumenwork - Global - Book a demo", label: "Book a demo", goalType: "book_demo", destinationPage: s.ref("page", "book-a-demo") });
-const nextStep = s.cta("see-results", { internalName: "Lumenwork - Solutions - See results", label: "See customer results", goalType: "next_step" });
+const bookDemo = s.cta("book-demo", { internalName: "StoutWare - Global - Book a demo", label: "Book a demo", goalType: "book_demo", destinationPage: s.ref("page", "book-a-demo") });
+const nextStep = s.cta("see-results", { internalName: "StoutWare - Solutions - See results", label: "See customer results", goalType: "next_step" });
 
 // Blocks
 const homeHero = s.hero("home", {
-  internalName: "Lumenwork - Home - Hero", headline: "Run operations without the chase",
+  internalName: "StoutWare - Home - Hero", headline: "Run operations without the chase",
   subheadline: "Requests, approvals, and handoffs in one clear workflow.", image: s.img(1), layout: "split", cta: bookDemo,
 });
 const solutionsGrid = s.cardGrid("home-solutions", {
-  internalName: "Lumenwork - Home - Solutions", heading: "Built for the work operations teams do", source: "manual",
+  internalName: "StoutWare - Home - Solutions", heading: "Built for the work operations teams do", source: "manual",
   items: [intake], layout: "cards", columns: 3,
 });
 const stats = s.stats("home-results", {
-  internalName: "Lumenwork - Home - Results", heading: "What teams report",
+  internalName: "StoutWare - Home - Results", heading: "What teams report",
   items: [s.item("stat-faster", { title: "faster approvals", value: "38%" }), s.item("stat-handoffs", { title: "fewer missed handoffs", value: "2x" })],
   footnote: "Figures are illustrative.",
 });
-const quote = s.testimonial("pinecrest", { internalName: "Lumenwork - Case study - Quote", quote: "We stopped chasing approvals in email.", person: customer, rating: 5 });
+const quote = s.testimonial("pinecrest", { internalName: "StoutWare - Case study - Quote", quote: "We stopped chasing approvals in email.", person: customer, rating: 5 });
 const demoForm = s.form("book-demo", {
-  internalName: "Lumenwork - Book a demo - Form", formKind: "book_demo", heading: "See Lumenwork with your workflow",
+  internalName: "StoutWare - Book a demo - Form", formKind: "book_demo", heading: "See StoutWare with your workflow",
   submitLabel: "Request my demo", successHeading: "Thanks, your demo request is in",
   successMessage: "This is a demo site, so no one will contact you.", privacyNote: "Demo only. Nothing you enter is sent or stored.", prefillSample: true,
 });
-const latest = s.cardGrid("resources-latest", { internalName: "Lumenwork - Resources - Latest", heading: "Latest articles", source: "latest_articles", layout: "cards", limit: 6 });
+const latest = s.cardGrid("resources-latest", { internalName: "StoutWare - Resources - Latest", heading: "Latest articles", source: "latest_articles", layout: "cards", limit: 6 });
 
 // Pages: step 1 to 4, plus the article index
 const home = s.page("home", {
-  title: "Lumenwork", slug: "home", pageType: "home", funnelStep: 1, nextStep: s.ref("page", "solutions"),
-  hero: homeHero, primaryCta: bookDemo, sections: [solutionsGrid, stats], seoTitle: "Lumenwork | Workflow software for operations teams",
+  title: "StoutWare", slug: "home", pageType: "home", funnelStep: 1, nextStep: s.ref("page", "solutions"),
+  hero: homeHero, primaryCta: bookDemo, sections: [solutionsGrid, stats], seoTitle: "StoutWare | Workflow software for operations teams",
 });
 s.page("solutions", {
   title: "Solutions", slug: "solutions", pageType: "offering_detail", funnelStep: 2, nextStep: s.ref("page", "customers"),
@@ -81,7 +81,7 @@ s.article("handoffs", {
 // Brand (references pages defined above)
 const navSolutions = s.item("nav-solutions", { title: "Solutions", link: s.ref("page", "solutions") });
 s.brand({
-  name: "Lumenwork", slug: "lumenwork", vertical: "b2b_saas", shortDescription: "Workflow and operations software for operations teams.",
+  name: "StoutWare", slug: "lumenwork", vertical: "b2b_saas", shortDescription: "Workflow and operations software for operations teams.",
   tagline: "Operations, in clear view.", logo: s.logo, favicon: s.favicon,
   colorBrand: "#1F2A44", colorButton: "#F2A33A", colorButtonText: "#1F2A44", colorAccent: "#2F7F7A",
   colorBackground: "#F7F6F2", colorSurface: "#FFFFFF", colorText: "#1C1F26", colorMuted: "#5B6170",

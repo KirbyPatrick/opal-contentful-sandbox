@@ -1,5 +1,5 @@
 /**
- * Stuchbery's: apparel retailer with classic seasonal collections.
+ * Stuchbery Acres: apparel retailer with classic seasonal collections.
  * Funnel: home (1) -> fieldstone-collection (2) -> shop/{product} (3) -> cart (4).
  * Off-funnel: size-guide and journal (article index).
  */
@@ -13,11 +13,11 @@ const s = defineBrand("stuchberys", "sb");
 
 const elena = s.person("elena-marsh", {
   name: "Elena Marsh", slug: "elena-marsh", role: "author", jobTitle: "Product care lead",
-  bio: "Elena Marsh looks after fabric testing and care guidance at Stuchbery's. She has spent the better part of a decade learning how wool, flannel, and leather hold up to a Vermont winter.",
+  bio: "Elena Marsh looks after fabric testing and care guidance at Stuchbery Acres. She has spent the better part of a decade learning how wool, flannel, and leather hold up to a Vermont winter.",
 });
 const thomas = s.person("thomas-avery", {
   name: "Thomas Avery", slug: "thomas-avery", role: "author", jobTitle: "Journal editor",
-  bio: "Thomas Avery edits the Stuchbery's Journal from the shop in Ashcombe. He writes about dressing for the weather and the small habits that keep good clothes in service.",
+  bio: "Thomas Avery edits the Stuchbery Acres Journal from the shop in Ashcombe. He writes about dressing for the weather and the small habits that keep good clothes in service.",
 });
 const ruth = s.person("ruth-calloway", {
   name: "Ruth Calloway", slug: "ruth-calloway", role: "customer", jobTitle: "Verified buyer",
@@ -28,7 +28,7 @@ const ruth = s.person("ruth-calloway", {
 // ---------------------------------------------------------------------------
 
 const sizeGuide = s.richText("size-guide", {
-  internalName: "Stuchbery's - Size guide - Table",
+  internalName: "Stuchbery Acres - Size guide - Table",
   heading: "Size guide",
   body: md(`Measure over a light shirt with a soft tape, keeping it level and snug but not tight.
 
@@ -96,7 +96,7 @@ The brushed finish settles over the first few weeks and takes on a gentle sheen 
   colors: ["Camel|#A08670", "Charcoal|#3B3A3C", "Oatmeal|#D8CCB6"],
   materials: "80% wool, 20% cashmere; cupro lining; horn buttons",
   fit: "classic", sizeGuide,
-  seoTitle: "Fieldstone Camel Coat in wool and cashmere | Stuchbery's",
+  seoTitle: "Fieldstone Camel Coat in wool and cashmere | Stuchbery Acres",
   seoDescription: "A belted camel coat in a brushed wool and cashmere blend, cut to close over a heavy sweater. Sizes XS to XL.",
 });
 
@@ -126,7 +126,7 @@ This is our slimmest coat. Take your usual size to wear it over a fine knit, or 
   colors: ["Apple Red|#B3202A", "Charcoal|#3B3A3C", "Loden|#4F5B3E"],
   materials: "100% boiled wool; viscose lining; corozo buttons",
   fit: "slim", sizeGuide,
-  seoTitle: "Orchard Wool Coat in red boiled wool | Stuchbery's",
+  seoTitle: "Orchard Wool Coat in red boiled wool | Stuchbery Acres",
   seoDescription: "A tailored red coat in dense boiled wool, fitted at the waist with a softly flared hem. Blocks the wind and sheds light rain.",
 });
 
@@ -158,7 +158,7 @@ Remove the collar and shake it out after wear. Have the coat cleaned once a seas
   colors: ["Navy|#1F2640", "Burgundy|#5C1F2B", "Camel|#A08670"],
   materials: "90% wool, 10% nylon melton; viscose lining; removable faux fur collar",
   fit: "classic", sizeGuide,
-  seoTitle: "Linden Collared Coat in navy wool | Stuchbery's",
+  seoTitle: "Linden Collared Coat in navy wool | Stuchbery Acres",
   seoDescription: "A navy wool melton coat with gold-tone buttons and a removable faux fur collar. Ends at mid-thigh. Sizes XS to XL.",
 });
 
@@ -188,7 +188,7 @@ Never put waxed cotton in the washing machine. Wipe off mud with a damp cloth, l
   colors: ["Navy|#1E2638", "Olive|#55573A", "Tobacco|#7A5534"],
   materials: "Waxed cotton canvas; cotton corduroy collar lining; brass zip and snaps",
   fit: "classic", sizeGuide,
-  seoTitle: "Towpath Field Jacket in navy waxed cotton | Stuchbery's",
+  seoTitle: "Towpath Field Jacket in navy waxed cotton | Stuchbery Acres",
   seoDescription: "A navy waxed cotton field jacket with a corduroy-lined collar, two-way zip, and snap pockets. Water-resistant and re-waxable.",
 });
 
@@ -217,7 +217,7 @@ Air it out between wears and hand wash it cold, a few times a season at most. Dr
   colors: ["Cream|#ECE4D2", "Bark|#6B5747", "Oatmeal|#C8B89E"],
   materials: "100% wool, 5-gauge cable knit",
   fit: "relaxed", sizeGuide,
-  seoTitle: "Millstone Cable-Knit Sweater in cream wool | Stuchbery's",
+  seoTitle: "Millstone Cable-Knit Sweater in cream wool | Stuchbery Acres",
   seoDescription: "A heavyweight cable-knit crewneck in pure wool with honeycomb and rope cables. Relaxed fit for layering. Sizes XS to XXL.",
 });
 
@@ -246,7 +246,7 @@ The cut is classic: straight through the body, with enough room for a T-shirt or
   colors: ["Navy and Gray|#2E3160", "Green and Oat|#4F5B44", "Rust and Cream|#A04A25"],
   materials: "70% cotton, 30% wool; waffle stitch",
   fit: "classic", sizeGuide,
-  seoTitle: "Lakeshore Striped Sweater in cotton and wool | Stuchbery's",
+  seoTitle: "Lakeshore Striped Sweater, cotton and wool | Stuchbery Acres",
   seoDescription: "A waffle-stitch crewneck in wide navy and gray stripes, knit from cotton and wool for early fall layering. Sizes XS to XXL.",
 });
 
@@ -276,7 +276,7 @@ Machine wash cold and tumble dry on low. Expect a little shrinkage in length aft
   colors: ["Red and Navy|#B23A36", "Green and Navy|#2F4A3A", "Gray and Black|#5A5A5A"],
   materials: "100% cotton flannel, brushed on both sides; corozo buttons",
   fit: "classic", sizeGuide,
-  seoTitle: "Ashcombe Flannel Shirt in red and navy check | Stuchbery's",
+  seoTitle: "Ashcombe Flannel Shirt, red and navy check | Stuchbery Acres",
   seoDescription: "A heavyweight cotton flannel shirt brushed on both sides, with matched check and two flap pockets. Sizes XS to XXL.",
 });
 
@@ -305,7 +305,7 @@ Brush off dirt after a muddy walk and let them dry away from direct heat. Condit
   colors: ["Chestnut|#6E3B2A", "Dark Brown|#45302A", "Black|#1E1B19"],
   materials: "Full-grain leather upper; leather lining; stitched welt; rubber sole",
   fit: "classic", sizeGuide,
-  seoTitle: "Quarry Lace-Up Boots in brown leather | Stuchbery's",
+  seoTitle: "Quarry Lace-Up Boots in brown leather | Stuchbery Acres",
   seoDescription: "Mid-calf lace-up boots in burnished full-grain leather with speed hooks, a stitched welt, and a replaceable rubber sole.",
 });
 
@@ -334,7 +334,7 @@ We pre-treat the suede to help it shed light rain, but it is still suede. Brush 
   colors: ["Tan|#B67D5C", "Chocolate|#4D3427", "Stone|#9A9384"],
   materials: "Suede upper; leather lining and laces; rubber sole",
   fit: "classic", sizeGuide,
-  seoTitle: "Birchwood Suede Chukkas in tan | Stuchbery's",
+  seoTitle: "Birchwood Suede Chukkas in tan | Stuchbery Acres",
   seoDescription: "Ankle-height chukka boots in soft tan suede with leather laces and a light cream rubber sole. Pre-treated to shed light rain.",
 });
 
@@ -364,7 +364,7 @@ Knock off dried mud with a stiff brush and dry them at room temperature with the
   colors: ["Wheat|#C9A06A", "Brown|#6A4A33", "Charcoal|#3A3A3A"],
   materials: "Water-resistant nubuck leather upper; padded collar; rubber lug sole",
   fit: "classic", sizeGuide,
-  seoTitle: "High Notch Hiking Boots in wheat leather | Stuchbery's",
+  seoTitle: "High Notch Hiking Boots in wheat leather | Stuchbery Acres",
   seoDescription: "Leather hiking boots with a padded collar, metal lacing hooks, and a lugged rubber sole for everyday trails. Sizes S to XL.",
 });
 
@@ -393,7 +393,7 @@ Alpaca sheds a little in its first few wears, and this settles quickly. Hand was
   colors: ["Frost|#CFC7B6", "Charcoal|#3E3D40", "Rust|#A04A25"],
   materials: "60% alpaca, 30% wool, 10% nylon; brushed knit",
   fit: "classic", sizeGuide,
-  seoTitle: "First Frost Knit Scarf in brushed alpaca | Stuchbery's",
+  seoTitle: "First Frost Knit Scarf in brushed alpaca | Stuchbery Acres",
   seoDescription: "A light, brushed alpaca and wool scarf in frosted oatmeal, 72 inches long so it wraps twice. One size.",
 });
 
@@ -422,7 +422,7 @@ Hand wash in cool water, press out the water in a towel, and dry them flat. A qu
   colors: ["Heather Gray|#8E8780", "Charcoal|#3E3D40", "Oatmeal|#D6CAB2", "Rust|#A04A25"],
   materials: "80% lambswool, 20% nylon",
   fit: "classic", sizeGuide,
-  seoTitle: "Hearthside Knit Gloves in gray lambswool | Stuchbery's",
+  seoTitle: "Hearthside Knit Gloves in gray lambswool | Stuchbery Acres",
   seoDescription: "Fine-rib lambswool gloves with long cuffs that tuck under a coat sleeve and reinforced fingertips. One size fits most adults.",
 });
 
@@ -448,7 +448,7 @@ The colors come from an October walk outside our shop in Ashcombe: dry grass cam
 - A brushed knit scarf and lambswool gloves for the coldest mornings`),
   image: s.img(4),
   items: [camelCoat, redCoat, navyCoat, fieldJacket, cableKnit, stripedSweater, flannelShirt, laceUpBoots, chukkas, hikingBoots, scarf, gloves],
-  seoTitle: "The Fieldstone Collection, Fall 2026 | Stuchbery's",
+  seoTitle: "The Fieldstone Collection, Fall 2026 | Stuchbery Acres",
   seoDescription: "Twelve pieces for fall 2026 in wool, brushed cotton, suede, and leather: coats, knits, a flannel shirt, boots, and accessories.",
 });
 
@@ -459,29 +459,29 @@ The colors come from an October walk outside our shop in Ashcombe: dry grass cam
 const collectionPageRef = s.ref("page", "fieldstone-collection");
 
 const shopCollection = s.cta("shop-collection", {
-  internalName: "Stuchbery's - Global - Shop the collection",
+  internalName: "Stuchbery Acres - Global - Shop the collection",
   label: "Shop the collection", goalType: "link", destinationPage: collectionPageRef, style: "primary",
 });
 const findYourSize = s.cta("find-your-size", {
-  internalName: "Stuchbery's - Global - Find your size",
+  internalName: "Stuchbery Acres - Global - Find your size",
   label: "Find your size", goalType: "link", destinationPage: s.ref("page", "size-guide"), style: "secondary",
 });
 const viewAllPieces = s.cta("view-all-pieces", {
-  internalName: "Stuchbery's - Home - View all pieces",
+  internalName: "Stuchbery Acres - Home - View all pieces",
   label: "View all 12 pieces", goalType: "link", destinationPage: collectionPageRef, style: "secondary",
 });
 const collectionBand = s.cta("collection-band", {
-  internalName: "Stuchbery's - Global - Collection band",
+  internalName: "Stuchbery Acres - Global - Collection band",
   label: "Shop the collection", goalType: "link", destinationPage: collectionPageRef, style: "primary",
   heading: "Ready for the first cold morning",
   body: "The Fieldstone Collection is twelve pieces for fall 2026, with free shipping on orders over $75 and free returns within 30 days.",
 });
 const shopAll = s.cta("shop-all", {
-  internalName: "Stuchbery's - Collection - Shop all pieces",
+  internalName: "Stuchbery Acres - Collection - Shop all pieces",
   label: "Shop all pieces", goalType: "next_step", style: "primary",
 });
 const addToBag = s.cta("add-to-bag", {
-  internalName: "Stuchbery's - Product - Add to bag",
+  internalName: "Stuchbery Acres - Product - Add to bag",
   label: "Add to bag", goalType: "add_to_cart", style: "primary",
 });
 
@@ -490,35 +490,35 @@ const addToBag = s.cta("add-to-bag", {
 // ---------------------------------------------------------------------------
 
 const homeHero = s.hero("home", {
-  internalName: "Stuchbery's - Home - Hero",
+  internalName: "Stuchbery Acres - Home - Hero",
   eyebrow: "The Fieldstone Collection, Fall 2026",
   headline: "Good coats for cold mornings",
   subheadline: "Twelve pieces in wool, flannel, and leather, cut to layer with one another and made to wear for many seasons.",
   image: s.img(6), layout: "full_bleed", cta: shopCollection, secondaryCta: findYourSize,
 });
 const collectionHero = s.hero("collection", {
-  internalName: "Stuchbery's - Collection - Hero",
+  internalName: "Stuchbery Acres - Collection - Hero",
   eyebrow: "Fall 2026",
   headline: "The Fieldstone Collection",
   subheadline: "Coats, knits, boots, and a few small things for the colder months, made for frosty mornings and long walks home.",
   image: s.img(4), layout: "split", cta: findYourSize,
 });
 const shopHero = s.hero("shop", {
-  internalName: "Stuchbery's - Shop - Hero",
+  internalName: "Stuchbery Acres - Shop - Hero",
   eyebrow: "Shop all",
   headline: "Every piece in the Fieldstone Collection",
   subheadline: "Coats, sweaters, shirts, boots, and accessories for fall 2026. Free shipping on orders over $75.",
   image: s.img(17), layout: "split",
 });
 const sizeGuideHero = s.hero("size-guide", {
-  internalName: "Stuchbery's - Size guide - Hero",
+  internalName: "Stuchbery Acres - Size guide - Hero",
   eyebrow: "Fit and sizing",
   headline: "Find your size",
   subheadline: "Measure over a light shirt, then use the charts below. If you are between sizes, the fit notes will help you choose.",
   layout: "text_only",
 });
 const journalHero = s.hero("journal", {
-  internalName: "Stuchbery's - Journal - Hero",
+  internalName: "Stuchbery Acres - Journal - Hero",
   eyebrow: "The Journal",
   headline: "Notes on caring for good clothes",
   subheadline: "Practical advice from our Ashcombe shop on looking after wool and leather, and on dressing for the weather you actually get.",
@@ -530,7 +530,7 @@ const journalHero = s.hero("journal", {
 // ---------------------------------------------------------------------------
 
 const homeFeatured = s.cardGrid("home-featured", {
-  internalName: "Stuchbery's - Home - Featured products",
+  internalName: "Stuchbery Acres - Home - Featured products",
   heading: "Four pieces to start the season",
   intro: "The coat, sweater, shirt, and boots we reach for first when the mornings turn cold.",
   source: "manual", items: [camelCoat, cableKnit, flannelShirt, laceUpBoots], layout: "products", columns: 4,
@@ -538,7 +538,7 @@ const homeFeatured = s.cardGrid("home-featured", {
 });
 
 const homeCraft = s.mediaText("home-craft", {
-  internalName: "Stuchbery's - Home - Craft story",
+  internalName: "Stuchbery Acres - Home - Craft story",
   eyebrow: "How we make it",
   heading: "Chosen for how it wears, not how it hangs",
   body: "Every piece starts with the cloth. We wear-test our fabrics through a full Ashcombe winter before we cut a single pattern, looking for wool that softens rather than thins, flannel brushed on both sides, and leather that creases without cracking.\n\nThen we cut for layering. Sleeves leave room for a sweater, coats close over a scarf, and shirts sit flat under a jacket. It is slower work, and it is why we make only twelve pieces a season.",
@@ -546,13 +546,13 @@ const homeCraft = s.mediaText("home-craft", {
 });
 
 const homeTestimonial = s.testimonial("home-ruth", {
-  internalName: "Stuchbery's - Home - Customer quote",
+  internalName: "Stuchbery Acres - Home - Customer quote",
   quote: "My cable-knit has been through two winters of dog walks and stacking wood. It has softened without losing its shape, the cuffs still spring back, and it came out of a careful hand wash the same size it went in. It is the first thing I pack for a weekend away.",
   person: ruth, rating: 5,
 });
 
 const collectionStory = s.mediaText("collection-story", {
-  internalName: "Stuchbery's - Collection - Story",
+  internalName: "Stuchbery Acres - Collection - Story",
   eyebrow: "About the collection",
   heading: "Named for the stone walls around Ashcombe",
   body: "The fields around our shop are lined with old fieldstone walls, stacked from rocks cleared by hand and still standing after a long run of hard winters. We named this collection for them because they are what we want our clothes to be: plain and sturdy, and better with age.\n\nThe colors come from the same walk, and every piece is cut to layer with the others. Start with a coat and a sweater, add boots, and you are ready for most of what October and November bring.",
@@ -560,7 +560,7 @@ const collectionStory = s.mediaText("collection-story", {
 });
 
 const collectionProducts = s.cardGrid("collection-products", {
-  internalName: "Stuchbery's - Collection - All products",
+  internalName: "Stuchbery Acres - Collection - All products",
   heading: "All 12 pieces",
   intro: "Coats and jackets first, then knits and shirts, boots, and the small things that keep the cold out.",
   source: "collection", collection: fieldstone, layout: "products", columns: 4,
@@ -589,7 +589,7 @@ const trustSecureCheckout = s.item("trust-secure-checkout", {
 });
 
 const shopTrust = s.cardGrid("shop-trust", {
-  internalName: "Stuchbery's - Product - Trust items",
+  internalName: "Stuchbery Acres - Product - Trust items",
   heading: "With every order",
   source: "manual", items: [trustShipping, trustReturns, trustFitHelp], layout: "icons", columns: 3,
 });
@@ -612,13 +612,13 @@ const faqBootCare = s.item("faq-boot-care", {
 });
 
 const shopFaq = s.faq("shop-shipping-care", {
-  internalName: "Stuchbery's - Product - Shipping FAQ",
+  internalName: "Stuchbery Acres - Product - Shipping FAQ",
   heading: "Shipping, returns, and care",
   items: [faqShipping, faqReturns, faqWoolCare, faqBootCare],
 });
 
 const checkoutForm = s.form("cart-checkout", {
-  internalName: "Stuchbery's - Cart - Checkout form",
+  internalName: "Stuchbery Acres - Cart - Checkout form",
   formKind: "checkout",
   heading: "Your bag",
   intro: "Use code FIELDSTONE15 for 15% off your first order. Demo only.",
@@ -630,7 +630,7 @@ const checkoutForm = s.form("cart-checkout", {
 });
 
 const cartShipping = s.richText("cart-shipping-returns", {
-  internalName: "Stuchbery's - Cart - Shipping and returns",
+  internalName: "Stuchbery Acres - Cart - Shipping and returns",
   heading: "Shipping and returns",
   body: md(`### Shipping
 
@@ -650,13 +650,13 @@ const cartShipping = s.richText("cart-shipping-returns", {
 });
 
 const cartTrust = s.cardGrid("cart-trust", {
-  internalName: "Stuchbery's - Cart - Trust badges",
+  internalName: "Stuchbery Acres - Cart - Trust badges",
   heading: "Every order includes",
   source: "manual", items: [trustReturns, trustMadeToLast, trustSecureCheckout], layout: "icons", columns: 3,
 });
 
 const journalLatest = s.cardGrid("journal-latest", {
-  internalName: "Stuchbery's - Journal - Latest articles",
+  internalName: "Stuchbery Acres - Journal - Latest articles",
   heading: "Latest from the journal",
   source: "latest_articles", layout: "cards", columns: 2, limit: 6,
 });
@@ -666,10 +666,10 @@ const journalLatest = s.cardGrid("journal-latest", {
 // ---------------------------------------------------------------------------
 
 const home = s.page("home", {
-  title: "Stuchbery's", slug: "home", pageType: "home", funnelStep: 1, nextStep: collectionPageRef,
+  title: "Stuchbery Acres", slug: "home", pageType: "home", funnelStep: 1, nextStep: collectionPageRef,
   hero: homeHero, primaryCta: shopCollection,
   sections: [homeFeatured, homeCraft, homeTestimonial, collectionBand],
-  seoTitle: "Stuchbery's | Wool coats, knitwear, and boots for fall",
+  seoTitle: "Stuchbery Acres | Wool coats, knitwear, and boots for fall",
   seoDescription: "Shop the Fieldstone Collection: wool coats, cable-knits, flannel shirts, and leather boots for fall 2026. Free shipping on orders over $75.",
 });
 
@@ -678,7 +678,7 @@ const collectionPage = s.page("fieldstone-collection", {
   nextStep: s.ref("page", "shop"),
   hero: collectionHero, primaryCta: shopAll,
   sections: [collectionStory, collectionProducts],
-  seoTitle: "The Fieldstone Collection, Fall 2026 | Stuchbery's",
+  seoTitle: "The Fieldstone Collection, Fall 2026 | Stuchbery Acres",
   seoDescription: "Twelve pieces for fall 2026 in wool, brushed cotton, suede, and leather. Free shipping on orders over $75 and free returns within 30 days.",
 });
 
@@ -687,14 +687,14 @@ const shopPage = s.page("shop", {
   hero: shopHero, primaryCta: addToBag,
   sections: [collectionProducts],
   detailSections: [shopFaq, shopTrust],
-  seoTitle: "Shop the Fieldstone Collection | Stuchbery's",
+  seoTitle: "Shop the Fieldstone Collection | Stuchbery Acres",
   seoDescription: "Coats, sweaters, flannel shirts, boots, and knit accessories from the Fieldstone Collection, with free returns within 30 days.",
 });
 
 const cartPage = s.page("cart", {
   title: "Your bag", slug: "cart", pageType: "goal", funnelStep: 4,
   sections: [checkoutForm, cartShipping, cartTrust],
-  seoTitle: "Your bag | Stuchbery's",
+  seoTitle: "Your bag | Stuchbery Acres",
   seoDescription: "Review your bag and check out. Free shipping on orders over $75 and free returns within 30 days.",
 });
 
@@ -702,7 +702,7 @@ const sizeGuidePage = s.page("size-guide", {
   title: "Size guide", slug: "size-guide", pageType: "standard", funnelStep: 0,
   hero: sizeGuideHero, primaryCta: shopCollection,
   sections: [sizeGuide, collectionBand],
-  seoTitle: "Size guide | Stuchbery's",
+  seoTitle: "Size guide | Stuchbery Acres",
   seoDescription: "Chest and waist measurements in inches for sizes XS to XXL, boot sizes, and fit notes for every piece in the Fieldstone Collection.",
 });
 
@@ -710,8 +710,8 @@ const journalPage = s.page("journal", {
   title: "The Journal", slug: "journal", pageType: "article_index", funnelStep: 0,
   hero: journalHero, primaryCta: shopCollection,
   sections: [journalLatest, collectionBand],
-  seoTitle: "The Journal | Stuchbery's",
-  seoDescription: "Care guides and seasonal advice from Stuchbery's: how to look after wool, leather, and suede, and how to dress for a long fall.",
+  seoTitle: "The Journal | Stuchbery Acres",
+  seoDescription: "Care guides and seasonal advice from Stuchbery Acres: how to look after wool, leather, and suede, and how to dress for a long fall.",
 });
 
 // ---------------------------------------------------------------------------
@@ -774,7 +774,7 @@ Before the weather turns warm, wash or clean everything you plan to put away. Mo
 Wear it, rest it, brush it, and wash it only when it needs it. Wool that is treated this way softens and settles over the years instead of wearing out, which is the whole reason to buy it in the first place.`),
   heroImage: s.img(1), author: elena, publishDate: "2026-09-10",
   topics: ["wool care", "knitwear", "coats"], relatedPage: cableKnit, cta: shopCollection,
-  seoTitle: "How to care for wool sweaters and coats | Stuchbery's",
+  seoTitle: "How to care for wool sweaters and coats | Stuchbery Acres",
   seoDescription: "How to air, brush, hand wash, de-pill, and store wool sweaters and coats so they keep their shape for many seasons.",
 });
 
@@ -831,7 +831,7 @@ If you are building a fall wardrobe from scratch, this short list covers almost 
 Buy fewer pieces, choose them to work together, and look after them well. That is most of what dressing for a long fall comes down to.`),
   heroImage: s.img(14), author: thomas, publishDate: "2026-09-24",
   topics: ["layering", "fall", "style advice"], relatedPage: collectionPage, cta: shopCollection,
-  seoTitle: "How to layer for a long fall | Stuchbery's",
+  seoTitle: "How to layer for a long fall | Stuchbery Acres",
   seoDescription: "A practical guide to layering shirts, sweaters, jackets, and coats for changeable fall weather, plus a simple wardrobe checklist.",
 });
 
@@ -848,14 +848,14 @@ const footerWoolCare = s.item("footer-wool-care", { title: "Caring for Wool", li
 const footerLayering = s.item("footer-layering", { title: "Layering for Fall", link: layeringArticle });
 
 s.brand({
-  name: "Stuchbery's", slug: "stuchberys", vertical: "apparel_retail",
+  name: "Stuchbery Acres", slug: "stuchbery-acres", vertical: "apparel_retail",
   shortDescription: "Apparel retailer with classic seasonal collections.",
   tagline: "Made for the long season.",
   logo: s.logo, favicon: s.favicon,
   colorBrand: "#2F4A3A", colorButton: "#2F4A3A", colorButtonText: "#F5EFE3", colorAccent: "#A04A25",
   colorBackground: "#F5EFE3", colorSurface: "#E4D9C4", colorText: "#2B2B2B", colorMuted: "#6B645A",
   fontHeading: "Libre Caslon Text", fontBody: "Source Sans 3", buttonRadius: 0, buttonTextCase: "uppercase",
-  voiceDescription: "A warm, understated outfitter from a small town in Vermont. Stuchbery's writes about fabric, fit, and care the way a knowledgeable shop assistant would: plainly, with specific detail about how things feel and how they wear over time.",
+  voiceDescription: "A warm, understated outfitter from a small town in Vermont. Stuchbery Acres writes about fabric, fit, and care the way a knowledgeable shop assistant would: plainly, with specific detail about how things feel and how they wear over time.",
   voiceDos: [
     "Describe how things feel and wear.",
     "Use seasonal moments, like the first frost or a wet October walk.",

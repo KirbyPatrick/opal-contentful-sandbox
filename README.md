@@ -24,10 +24,10 @@ A demo sandbox that shows Optimizely Opal creating, updating, and publishing con
 
 | Brand | Vertical | Funnel (step 1 to 4) |
 |---|---|---|
-| Lumenwork | B2B SaaS | Home, solution page, case study, book a demo |
-| Stuchbery's | B2C apparel | Home, collection, product detail, add to cart |
-| Harborline Mutual | Insurance | Home, coverage detail, quote start, get a quote |
-| Clearwater Health | Medical | Home, specialty page, provider profile, book an appointment |
+| StoutWare | B2B SaaS | Home, solution page, case study, book a demo |
+| Stuchbery Acres | B2C apparel | Home, collection, product detail, add to cart |
+| DeFeo Mutual | Insurance | Home, coverage detail, quote start, get a quote |
+| St. Isaac's Health | Medical | Home, specialty page, provider profile, book an appointment |
 | Ledgerwood Bank | Financial services | Home, product detail, rates or comparison, start an application |
 | Tidewater Journeys | Travel | Home, destination, package detail, request a booking |
 

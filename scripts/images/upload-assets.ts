@@ -10,6 +10,9 @@
  *   never printed or logged.
  * - Logos and favicons come from assets/brand/<slug>/ and are uploaded as files.
  * - Asset IDs are deterministic, so re-running skips anything already uploaded.
+ *   npm run assets:upload -- --retag            After a rebrand: give every asset its brand's current brand-<slug> tag.
+ *   npm run assets:upload -- --replace-logos    After a rebrand: re-upload the logo and favicon of each rebranded brand (same asset IDs).
+ *
  * - Alt text goes in the asset title, attribution in the description, and every
  *   asset is tagged seed and brand-<slug>. Assets are published.
  */
@@ -19,6 +22,7 @@ import { z } from "zod";
 import { describeError } from "../../src/lib/contentful/errors";
 import { getSandboxClient } from "../../src/lib/contentful/management";
 import type { SandboxClient } from "../../src/lib/contentful/policy";
+import { BRAND_INFO, brandInfo } from "../../seed/lib/brands";
 
 const LOCALE = "en-US";
 const ALT_TEXT_LIMIT = 125;
@@ -38,22 +42,14 @@ const Manifest = z.object({
   ),
 });
 
-const BRAND_NAMES: Record<string, string> = {
-  lumenwork: "Lumenwork",
-  stuchberys: "Stuchbery's",
-  "harborline-mutual": "Harborline Mutual",
-  "clearwater-health": "Clearwater Health",
-  "ledgerwood-bank": "Ledgerwood Bank",
-  "tidewater-journeys": "Tidewater Journeys",
-};
-
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-function tags(brand: string) {
+/** Assets carry the brand's image pool tag, brand-<slug>. The manifest and asset IDs use the brand key. */
+function tags(brandKey: string) {
   return {
     tags: [
       { sys: { type: "Link" as const, linkType: "Tag" as const, id: "seed" } },
-      { sys: { type: "Link" as const, linkType: "Tag" as const, id: `brand-${brand}` } },
+      { sys: { type: "Link" as const, linkType: "Tag" as const, id: `brand-${brandInfo(brandKey).slug}` } },
     ],
   };
 }
@@ -94,12 +90,65 @@ async function processAndPublish(client: SandboxClient, assetId: string): Promis
   }
 }
 
+
+/**
+ * Gives every asset the image pool tag of its brand's current slug (brand-<slug>), replacing any earlier brand tag.
+ * The brand comes from the asset ID (img-<key>-NN, logo-<key>, favicon-<key>). Create the tags first: npm run tags:setup.
+ */
+async function retagAssets(client: SandboxClient): Promise<void> {
+  const brandOf = (assetId: string) => BRAND_INFO.find(({ key }) => assetId.startsWith(`img-${key}-`) || assetId === `logo-${key}` || assetId === `favicon-${key}`);
+  let moved = 0;
+  for (let skip = 0; ; skip += 100) {
+    const page = await client.asset.getMany({ query: { limit: 100, skip, order: "sys.id" } });
+    for (const asset of page.items) {
+      const brand = brandOf(asset.sys.id);
+      if (!brand) continue;
+      const wanted = `brand-${brand.slug}`;
+      const tags = asset.metadata?.tags ?? [];
+      const others = tags.filter((tag) => !tag.sys.id.startsWith("brand-"));
+      if (tags.length === others.length + 1 && tags.some((tag) => tag.sys.id === wanted)) continue;
+      const published = asset.sys.publishedVersion !== undefined && asset.sys.version <= asset.sys.publishedVersion + 1;
+      const next = [...others, { sys: { type: "Link" as const, linkType: "Tag" as const, id: wanted } }];
+      const updated = await client.asset.update({ assetId: asset.sys.id }, { ...asset, metadata: { ...asset.metadata, tags: next } });
+      if (published) await client.asset.publish({ assetId: asset.sys.id }, updated);
+      moved++;
+    }
+    if (skip + page.items.length >= page.total) break;
+  }
+  console.log(`retagged  ${moved} assets`);
+}
+
+/** Re-uploads the logo and favicon of every rebranded brand into the existing assets (IDs unchanged, titles updated). */
+async function replaceLogos(client: SandboxClient): Promise<void> {
+  for (const { key, slug, name } of BRAND_INFO) {
+    if (slug === key) continue;
+    for (const kind of ["logo", "favicon"] as const) {
+      const assetId = `${kind}-${key}`;
+      const current = await client.asset.get({ assetId });
+      const file = readFileSync(join("assets", "brand", key, `${kind}.svg`));
+      const upload = await client.upload.create({}, { file: file.buffer.slice(file.byteOffset, file.byteOffset + file.byteLength) as ArrayBuffer });
+      await client.asset.update({ assetId }, {
+        ...current,
+        fields: {
+          ...current.fields,
+          title: { [LOCALE]: kind === "logo" ? `${name} logo` : `${name} icon` },
+          file: { [LOCALE]: { contentType: "image/svg+xml", fileName: `${key}-${kind}.svg`, uploadFrom: { sys: { type: "Link", linkType: "Upload", id: upload.sys.id } } } },
+        },
+      });
+      await processAndPublish(client, assetId);
+      console.log(`replaced  ${assetId}`);
+    }
+  }
+}
+
 async function main(): Promise<void> {
   const pixabayKey = process.env.PIXABAY_API_KEY;
   if (!pixabayKey || !/^\d+-[0-9a-f]{20,}$/.test(pixabayKey)) throw new Error("PIXABAY_API_KEY is missing or invalid. See .env.example.");
 
   const manifest = Manifest.parse(JSON.parse(readFileSync(join("assets", "manifest.json"), "utf8")));
   const client = await getSandboxClient();
+  if (process.argv.includes("--retag")) return retagAssets(client);
+  if (process.argv.includes("--replace-logos")) return replaceLogos(client);
   const existing = await existingAssetIds(client);
   const replaceIndex = process.argv.indexOf("--replace");
   const replaceKey = replaceIndex >= 0 ? process.argv[replaceIndex + 1] : undefined;
@@ -153,7 +202,7 @@ async function main(): Promise<void> {
     console.log(`uploaded  ${assetId}`);
   }
 
-  for (const [brand, name] of Object.entries(BRAND_NAMES)) {
+  for (const { key: brand, name } of BRAND_INFO) {
     for (const kind of ["logo", "favicon"] as const) {
       const assetId = `${kind}-${brand}`;
       if (existing.has(assetId)) {

@@ -53,23 +53,23 @@ export function asset(id: string, tag: string, title: string, contentType = "ima
 export function seedData() {
   const entries = [
     entry("brand-harborline", "brand", {
-      name: "Harborline Mutual", slug: "harborline-mutual", vertical: "insurance", shortDescription: "Home and auto insurance.",
+      name: "DeFeo Mutual", slug: "defeo-mutual", vertical: "insurance", shortDescription: "Home and auto insurance.",
       tagline: "Coverage you can read.", voiceDescription: "Plain and steady.", voiceDos: ["Use short sentences", "Name the benefit"],
       voiceDonts: ["No hype", "No jargon"], homePage: link("Entry", "page-hl-home"),
     }, { version: 5, publishedVersion: 4 }),
-    entry("brand-lumenwork", "brand", {
-      name: "Lumenwork", slug: "lumenwork", vertical: "b2b_saas", shortDescription: "Workflow software.",
+    entry("brand-stoutware", "brand", {
+      name: "StoutWare", slug: "stoutware", vertical: "b2b_saas", shortDescription: "Workflow software.",
       voiceDescription: "Crisp.", voiceDos: ["a", "b"], voiceDonts: ["c", "d"], homePage: link("Entry", "page-lw-home"),
     }, { version: 5, publishedVersion: 4 }),
     entry("page-hl-home", "page", { title: "Home", slug: "home", brand: link("Entry", "brand-harborline"), pageType: "home", funnelStep: 1, hero: link("Entry", "hero-hl-home"), primaryCta: link("Entry", "cta-hl-quote") }, { version: 4, publishedVersion: 3 }),
     entry("page-hl-journal", "page", { title: "Journal", slug: "journal", brand: link("Entry", "brand-harborline"), pageType: "article_index", funnelStep: 0 }, { version: 2, publishedVersion: 1 }),
     entry("page-hl-coverage", "page", { title: "Coverage", slug: "coverage", brand: link("Entry", "brand-harborline"), pageType: "offering_detail", funnelStep: 2 }, { version: 2, publishedVersion: 1 }),
-    entry("page-lw-home", "page", { title: "Home", slug: "home", brand: link("Entry", "brand-lumenwork"), pageType: "home", funnelStep: 1 }, { version: 4, publishedVersion: 3 }),
-    entry("hero-hl-home", "hero", { internalName: "Harborline - Home - Hero", brand: link("Entry", "brand-harborline"), headline: "Insurance without the fine print maze", layout: "split" }, { version: 3, publishedVersion: 2 }),
-    entry("cta-hl-quote", "cta", { internalName: "Harborline - Home - Quote", brand: link("Entry", "brand-harborline"), label: "Get a quote", goalType: "get_quote" }, { version: 3, publishedVersion: 2 }),
+    entry("page-lw-home", "page", { title: "Home", slug: "home", brand: link("Entry", "brand-stoutware"), pageType: "home", funnelStep: 1 }, { version: 4, publishedVersion: 3 }),
+    entry("hero-hl-home", "hero", { internalName: "DeFeo - Home - Hero", brand: link("Entry", "brand-harborline"), headline: "Insurance without the fine print maze", layout: "split" }, { version: 3, publishedVersion: 2 }),
+    entry("cta-hl-quote", "cta", { internalName: "DeFeo - Home - Quote", brand: link("Entry", "brand-harborline"), label: "Get a quote", goalType: "get_quote" }, { version: 3, publishedVersion: 2 }),
     entry("person-hl-author", "person", { name: "Dana Whitfield", slug: "dana-whitfield", brand: link("Entry", "brand-harborline"), role: "author" }, { version: 2, publishedVersion: 1 }),
     entry("person-hl-provider", "person", { name: "Pat Rivers", slug: "pat-rivers", brand: link("Entry", "brand-harborline"), role: "provider" }, { version: 2, publishedVersion: 1 }),
-    entry("person-lw-author", "person", { name: "Lee Park", slug: "lee-park", brand: link("Entry", "brand-lumenwork"), role: "author" }, { version: 2, publishedVersion: 1 }),
+    entry("person-lw-author", "person", { name: "Lee Park", slug: "lee-park", brand: link("Entry", "brand-stoutware"), role: "author" }, { version: 2, publishedVersion: 1 }),
     entry("offering-hl-home", "offering", { name: "Home coverage", slug: "home-coverage", brand: link("Entry", "brand-harborline"), offeringType: "insurance_coverage", summary: "Covers your home." }, { version: 3, publishedVersion: 2 }),
     entry("article-hl-seed", "article", {
       title: "How claims work", slug: "how-claims-work", brand: link("Entry", "brand-harborline"), summary: "A short guide to claims.",
@@ -78,10 +78,10 @@ export function seedData() {
     }, { version: 6, publishedVersion: 5 }),
   ];
   const assets = [
-    asset("img-hl-1", "brand-harborline-mutual", "A family at a kitchen table"),
-    asset("img-hl-2", "brand-harborline-mutual", "A sunny front porch"),
-    asset("img-lw-1", "brand-lumenwork", "A team at a whiteboard"),
-    asset("doc-hl-1", "brand-harborline-mutual", "A PDF brochure", "application/pdf"),
+    asset("img-hl-1", "brand-defeo-mutual", "A family at a kitchen table"),
+    asset("img-hl-2", "brand-defeo-mutual", "A sunny front porch"),
+    asset("img-lw-1", "brand-stoutware", "A team at a whiteboard"),
+    asset("doc-hl-1", "brand-defeo-mutual", "A PDF brochure", "application/pdf"),
   ];
   return { entries, assets };
 }

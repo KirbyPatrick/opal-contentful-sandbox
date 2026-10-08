@@ -15,7 +15,7 @@ const OUT_DIR = join("assets", "brand");
 
 const BRANDS = [
   {
-    slug: "lumenwork", name: "Lumenwork", font: "Space Grotesk", weight: 700, text: "#1F2A44", letterSpacing: -0.5,
+    slug: "lumenwork", name: "StoutWare", font: "Space Grotesk", weight: 700, text: "#1F2A44", letterSpacing: -0.5,
     // Amber disc with three navy steps: work moving forward in the light.
     symbol: (s) => `<circle cx="${s / 2}" cy="${s / 2}" r="${s / 2}" fill="#F2A33A"/>
       <rect x="${s * 0.24}" y="${s * 0.58}" width="${s * 0.16}" height="${s * 0.16}" rx="${s * 0.02}" fill="#1F2A44"/>
@@ -23,13 +23,13 @@ const BRANDS = [
       <rect x="${s * 0.6}" y="${s * 0.3}" width="${s * 0.16}" height="${s * 0.44}" rx="${s * 0.02}" fill="#1F2A44"/>`,
   },
   {
-    slug: "stuchberys", name: "Stuchbery’s", font: "Libre Caslon Text", weight: 700, text: "#2F4A3A", letterSpacing: 0.5,
+    slug: "stuchberys", name: "Stuchbery Acres", font: "Libre Caslon Text", weight: 700, text: "#2F4A3A", letterSpacing: 0.5,
     // A fieldstone: a soft, irregular forest green stone with a cream "S" monogram.
     monogram: { letter: "S", fill: "#F5EFE3" },
     symbol: (s) => `<path d="M${s * 0.18} ${s * 0.22} Q${s * 0.34} ${s * 0.04} ${s * 0.6} ${s * 0.06} Q${s * 0.92} ${s * 0.1} ${s * 0.95} ${s * 0.44} Q${s * 0.98} ${s * 0.84} ${s * 0.6} ${s * 0.94} Q${s * 0.18} ${s * 1.0} ${s * 0.06} ${s * 0.68} Q${s * 0.0} ${s * 0.4} ${s * 0.18} ${s * 0.22} Z" fill="#2F4A3A"/>`,
   },
   {
-    slug: "harborline-mutual", name: "Harborline Mutual", font: "DM Serif Display", weight: 400, text: "#12355B", letterSpacing: 0,
+    slug: "harborline-mutual", name: "DeFeo Mutual", font: "DM Serif Display", weight: 400, text: "#12355B", letterSpacing: 0,
     // A harbor at dusk: navy circle, sea-glass waves, coral horizon.
     symbol: (s) => `<circle cx="${s / 2}" cy="${s / 2}" r="${s / 2}" fill="#12355B"/>
       <rect x="${s * 0.2}" y="${s * 0.36}" width="${s * 0.6}" height="${s * 0.07}" rx="${s * 0.035}" fill="#C9472F"/>
@@ -37,7 +37,7 @@ const BRANDS = [
       <path d="M${s * 0.26} ${s * 0.72} q${s * 0.06} ${-s * 0.05} ${s * 0.12} 0 t${s * 0.12} 0 t${s * 0.12} 0 t${s * 0.12} 0" stroke="#7FB7BE" stroke-width="${s * 0.05}" fill="none" stroke-linecap="round"/>`,
   },
   {
-    slug: "clearwater-health", name: "Clearwater Health", font: "Merriweather Sans", weight: 700, text: "#163E5C", letterSpacing: 0,
+    slug: "clearwater-health", name: "St. Isaac's Health", font: "Merriweather Sans", weight: 700, text: "#163E5C", letterSpacing: 0,
     // A clear drop with a gentle cross inside.
     symbol: (s) => `<path d="M${s / 2} ${s * 0.04} C${s * 0.72} ${s * 0.32} ${s * 0.88} ${s * 0.5} ${s * 0.88} ${s * 0.64} A${s * 0.38} ${s * 0.36} 0 0 1 ${s * 0.12} ${s * 0.64} C${s * 0.12} ${s * 0.5} ${s * 0.28} ${s * 0.32} ${s / 2} ${s * 0.04} Z" fill="#0F7C8C"/>
       <rect x="${s * 0.44}" y="${s * 0.46}" width="${s * 0.12}" height="${s * 0.34}" rx="${s * 0.03}" fill="#FFFFFF"/>

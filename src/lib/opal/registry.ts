@@ -43,7 +43,7 @@ function defineTool<S extends z.ZodType>(def: {
   return { ...def, run: (ctx, input) => def.run(ctx, input as z.output<S>) };
 }
 
-const BRAND = "Brand slug from list_brands, for example harborline-mutual. If the user's brand is unclear, ask them.";
+const BRAND = "Brand slug from list_brands, for example defeo-mutual. If the user's brand is unclear, ask them.";
 const VERSION = "The entry's current version number, from get_entry or the last write response.";
 
 export const TOOLS: readonly ToolDefinition[] = [

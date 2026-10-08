@@ -6,16 +6,17 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { markdownToRichText } from "../../src/lib/richtext/markdown";
-import type { BrandSlug, SeedEntry } from "./builders";
+import { BRAND_INFO, BRAND_KEYS, type BrandKey } from "./brands";
+import type { SeedEntry } from "./builders";
 
 export const LOCALE = "en-US";
-export const BRANDS: BrandSlug[] = ["lumenwork", "stuchberys", "harborline-mutual", "clearwater-health", "ledgerwood-bank", "tidewater-journeys"];
+export const BRANDS: BrandKey[] = BRAND_KEYS;
 
-export async function loadSeedEntries(slugs: readonly BrandSlug[]): Promise<SeedEntry[]> {
+export async function loadSeedEntries(keys: readonly BrandKey[]): Promise<SeedEntry[]> {
   const all: SeedEntry[] = [];
-  for (const slug of slugs) {
-    const module = (await import(`../brands/${slug}.ts`)) as { default?: SeedEntry[] };
-    if (!Array.isArray(module.default)) throw new Error(`seed/brands/${slug}.ts must export default an array of entries (s.entries).`);
+  for (const key of keys) {
+    const module = (await import(`../brands/${key}.ts`)) as { default?: SeedEntry[] };
+    if (!Array.isArray(module.default)) throw new Error(`seed/brands/${key}.ts must export default an array of entries (s.entries).`);
     all.push(...module.default);
   }
   return all;
@@ -25,9 +26,9 @@ export async function loadSeedEntries(slugs: readonly BrandSlug[]): Promise<Seed
 export function knownAssetIds(): Set<string> {
   const manifest = JSON.parse(readFileSync(join("assets", "manifest.json"), "utf8")) as { images: Array<{ key: string }> };
   const ids = new Set(manifest.images.map((image) => `img-${image.key}`));
-  for (const slug of BRANDS) {
-    ids.add(`logo-${slug}`);
-    ids.add(`favicon-${slug}`);
+  for (const { key } of BRAND_INFO) {
+    ids.add(`logo-${key}`);
+    ids.add(`favicon-${key}`);
   }
   return ids;
 }

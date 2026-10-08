@@ -2,7 +2,7 @@
  * Seeds the sandbox with the brand content in seed/brands/.
  *
  *   npm run seed -- --dry-run                    Validate everything offline. No network.
- *   npm run seed -- --dry-run --brand lumenwork  Validate one brand offline.
+ *   npm run seed -- --dry-run --brand lumenwork  Validate one brand offline (by brand key, see seed/lib/brands.ts).
  *   npm run seed                                 Validate, then create or update entries and publish them.
  *
  * Idempotent: entry IDs are deterministic, unchanged entries are skipped, and
@@ -11,7 +11,7 @@
 import { describeError } from "../src/lib/contentful/errors";
 import { getSandboxClient } from "../src/lib/contentful/management";
 import { readSandboxTarget } from "../src/lib/contentful/config";
-import type { BrandSlug } from "../seed/lib/builders";
+import type { BrandKey } from "../seed/lib/brands";
 import { BRANDS, knownAssetIds, loadSeedEntries, stable, toContentfulFields } from "../seed/lib/sync";
 import { validateGraph } from "../seed/lib/validate";
 
@@ -31,7 +31,7 @@ function report(errors: string[], warnings: string[]): void {
 
 async function main(): Promise<void> {
   const dryRun = process.argv.includes("--dry-run");
-  const only = arg("--brand") as BrandSlug | undefined;
+  const only = arg("--brand") as BrandKey | undefined;
   if (only && !BRANDS.includes(only)) throw new Error(`Unknown brand "${only}". Use one of: ${BRANDS.join(", ")}.`);
 
   const entries = await loadSeedEntries(only ? [only] : BRANDS);

@@ -13,14 +13,18 @@ Every brand footer carries: "Fictional company. Sample content for illustration 
 
 ## Name check (October 2026)
 
-| Brand | Finding | Decision |
+The brands were renamed on 2026-10-08. The names below were searched on the web; none matched a real company exactly.
+
+| Brand (original name) | Finding | Decision |
 |---|---|---|
-| Lumenwork | No exact match. Closest: LumWork, a small 2022 Google Workspace add-on by LumApps. | Keep |
-| Stuchbery's | No apparel company by this name. | Keep |
-| Harborline Mutual | No exact match. Similar names: Harford Mutual, Harborway Insurance, Harbor One Insurance. | Keep |
-| Clearwater Health | No exact match. Clearwater, Florida has local clinics with similar names. | Keep (mild flag) |
+| StoutWare (Lumenwork) | No exact match. Similar: Stout Systems, a software firm in Ann Arbor, Michigan; Stoneware, a software company. | Keep (mild flag) |
+| Stuchbery Acres (Stuchbery's) | No apparel company by this name. | Keep |
+| DeFeo Mutual (Harborline Mutual) | No insurer by this name. Similar: Edward R. DeFeo Agency, an independent insurance agency in New Jersey. | Keep (mild flag) |
+| St. Isaac's Health (Clearwater Health) | No exact match. Similar: Isaac Health, a New York memory clinic, and Chief Andrew Isaac Health Center in Alaska. | Keep (mild flag) |
 | Ledgerwood Bank | No bank by this name. | Keep |
 | Tidewater Journeys | No exact match. A small agency, Tidewater Cruise and Travel, operates in Maryland. | Keep |
+
+Internal IDs, seed file names, and logo folders still use the original names (see [rebrand.md](rebrand.md)).
 
 ## Theme token reference
 
@@ -39,7 +43,7 @@ Each Brand entry has eight color tokens:
 
 ---
 
-## 1. Lumenwork
+## 1. StoutWare
 
 - **Vertical:** B2B SaaS
 - **Short description:** Workflow and operations software for operations teams.
@@ -57,7 +61,7 @@ Each Brand entry has eight color tokens:
 - **Phone:** (970) 555-0142
 - **Legal disclaimer:** Fictional company. Sample content for illustration only.
 
-## 2. Stuchbery's
+## 2. Stuchbery Acres
 
 - **Vertical:** B2C apparel
 - **Short description:** Apparel retailer with classic seasonal collections.
@@ -77,7 +81,7 @@ Each Brand entry has eight color tokens:
 - **Phone:** (802) 555-0118
 - **Legal disclaimer:** Fictional company. Sample content for illustration only.
 
-## 3. Harborline Mutual
+## 3. DeFeo Mutual
 
 - **Vertical:** Insurance
 - **Short description:** Auto, home, and life insurance for families.
@@ -95,7 +99,7 @@ Each Brand entry has eight color tokens:
 - **Phone:** (207) 555-0163
 - **Legal disclaimer:** Fictional company. Sample content for illustration only. Coverage descriptions and quotes are illustrative and are not offers of insurance.
 
-## 4. Clearwater Health
+## 4. St. Isaac's Health
 
 - **Vertical:** Healthcare
 - **Short description:** Multi-location clinic network offering primary and specialty care.

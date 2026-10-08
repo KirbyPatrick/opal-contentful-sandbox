@@ -29,7 +29,7 @@ async function toolError(run: Promise<unknown>): Promise<ToolError> {
 }
 
 const article = {
-  brand: "harborline-mutual",
+  brand: "defeo-mutual",
   title: "What a deductible really does",
   summary: "A plain look at how deductibles change what you pay.",
   body_markdown: "## The short version\n\nA deductible is what you pay first. See [our guide](https://example.com/guide) for more.\n\n- Higher deductible, lower premium\n- Lower deductible, higher premium",
@@ -40,8 +40,8 @@ describe("read tools", () => {
   it("list_brands returns every brand with a slug to use elsewhere", async () => {
     const { ctx } = setup();
     const result = await listBrands(ctx);
-    assert.deepEqual(result.brands.map((b) => b.slug), ["harborline-mutual", "lumenwork"]);
-    assert.equal(result.brands[0]?.home_url, `${SITE}/harborline-mutual`);
+    assert.deepEqual(result.brands.map((b) => b.slug), ["defeo-mutual", "stoutware"]);
+    assert.equal(result.brands[0]?.home_url, `${SITE}/defeo-mutual`);
   });
 
   it("an unknown brand is refused and the agent is told to ask the user", async () => {
@@ -49,34 +49,34 @@ describe("read tools", () => {
     const error = await toolError(findPages(ctx, { brand: "acme" }));
     assert.equal(error.code, "unknown_brand");
     assert.match(error.message, /ask the user/i);
-    assert.match(error.message, /harborline-mutual/);
+    assert.match(error.message, /defeo-mutual/);
   });
 
   it("accepts the brand name as well as the slug, but never guesses", async () => {
     const { ctx } = setup();
-    assert.equal((await findPages(ctx, { brand: "Harborline Mutual" })).brand, "harborline-mutual");
+    assert.equal((await findPages(ctx, { brand: "DeFeo Mutual" })).brand, "defeo-mutual");
     assert.equal((await toolError(findPages(ctx, { brand: "harbor" }))).code, "unknown_brand");
   });
 
   it("find_pages stays inside the brand and echoes status, preview URL, and live URL", async () => {
     const { ctx } = setup();
-    const result = await findPages(ctx, { brand: "harborline-mutual" });
+    const result = await findPages(ctx, { brand: "defeo-mutual" });
     assert.ok(result.results.length >= 5);
-    assert.ok(result.results.every((r) => r.brand === "harborline-mutual"));
+    assert.ok(result.results.every((r) => r.brand === "defeo-mutual"));
     assert.ok(!result.results.some((r) => r.entry_id === "page-lw-home"));
     const seed = result.results.find((r) => r.entry_id === "article-hl-seed");
     assert.equal(seed?.status, "published");
-    assert.equal(seed?.live_url, `${SITE}/harborline-mutual/journal/how-claims-work`);
+    assert.equal(seed?.live_url, `${SITE}/defeo-mutual/journal/how-claims-work`);
     assert.match(seed?.preview_url ?? "", /^https:\/\/site\.test\/api\/draft\?entry=article-hl-seed&exp=\d+&sig=[0-9a-f]{64}$/);
     const home = result.results.find((r) => r.entry_id === "page-hl-home");
-    assert.equal(home?.live_url, `${SITE}/harborline-mutual`);
+    assert.equal(home?.live_url, `${SITE}/defeo-mutual`);
   });
 
   it("find_pages filters by type and query", async () => {
     const { ctx } = setup();
-    const articles = await findPages(ctx, { brand: "harborline-mutual", type: "article" });
+    const articles = await findPages(ctx, { brand: "defeo-mutual", type: "article" });
     assert.deepEqual(articles.results.map((r) => r.entry_id), ["article-hl-seed"]);
-    const none = await findPages(ctx, { brand: "harborline-mutual", query: "zzz-no-match" });
+    const none = await findPages(ctx, { brand: "defeo-mutual", query: "zzz-no-match" });
     assert.equal(none.count, 0);
   });
 
@@ -84,10 +84,10 @@ describe("read tools", () => {
     const { ctx } = setup();
     const everything = JSON.stringify([
       await listBrands(ctx),
-      await findPages(ctx, { brand: "harborline-mutual" }),
+      await findPages(ctx, { brand: "defeo-mutual" }),
       await getEntry(ctx, { entry_id: "article-hl-seed" }),
-      await getContentRules(ctx, { brand: "harborline-mutual" }),
-      await listBrandImages(ctx, { brand: "harborline-mutual" }),
+      await getContentRules(ctx, { brand: "defeo-mutual" }),
+      await listBrandImages(ctx, { brand: "defeo-mutual" }),
     ]);
     assert.ok(!everything.includes(PREVIEW_SECRET));
   });
@@ -107,27 +107,27 @@ describe("read tools", () => {
 
   it("get_entry refuses a brand mismatch and entries it does not expose", async () => {
     const { ctx } = setup();
-    assert.equal((await toolError(getEntry(ctx, { entry_id: "article-hl-seed", brand: "lumenwork" }))).code, "not_allowed");
+    assert.equal((await toolError(getEntry(ctx, { entry_id: "article-hl-seed", brand: "stoutware" }))).code, "not_allowed");
     assert.equal((await toolError(getEntry(ctx, { entry_id: "brand-harborline" }))).code, "not_allowed");
     assert.equal((await toolError(getEntry(ctx, { entry_id: "does-not-exist" }))).code, "not_found");
   });
 
   it("get_content_rules returns the brand voice and which fields are editable", async () => {
     const { ctx } = setup();
-    const rules = await getContentRules(ctx, { brand: "harborline-mutual" });
+    const rules = await getContentRules(ctx, { brand: "defeo-mutual" });
     assert.equal(rules.voice.description, "Plain and steady.");
     assert.deepEqual(rules.voice.dont, ["No hype", "No jargon"]);
     const types = rules.content_types as Record<string, { can_create: boolean; editable_fields: Record<string, unknown> }>;
     assert.equal(types.article?.can_create, true);
     assert.equal(types.page?.can_create, false);
     assert.ok(!("slug" in (types.page?.editable_fields ?? {})));
-    const narrowed = await getContentRules(ctx, { brand: "harborline-mutual", content_type: "hero" });
+    const narrowed = await getContentRules(ctx, { brand: "defeo-mutual", content_type: "hero" });
     assert.deepEqual(Object.keys(narrowed.content_types), ["hero"]);
   });
 
   it("list_brand_images lists only that brand's images, no documents", async () => {
     const { ctx } = setup();
-    const result = await listBrandImages(ctx, { brand: "harborline-mutual" });
+    const result = await listBrandImages(ctx, { brand: "defeo-mutual" });
     assert.deepEqual(result.images.map((i) => i.asset_id).sort(), ["img-hl-1", "img-hl-2"]);
     assert.equal(result.images[0]?.alt_text, "A family at a kitchen table");
     assert.match(result.images[0]?.thumbnail_url ?? "", /^https:\/\/images\.ctfassets\.net\//);
@@ -143,7 +143,7 @@ describe("create_article", () => {
     assert.equal(result.live_url, null);
     assert.equal(result.version, 1);
     assert.equal(result.slug, "what-a-deductible-really-does");
-    assert.equal(result.brand, "harborline-mutual");
+    assert.equal(result.brand, "defeo-mutual");
     assert.match(result.preview_url, /\/api\/draft\?entry=new-1&exp=\d+&sig=/);
     assert.ok(!JSON.stringify(result).includes(PREVIEW_SECRET));
     const stored = cma.entries.get("new-1");
@@ -160,7 +160,7 @@ describe("create_article", () => {
     const { cma, ctx } = setup();
     const published = await createArticle(ctx, { ...article, publish: true });
     assert.equal(published.status, "published");
-    assert.equal(published.live_url, `${SITE}/harborline-mutual/journal/what-a-deductible-really-does`);
+    assert.equal(published.live_url, `${SITE}/defeo-mutual/journal/what-a-deductible-really-does`);
 
     cma.failNextPublish.value = true;
     const failed = await createArticle(next(cma), { ...article, title: "A second deductible guide", publish: true });
@@ -196,15 +196,15 @@ describe("create_article", () => {
     ["a relative link", { body_markdown: "A paragraph with enough text to count and a [link](/relative/path) inside." }, /http or https/],
     ["a javascript link", { body_markdown: "A paragraph with enough text to count and a [link](javascript:alert(1)) inside." }, /http or https/],
     ["a nearly empty body", { body_markdown: "Too short" }, /nearly empty/],
-    ["a hero image from another brand", { hero_image_id: "img-lw-1" }, /not in Harborline Mutual's image pool/],
+    ["a hero image from another brand", { hero_image_id: "img-lw-1" }, /not in DeFeo Mutual's image pool/],
     ["a hero image that is not an image", { hero_image_id: "doc-hl-1" }, /image pool/],
     ["a hero image that does not exist", { hero_image_id: "nope" }, /does not exist/],
     ["a bad slug", { slug: "Not A Slug" }, /slug/],
     ["a bad date", { publish_date: "10/08/2026" }, /date like/],
     ["too many topics", { topics: "a,b,c,d,e,f" }, /limit is 5/],
-    ["an author from another brand", { author_id: "person-lw-author" }, /belongs to Lumenwork/],
+    ["an author from another brand", { author_id: "person-lw-author" }, /belongs to StoutWare/],
     ["an author who is not an author", { author_id: "person-hl-provider" }, /not an author/],
-    ["a related page from another brand", { related_page_id: "page-lw-home" }, /belongs to Lumenwork/],
+    ["a related page from another brand", { related_page_id: "page-lw-home" }, /belongs to StoutWare/],
     ["a related entry of the wrong type", { related_page_id: "hero-hl-home" }, /must be one of/],
   ];
   for (const [label, override, expected] of refused) {
@@ -227,15 +227,15 @@ describe("create_article", () => {
 
   it("allows the same slug in a different brand", async () => {
     const { ctx } = setup();
-    const result = await createArticle(ctx, { ...article, brand: "lumenwork", title: "How claims work", hero_image_id: "img-lw-1" });
-    assert.equal(result.brand, "lumenwork");
+    const result = await createArticle(ctx, { ...article, brand: "stoutware", title: "How claims work", hero_image_id: "img-lw-1" });
+    assert.equal(result.brand, "stoutware");
   });
 });
 
 describe("update_entry", () => {
   it("saves an allowlisted change as a draft change and bumps the version", async () => {
     const { cma, ctx } = setup();
-    const result = await updateEntry(ctx, { brand: "harborline-mutual", entry_id: "hero-hl-home", version: 3, fields: '{"headline": "Insurance you can actually read"}' });
+    const result = await updateEntry(ctx, { brand: "defeo-mutual", entry_id: "hero-hl-home", version: 3, fields: '{"headline": "Insurance you can actually read"}' });
     assert.equal(result.status, "changed");
     assert.equal(result.version, 4);
     assert.deepEqual(result.changed_fields, ["headline"]);
@@ -248,25 +248,25 @@ describe("update_entry", () => {
 
   it("keeps the live URL of a published article that now has unpublished changes", async () => {
     const { ctx } = setup();
-    const result = await updateEntry(ctx, { brand: "harborline-mutual", entry_id: "article-hl-seed", version: 6, fields: { summary: "A clearer guide to claims." } });
+    const result = await updateEntry(ctx, { brand: "defeo-mutual", entry_id: "article-hl-seed", version: 6, fields: { summary: "A clearer guide to claims." } });
     assert.equal(result.status, "changed");
-    assert.equal(result.live_url, `${SITE}/harborline-mutual/journal/how-claims-work`);
+    assert.equal(result.live_url, `${SITE}/defeo-mutual/journal/how-claims-work`);
   });
 
   it("converts Markdown to rich text and round-trips it through get_entry", async () => {
     const { cma, ctx } = setup();
     const markdown = "## Steps\n\nCall us **first**, then see [the guide](https://example.com/g).\n\n1. Report\n2. Inspect";
-    await updateEntry(ctx, { brand: "harborline-mutual", entry_id: "article-hl-seed", version: 6, fields: { body: markdown } });
+    await updateEntry(ctx, { brand: "defeo-mutual", entry_id: "article-hl-seed", version: 6, fields: { body: markdown } });
     const read = await getEntry(next(cma), { entry_id: "article-hl-seed" });
     assert.equal(read.editable_fields.body, markdown);
   });
 
   it("clears an optional field with null but never a required one", async () => {
     const { cma, ctx } = setup();
-    await updateEntry(ctx, { brand: "harborline-mutual", entry_id: "article-hl-seed", version: 6, fields: '{"topics": null}' });
+    await updateEntry(ctx, { brand: "defeo-mutual", entry_id: "article-hl-seed", version: 6, fields: '{"topics": null}' });
     const stored = cma.entries.get("article-hl-seed")?.fields as Record<string, unknown>;
     assert.ok(!("topics" in stored), "the optional field is cleared");
-    const error = await toolError(updateEntry(next(cma), { brand: "harborline-mutual", entry_id: "hero-hl-home", version: 3, fields: '{"headline": null}' }));
+    const error = await toolError(updateEntry(next(cma), { brand: "defeo-mutual", entry_id: "hero-hl-home", version: 3, fields: '{"headline": null}' }));
     assert.match(error.message, /required/);
   });
 
@@ -278,7 +278,7 @@ describe("update_entry", () => {
       for (const entryId of entries) {
         const entry = cma.entries.get(entryId);
         const body = field === "__proto__" ? `{"__proto__": "x"}` : JSON.stringify({ [field]: "x" });
-        const error = await toolError(updateEntry(next(cma), { brand: "harborline-mutual", entry_id: entryId, version: entry?.sys.version ?? 0, fields: body }));
+        const error = await toolError(updateEntry(next(cma), { brand: "defeo-mutual", entry_id: entryId, version: entry?.sys.version ?? 0, fields: body }));
         assert.match(error.message, /cannot change|not editable/i);
       }
       assert.ok(!cma.calls.includes("entry.update"));
@@ -287,22 +287,22 @@ describe("update_entry", () => {
 
   it("refuses entries the API may not change: brands, people", async () => {
     const { cma, ctx } = setup();
-    assert.equal((await toolError(updateEntry(ctx, { brand: "harborline-mutual", entry_id: "brand-harborline", version: 5, fields: '{"name": "x"}' }))).code, "not_allowed");
-    assert.equal((await toolError(updateEntry(next(cma), { brand: "harborline-mutual", entry_id: "person-hl-author", version: 2, fields: '{"name": "x"}' }))).code, "not_allowed");
+    assert.equal((await toolError(updateEntry(ctx, { brand: "defeo-mutual", entry_id: "brand-harborline", version: 5, fields: '{"name": "x"}' }))).code, "not_allowed");
+    assert.equal((await toolError(updateEntry(next(cma), { brand: "defeo-mutual", entry_id: "person-hl-author", version: 2, fields: '{"name": "x"}' }))).code, "not_allowed");
     assert.ok(!cma.calls.includes("entry.update"));
   });
 
   it("refuses an entry from a different brand than the one named", async () => {
     const { cma, ctx } = setup();
-    const error = await toolError(updateEntry(ctx, { brand: "lumenwork", entry_id: "hero-hl-home", version: 3, fields: '{"headline": "x"}' }));
+    const error = await toolError(updateEntry(ctx, { brand: "stoutware", entry_id: "hero-hl-home", version: 3, fields: '{"headline": "x"}' }));
     assert.equal(error.code, "not_allowed");
-    assert.match(error.message, /belongs to Harborline Mutual/);
+    assert.match(error.message, /belongs to DeFeo Mutual/);
     assert.ok(!cma.calls.includes("entry.update"));
   });
 
   it("refuses a stale version without writing, and says which version is current", async () => {
     const { cma, ctx } = setup();
-    const error = await toolError(updateEntry(ctx, { brand: "harborline-mutual", entry_id: "hero-hl-home", version: 2, fields: '{"headline": "x"}' }));
+    const error = await toolError(updateEntry(ctx, { brand: "defeo-mutual", entry_id: "hero-hl-home", version: 2, fields: '{"headline": "x"}' }));
     assert.equal(error.code, "version_conflict");
     assert.match(error.message, /version 3/);
     assert.ok(!cma.calls.includes("entry.update"));
@@ -315,7 +315,7 @@ describe("update_entry", () => {
       const stored = cma.entries.get(entryId);
       if (stored) stored.sys.version += 1;
     };
-    const error = await toolError(updateEntry(ctx, { brand: "harborline-mutual", entry_id: "hero-hl-home", version: 3, fields: '{"headline": "x"}' }));
+    const error = await toolError(updateEntry(ctx, { brand: "defeo-mutual", entry_id: "hero-hl-home", version: 3, fields: '{"headline": "x"}' }));
     assert.equal(error.code, "version_conflict");
   });
 
@@ -332,7 +332,7 @@ describe("update_entry", () => {
       ["{}", /is empty/],
     ];
     for (const [fields, expected] of cases) {
-      const error = await toolError(updateEntry(next(cma), { brand: "harborline-mutual", entry_id: "hero-hl-home", version: 3, fields }));
+      const error = await toolError(updateEntry(next(cma), { brand: "defeo-mutual", entry_id: "hero-hl-home", version: 3, fields }));
       assert.match(error.message, expected);
     }
     assert.ok(!cma.calls.includes("entry.update"));
@@ -340,7 +340,7 @@ describe("update_entry", () => {
 
   it("accepts an image from the brand's own pool", async () => {
     const { cma, ctx } = setup();
-    await updateEntry(ctx, { brand: "harborline-mutual", entry_id: "hero-hl-home", version: 3, fields: '{"image": "img-hl-2"}' });
+    await updateEntry(ctx, { brand: "defeo-mutual", entry_id: "hero-hl-home", version: 3, fields: '{"image": "img-hl-2"}' });
     const fields = cma.entries.get("hero-hl-home")?.fields as Record<string, Record<string, unknown>>;
     assert.deepEqual(fields.image?.["en-US"], { sys: { type: "Link", linkType: "Asset", id: "img-hl-2" } });
   });
@@ -349,26 +349,26 @@ describe("update_entry", () => {
 describe("publish_entry and unpublish_entry", () => {
   it("update then publish chains using the returned version", async () => {
     const { cma, ctx } = setup();
-    const saved = await updateEntry(ctx, { brand: "harborline-mutual", entry_id: "article-hl-seed", version: 6, fields: { summary: "A clearer guide to claims." } });
-    const published = await publishEntry(next(cma), { brand: "harborline-mutual", entry_id: "article-hl-seed", version: saved.version });
+    const saved = await updateEntry(ctx, { brand: "defeo-mutual", entry_id: "article-hl-seed", version: 6, fields: { summary: "A clearer guide to claims." } });
+    const published = await publishEntry(next(cma), { brand: "defeo-mutual", entry_id: "article-hl-seed", version: saved.version });
     assert.equal(published.status, "published");
     assert.equal(published.changed, true);
-    assert.equal(published.live_url, `${SITE}/harborline-mutual/journal/how-claims-work`);
+    assert.equal(published.live_url, `${SITE}/defeo-mutual/journal/how-claims-work`);
   });
 
   it("publishing an already published entry is a no-op", async () => {
     const { cma, ctx } = setup();
-    const result = await publishEntry(ctx, { brand: "harborline-mutual", entry_id: "article-hl-seed", version: 6 });
+    const result = await publishEntry(ctx, { brand: "defeo-mutual", entry_id: "article-hl-seed", version: 6 });
     assert.equal(result.changed, false);
     assert.ok(!cma.calls.includes("entry.publish"));
   });
 
   it("refuses a stale version, a wrong brand, and types that cannot be published", async () => {
     const { cma, ctx } = setup();
-    assert.equal((await toolError(publishEntry(ctx, { brand: "harborline-mutual", entry_id: "hero-hl-home", version: 1 }))).code, "version_conflict");
-    assert.equal((await toolError(publishEntry(next(cma), { brand: "lumenwork", entry_id: "hero-hl-home", version: 3 }))).code, "not_allowed");
-    assert.equal((await toolError(publishEntry(next(cma), { brand: "harborline-mutual", entry_id: "person-hl-author", version: 2 }))).code, "not_allowed");
-    assert.equal((await toolError(publishEntry(next(cma), { brand: "harborline-mutual", entry_id: "brand-harborline", version: 5 }))).code, "not_allowed");
+    assert.equal((await toolError(publishEntry(ctx, { brand: "defeo-mutual", entry_id: "hero-hl-home", version: 1 }))).code, "version_conflict");
+    assert.equal((await toolError(publishEntry(next(cma), { brand: "stoutware", entry_id: "hero-hl-home", version: 3 }))).code, "not_allowed");
+    assert.equal((await toolError(publishEntry(next(cma), { brand: "defeo-mutual", entry_id: "person-hl-author", version: 2 }))).code, "not_allowed");
+    assert.equal((await toolError(publishEntry(next(cma), { brand: "defeo-mutual", entry_id: "brand-harborline", version: 5 }))).code, "not_allowed");
     assert.ok(!cma.calls.includes("entry.publish"));
   });
 
@@ -376,7 +376,7 @@ describe("publish_entry and unpublish_entry", () => {
     const { cma, ctx } = setup();
     const draft = await createArticle(ctx, article);
     cma.failNextPublish.value = true;
-    const error = await toolError(publishEntry(next(cma), { brand: "harborline-mutual", entry_id: draft.entry_id, version: draft.version }));
+    const error = await toolError(publishEntry(next(cma), { brand: "defeo-mutual", entry_id: draft.entry_id, version: draft.version }));
     assert.equal(error.code, "rejected");
   });
 
@@ -384,7 +384,7 @@ describe("publish_entry and unpublish_entry", () => {
     const { cma, ctx } = setup();
     const draft = await createArticle(ctx, article);
     cma.failNextPublish.value = true;
-    const error = await toolError(publishEntry(next(cma), { brand: "harborline-mutual", entry_id: draft.entry_id, version: draft.version }));
+    const error = await toolError(publishEntry(next(cma), { brand: "defeo-mutual", entry_id: draft.entry_id, version: draft.version }));
     assert.ok(!/api\.contentful\.com|spaces\/|request id/i.test(error.message), error.message);
   });
 
@@ -400,7 +400,7 @@ describe("publish_entry and unpublish_entry", () => {
 
   it("unpublishes an article back to draft and keeps it", async () => {
     const { cma, ctx } = setup();
-    const result = await unpublishEntry(ctx, { brand: "harborline-mutual", entry_id: "article-hl-seed", version: 6 });
+    const result = await unpublishEntry(ctx, { brand: "defeo-mutual", entry_id: "article-hl-seed", version: 6 });
     assert.equal(result.status, "draft");
     assert.equal(result.live_url, null);
     assert.ok(cma.entries.has("article-hl-seed"), "nothing is deleted");
@@ -408,10 +408,10 @@ describe("publish_entry and unpublish_entry", () => {
 
   it("only articles can be unpublished; an already unpublished article is a no-op", async () => {
     const { cma, ctx } = setup();
-    assert.equal((await toolError(unpublishEntry(ctx, { brand: "harborline-mutual", entry_id: "page-hl-home", version: 4 }))).code, "not_allowed");
-    assert.equal((await toolError(unpublishEntry(next(cma), { brand: "harborline-mutual", entry_id: "hero-hl-home", version: 3 }))).code, "not_allowed");
+    assert.equal((await toolError(unpublishEntry(ctx, { brand: "defeo-mutual", entry_id: "page-hl-home", version: 4 }))).code, "not_allowed");
+    assert.equal((await toolError(unpublishEntry(next(cma), { brand: "defeo-mutual", entry_id: "hero-hl-home", version: 3 }))).code, "not_allowed");
     const draft = await createArticle(next(cma), article);
-    const again = await unpublishEntry(next(cma), { brand: "harborline-mutual", entry_id: draft.entry_id, version: draft.version });
+    const again = await unpublishEntry(next(cma), { brand: "defeo-mutual", entry_id: draft.entry_id, version: draft.version });
     assert.equal(again.changed, false);
     assert.ok(!cma.calls.includes("entry.unpublish"));
   });
@@ -421,12 +421,12 @@ describe("what the tools can reach", () => {
   it("only ever call methods the Opal policy allows", async () => {
     const { cma, ctx } = setup();
     await listBrands(ctx);
-    await findPages(next(cma), { brand: "harborline-mutual" });
-    await listBrandImages(next(cma), { brand: "harborline-mutual" });
+    await findPages(next(cma), { brand: "defeo-mutual" });
+    await listBrandImages(next(cma), { brand: "defeo-mutual" });
     const draft = await createArticle(next(cma), article);
-    const saved = await updateEntry(next(cma), { brand: "harborline-mutual", entry_id: draft.entry_id, version: draft.version, fields: { summary: "Another summary line." } });
-    await publishEntry(next(cma), { brand: "harborline-mutual", entry_id: draft.entry_id, version: saved.version });
-    await unpublishEntry(next(cma), { brand: "harborline-mutual", entry_id: draft.entry_id, version: saved.version + 1 });
+    const saved = await updateEntry(next(cma), { brand: "defeo-mutual", entry_id: draft.entry_id, version: draft.version, fields: { summary: "Another summary line." } });
+    await publishEntry(next(cma), { brand: "defeo-mutual", entry_id: draft.entry_id, version: saved.version });
+    await unpublishEntry(next(cma), { brand: "defeo-mutual", entry_id: draft.entry_id, version: saved.version + 1 });
     const allowed = new Set(["entry.get", "entry.getMany", "entry.create", "entry.update", "entry.publish", "entry.unpublish", "asset.get", "asset.getMany"]);
     assert.ok(cma.calls.every((call) => allowed.has(call)));
     assert.ok(!cma.calls.some((call) => /delete|archive/.test(call)));

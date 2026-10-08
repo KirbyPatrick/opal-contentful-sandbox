@@ -1,5 +1,5 @@
 /**
- * Harborline Mutual: auto, home, and life insurance for families.
+ * DeFeo Mutual: auto, home, and life insurance for families.
  * Funnel: home (1) -> coverage/{coverage} (2) -> start-a-quote (3) -> get-a-quote (4).
  * Off-funnel: learn (article index).
  */
@@ -10,11 +10,11 @@ const s = defineBrand("harborline-mutual", "hm");
 // ---------- People ----------
 const theo = s.person("theo-lindqvist", {
   name: "Theo Lindqvist", slug: "theo-lindqvist", role: "author", jobTitle: "Auto and home underwriting lead",
-  bio: "Theo has reviewed auto and home policies at Harborline Mutual for more than a decade. He writes about deductibles, coverage limits, and the questions he hears most often from families comparing their options.",
+  bio: "Theo has reviewed auto and home policies at DeFeo Mutual for more than a decade. He writes about deductibles, coverage limits, and the questions he hears most often from families comparing their options.",
 });
 const clara = s.person("clara-benning", {
   name: "Clara Benning", slug: "clara-benning", role: "author", jobTitle: "Customer education editor",
-  bio: "Clara edits Harborline's guides and checklists. Before joining the Learn team, she spent eight years answering policy questions in the Port Mercer office, which is still where most of her article ideas come from.",
+  bio: "Clara edits DeFeo's guides and checklists. Before joining the Learn team, she spent eight years answering policy questions in the Port Mercer office, which is still where most of her article ideas come from.",
 });
 const elena = s.person("elena-marsh", {
   name: "Elena Marsh", slug: "elena-marsh", role: "customer", jobTitle: "Auto and home customer, Port Mercer",
@@ -29,7 +29,7 @@ const auto = s.offering("auto-insurance", {
   summary: "Coverage for the cars your household drives, from liability and collision to roadside help, with every term explained.",
   description: md(`## What it covers
 
-Auto insurance pays for damage and injuries tied to the cars your household drives. A Harborline auto policy is built from a few parts you choose:
+Auto insurance pays for damage and injuries tied to the cars your household drives. A DeFeo auto policy is built from a few parts you choose:
 
 - **Liability** pays for injuries and property damage you cause to others. Most states require a minimum amount.
 - **Collision** pays to repair your car after it hits another vehicle or object, minus your deductible.
@@ -63,7 +63,7 @@ Then pick deductibles you could pay on short notice. You can set collision and c
     "Claims line: 24 hours a day, 7 days a week",
   ],
   finePrint: `${FINE_PRINT} Coverage, limits, and deductibles would vary by policy and by state.`,
-  seoTitle: "Auto insurance for families | Harborline Mutual",
+  seoTitle: "Auto insurance for families | DeFeo Mutual",
   seoDescription: "Liability, collision, comprehensive, and common add-ons, explained in plain language. Coverage details are illustrative and not offers of insurance.",
 });
 
@@ -72,7 +72,7 @@ const home = s.offering("home-insurance", {
   summary: "Protection for the house, the things inside it, and your family if someone is hurt on your property.",
   description: md(`## What it covers
 
-Home insurance protects the house itself, the belongings inside it, and you, if someone is injured on your property. A typical Harborline home policy includes:
+Home insurance protects the house itself, the belongings inside it, and you, if someone is injured on your property. A typical DeFeo home policy includes:
 
 - **Dwelling** coverage for the structure, including the roof, walls, and built-in systems.
 - **Other structures** such as a detached garage, shed, or fence.
@@ -105,7 +105,7 @@ Set dwelling coverage to what it would cost to rebuild your home, which is often
     "Payment options: Monthly, annually, or through mortgage escrow",
   ],
   finePrint: `${FINE_PRINT} Coverage, limits, exclusions, and deductibles would vary by policy and by state.`,
-  seoTitle: "Home insurance for families | Harborline Mutual",
+  seoTitle: "Home insurance for families | DeFeo Mutual",
   seoDescription: "What home insurance covers, the endorsements families ask about, and how to set dwelling coverage. Illustrative descriptions, not offers of insurance.",
 });
 
@@ -116,7 +116,7 @@ const life = s.offering("life-insurance", {
 
 Life insurance pays a set amount, called the death benefit, to the people you name as beneficiaries if you die while the policy is in force. Families often use it to help cover a mortgage, childcare, everyday household costs, or future education.
 
-Harborline offers two kinds of coverage:
+DeFeo offers two kinds of coverage:
 
 - **Term life** covers you for a set period, such as 10, 20, or 30 years. It is often the simplest way to cover the years when others depend on your income.
 - **Whole life** covers you for your lifetime as long as premiums are paid, and builds cash value, a savings component you may be able to borrow against.
@@ -146,56 +146,56 @@ Name a primary beneficiary and a contingent beneficiary, the backup if the first
     "Payment options: Monthly or annually",
   ],
   finePrint: `${FINE_PRINT} Life coverage would be subject to an application and an underwriting review.`,
-  seoTitle: "Term and whole life insurance | Harborline Mutual",
+  seoTitle: "Term and whole life insurance | DeFeo Mutual",
   seoDescription: "How term and whole life insurance work, which riders families ask about, and how to choose a term length. Illustrative, not an offer of insurance.",
 });
 
 // ---------- CTAs ----------
 const getQuote = s.cta("get-quote", {
-  internalName: "Harborline Mutual - Global - Get a quote", label: "Get a quote", goalType: "get_quote",
+  internalName: "DeFeo Mutual - Global - Get a quote", label: "Get a quote", goalType: "get_quote",
   destinationPage: s.ref("page", "get-a-quote"), style: "primary",
 });
 const exploreCoverage = s.cta("explore-coverage", {
-  internalName: "Harborline Mutual - Home - Explore coverage", label: "Explore coverage", goalType: "link",
+  internalName: "DeFeo Mutual - Home - Explore coverage", label: "Explore coverage", goalType: "link",
   destinationPage: s.ref("page", "coverage"), style: "secondary",
 });
 const readGuides = s.cta("read-guides", {
-  internalName: "Harborline Mutual - Home - Read our guides", label: "Read our guides", goalType: "link",
+  internalName: "DeFeo Mutual - Home - Read our guides", label: "Read our guides", goalType: "link",
   destinationPage: s.ref("page", "learn"), style: "secondary",
 });
 const homeBand = s.cta("home-quote-band", {
-  internalName: "Harborline Mutual - Home - Quote band", label: "Get a quote", goalType: "get_quote",
+  internalName: "DeFeo Mutual - Home - Quote band", label: "Get a quote", goalType: "get_quote",
   destinationPage: s.ref("page", "get-a-quote"), style: "primary",
   heading: "See what coverage could look like for your family",
   body: "Answer a few questions and get an illustrative quote in about five minutes. It is an estimate, not an offer, and there is no obligation.",
 });
 const startQuote = s.cta("start-quote", {
-  internalName: "Harborline Mutual - Coverage - Start a quote", label: "Start a quote", goalType: "next_step", style: "primary",
+  internalName: "DeFeo Mutual - Coverage - Start a quote", label: "Start a quote", goalType: "next_step", style: "primary",
 });
 const coverageBand = s.cta("coverage-quote-band", {
-  internalName: "Harborline Mutual - Coverage - Quote band", label: "Start a quote", goalType: "next_step", style: "primary",
+  internalName: "DeFeo Mutual - Coverage - Quote band", label: "Start a quote", goalType: "next_step", style: "primary",
   heading: "Ready to see your options?",
   body: "Start with three quick questions. You will see an illustrative estimate at the end, and you can adjust coverage as you go.",
 });
 const continueQuote = s.cta("continue-quote", {
-  internalName: "Harborline Mutual - Start a quote - Continue", label: "Continue my quote", goalType: "next_step", style: "primary",
+  internalName: "DeFeo Mutual - Start a quote - Continue", label: "Continue my quote", goalType: "next_step", style: "primary",
 });
 const learnStartQuote = s.cta("learn-start-quote", {
-  internalName: "Harborline Mutual - Learn - Start a quote", label: "Start a quote", goalType: "link",
+  internalName: "DeFeo Mutual - Learn - Start a quote", label: "Start a quote", goalType: "link",
   destinationPage: s.ref("page", "start-a-quote"), style: "primary",
 });
 const deductiblesCta = s.cta("deductibles-start-quote", {
-  internalName: "Harborline Mutual - Article - Deductibles CTA", label: "Start a quote", goalType: "link",
+  internalName: "DeFeo Mutual - Article - Deductibles CTA", label: "Start a quote", goalType: "link",
   destinationPage: s.ref("page", "start-a-quote"), style: "primary",
 });
 const movingCta = s.cta("moving-quote-new-home", {
-  internalName: "Harborline Mutual - Article - Moving day CTA", label: "Quote your new home", goalType: "link",
+  internalName: "DeFeo Mutual - Article - Moving day CTA", label: "Quote your new home", goalType: "link",
   destinationPage: s.ref("page", "start-a-quote"), style: "primary",
 });
 
 // ---------- FAQ items ----------
 const homeFaq = s.faq("home-common-questions", {
-  internalName: "Harborline Mutual - Home - Common questions", heading: "Common questions",
+  internalName: "DeFeo Mutual - Home - Common questions", heading: "Common questions",
   items: [
     s.item("faq-illustrative-quote", {
       title: "What is an illustrative quote?",
@@ -225,7 +225,7 @@ const homeFaq = s.faq("home-common-questions", {
 });
 
 const termsFaq = s.faq("coverage-terms", {
-  internalName: "Harborline Mutual - Coverage - Terms explained", heading: "Insurance terms, explained",
+  internalName: "DeFeo Mutual - Coverage - Terms explained", heading: "Insurance terms, explained",
   items: [
     s.item("term-premium", {
       title: "What is a premium?",
@@ -256,24 +256,24 @@ const termsFaq = s.faq("coverage-terms", {
 
 // ---------- Blocks: home ----------
 const homeHero = s.hero("home", {
-  internalName: "Harborline Mutual - Home - Hero", eyebrow: "Auto, home, and life insurance",
+  internalName: "DeFeo Mutual - Home - Hero", eyebrow: "Auto, home, and life insurance",
   headline: "Steady coverage for you and your family",
   subheadline: "Local agents explain every term in plain language, and an illustrative quote takes about five minutes.",
   image: s.img(1), layout: "split", cta: getQuote, secondaryCta: exploreCoverage,
 });
 const homeGrid = s.cardGrid("home-coverage", {
-  internalName: "Harborline Mutual - Home - Coverage grid", heading: "Coverage for each part of family life",
+  internalName: "DeFeo Mutual - Home - Coverage grid", heading: "Coverage for each part of family life",
   intro: "Start with the coverage you need today. You can add more later, and one agent can help with all of it.",
   source: "manual", items: [auto, home, life], layout: "cards", columns: 3,
 });
 const homeStory = s.mediaText("home-plain-answers", {
-  internalName: "Harborline Mutual - Home - Plain answers", eyebrow: "How we work",
+  internalName: "DeFeo Mutual - Home - Plain answers", eyebrow: "How we work",
   heading: "Plain answers before you sign anything",
   body: "Insurance comes with its own vocabulary. We explain it as we go, so you know what a deductible, a coverage limit, or a rider means for your family before you choose one.\n\nOur agents work out of Port Mercer and answer the phone themselves. Ask as many questions as you like. There is no pressure to decide on the first call.",
   image: s.img(13), imagePosition: "left", cta: readGuides,
 });
 const homeStats = s.stats("home-at-a-glance", {
-  internalName: "Harborline Mutual - Home - At a glance", heading: "Harborline at a glance",
+  internalName: "DeFeo Mutual - Home - At a glance", heading: "DeFeo at a glance",
   items: [
     s.item("stat-quote-time", { title: "average time to an illustrative quote", value: "5 min" }),
     s.item("stat-claims-line", { title: "claims line answered by people", value: "24/7" }),
@@ -283,33 +283,33 @@ const homeStats = s.stats("home-at-a-glance", {
   footnote: "Figures are illustrative and describe a fictional company.",
 });
 const homeQuote = s.testimonial("elena-marsh", {
-  internalName: "Harborline Mutual - Home - Customer quote",
+  internalName: "DeFeo Mutual - Home - Customer quote",
   quote: "When we bought our first house, our agent walked us through every line of the policy, from the deductible to what water damage would and would not cover. For the first time, I understood what I was paying for.",
   person: elena, rating: 5,
 });
 
 // ---------- Blocks: coverage template ----------
 const coverageHero = s.hero("coverage", {
-  internalName: "Harborline Mutual - Coverage - Hero", eyebrow: "Coverage",
+  internalName: "DeFeo Mutual - Coverage - Hero", eyebrow: "Coverage",
   headline: "Auto, home, and life coverage, explained plainly",
   subheadline: "See what each policy covers, the add-ons families ask about most, and how to choose limits you are comfortable with.",
   image: s.img(4), layout: "split", cta: startQuote,
 });
 const coverageGrid = s.cardGrid("coverage-options", {
-  internalName: "Harborline Mutual - Coverage - Options grid", heading: "Choose a coverage to see the details",
+  internalName: "DeFeo Mutual - Coverage - Options grid", heading: "Choose a coverage to see the details",
   intro: "Pick a coverage to read what it includes, then start a quote when you are ready.",
   source: "manual", items: [auto, home, life], layout: "cards", columns: 3,
 });
 
 // ---------- Blocks: start a quote ----------
 const startHero = s.hero("start-a-quote", {
-  internalName: "Harborline Mutual - Start a quote - Hero", eyebrow: "Start a quote",
+  internalName: "DeFeo Mutual - Start a quote - Hero", eyebrow: "Start a quote",
   headline: "Start your quote with three quick questions",
   subheadline: "Tell us what you would like to cover, where you live, and who is in your household. It takes about a minute.",
   image: s.img(6), layout: "split",
 });
 const startForm = s.form("quote-start", {
-  internalName: "Harborline Mutual - Start a quote - Form", formKind: "quote_start",
+  internalName: "DeFeo Mutual - Start a quote - Form", formKind: "quote_start",
   heading: "Start with the basics",
   intro: "Choose the coverage you are interested in, enter your ZIP code, and tell us who lives in your household. Sample answers are filled in so you can try it.",
   submitLabel: "Continue to details",
@@ -319,7 +319,7 @@ const startForm = s.form("quote-start", {
   prefillSample: true,
 });
 const whatHappensNext = s.richText("start-what-happens-next", {
-  internalName: "Harborline Mutual - Start a quote - What happens next", heading: "What happens next",
+  internalName: "DeFeo Mutual - Start a quote - What happens next", heading: "What happens next",
   body: md(`1. **Tell us the basics.** Coverage type, ZIP code, and household take about a minute.
 2. **Add a few details.** On the next page we ask about drivers, vehicles, or your home, depending on what you chose.
 3. **See an illustrative estimate.** You will see a sample range and the coverage choices behind it. It is not an offer of insurance.
@@ -328,13 +328,13 @@ const whatHappensNext = s.richText("start-what-happens-next", {
 
 // ---------- Blocks: get a quote ----------
 const goalHero = s.hero("get-a-quote", {
-  internalName: "Harborline Mutual - Get a quote - Hero", eyebrow: "Quote details",
+  internalName: "DeFeo Mutual - Get a quote - Hero", eyebrow: "Quote details",
   headline: "Get your illustrative quote",
   subheadline: "A few more details about your household and what you want to cover. It takes about four minutes.",
   image: s.img(12), layout: "split",
 });
 const goalForm = s.form("get-quote", {
-  internalName: "Harborline Mutual - Get a quote - Form", formKind: "get_quote",
+  internalName: "DeFeo Mutual - Get a quote - Form", formKind: "get_quote",
   heading: "Tell us about your household",
   intro: "These answers shape your illustrative estimate. Sample details are already filled in so you can see how it works. Change anything you like.",
   submitLabel: "See my estimate",
@@ -346,17 +346,17 @@ const goalForm = s.form("get-quote", {
 
 // ---------- Blocks: learn ----------
 const learnHero = s.hero("learn", {
-  internalName: "Harborline Mutual - Learn - Hero", eyebrow: "Learn",
+  internalName: "DeFeo Mutual - Learn - Hero", eyebrow: "Learn",
   headline: "Plain-language guides to insurance for families",
   subheadline: "Short explainers and checklists that help you understand your coverage before you need it.",
   image: s.img(7), layout: "full_bleed",
 });
 const learnLatest = s.cardGrid("learn-latest", {
-  internalName: "Harborline Mutual - Learn - Latest guides", heading: "Latest guides",
+  internalName: "DeFeo Mutual - Learn - Latest guides", heading: "Latest guides",
   source: "latest_articles", layout: "cards", limit: 6, columns: 3,
 });
 const learnPromo = s.mediaText("learn-start-quote", {
-  internalName: "Harborline Mutual - Learn - Start a quote promo", eyebrow: "Ready when you are",
+  internalName: "DeFeo Mutual - Learn - Start a quote promo", eyebrow: "Ready when you are",
   heading: "Know what you need? Start a quote in a few minutes",
   body: "Tell us what you would like to cover, your ZIP code, and who lives with you. You will see an illustrative estimate at the end, and an agent is a phone call away if you want to talk anything through.",
   image: s.img(8), imagePosition: "right", cta: learnStartQuote,
@@ -364,10 +364,10 @@ const learnPromo = s.mediaText("learn-start-quote", {
 
 // ---------- Pages: steps 1 to 4, plus the article index ----------
 const homePage = s.page("home", {
-  title: "Harborline Mutual", slug: "home", pageType: "home", funnelStep: 1, nextStep: s.ref("page", "coverage"),
+  title: "DeFeo Mutual", slug: "home", pageType: "home", funnelStep: 1, nextStep: s.ref("page", "coverage"),
   hero: homeHero, primaryCta: getQuote,
   sections: [homeGrid, homeStory, homeStats, homeQuote, homeFaq, homeBand],
-  seoTitle: "Harborline Mutual | Auto, home, and life insurance",
+  seoTitle: "DeFeo Mutual | Auto, home, and life insurance",
   seoDescription: "Auto, home, and life insurance for families, with plain explanations of every term and an illustrative quote in about five minutes.",
 });
 s.page("coverage", {
@@ -375,29 +375,29 @@ s.page("coverage", {
   hero: coverageHero, primaryCta: startQuote,
   sections: [coverageGrid, termsFaq, coverageBand],
   detailSections: [termsFaq, coverageBand],
-  seoTitle: "Auto, home, and life coverage | Harborline Mutual",
-  seoDescription: "Compare auto, home, and life coverage from Harborline Mutual, with plain explanations of premiums, deductibles, and limits. Descriptions are illustrative.",
+  seoTitle: "Auto, home, and life coverage | DeFeo Mutual",
+  seoDescription: "Compare auto, home, and life coverage from DeFeo Mutual, with plain explanations of premiums, deductibles, and limits. Descriptions are illustrative.",
 });
 const startPage = s.page("start-a-quote", {
   title: "Start a quote", slug: "start-a-quote", pageType: "standard", funnelStep: 3, nextStep: s.ref("page", "get-a-quote"),
   hero: startHero, primaryCta: continueQuote,
   sections: [startForm, whatHappensNext],
-  seoTitle: "Start a quote | Harborline Mutual",
+  seoTitle: "Start a quote | DeFeo Mutual",
   seoDescription: "Start an illustrative quote for auto, home, or life insurance with three quick questions: coverage type, ZIP code, and household.",
 });
 s.page("get-a-quote", {
   title: "Get a quote", slug: "get-a-quote", pageType: "goal", funnelStep: 4,
   hero: goalHero,
   sections: [goalForm],
-  seoTitle: "Get an illustrative quote | Harborline Mutual",
+  seoTitle: "Get an illustrative quote | DeFeo Mutual",
   seoDescription: "Add a few details about your household, vehicles, and home to see an illustrative estimate. Quotes are illustrative and are not offers of insurance.",
 });
 const learnPage = s.page("learn", {
   title: "Learn", slug: "learn", pageType: "article_index", funnelStep: 0,
   hero: learnHero,
   sections: [learnLatest, learnPromo],
-  seoTitle: "Insurance guides and checklists | Harborline Mutual",
-  seoDescription: "Plain-language guides from Harborline Mutual on deductibles, coverage limits, moving day, and other insurance questions families ask.",
+  seoTitle: "Insurance guides and checklists | DeFeo Mutual",
+  seoDescription: "Plain-language guides from DeFeo Mutual on deductibles, coverage limits, moving day, and other insurance questions families ask.",
 });
 
 // ---------- Articles ----------
@@ -445,7 +445,7 @@ Your deductibles are listed on your declarations page, usually the first page or
   heroImage: s.img(10), author: theo, publishDate: "2026-08-18",
   topics: ["deductibles", "auto insurance", "home insurance"],
   relatedPage: auto, cta: deductiblesCta,
-  seoTitle: "How deductibles work | Harborline Mutual",
+  seoTitle: "How deductibles work | DeFeo Mutual",
   seoDescription: "What a deductible is, where it applies on auto and home policies, how it affects your premium, and questions to ask before you choose one.",
 });
 
@@ -491,7 +491,7 @@ If your home and auto policies are with the same insurer, one conversation with 
   heroImage: s.img(5), author: clara, publishDate: "2026-09-15",
   topics: ["moving", "home insurance", "checklists"],
   relatedPage: home, cta: movingCta,
-  seoTitle: "Moving-day insurance checklist | Harborline Mutual",
+  seoTitle: "Moving-day insurance checklist | DeFeo Mutual",
   seoDescription: "A three-stage checklist for moving day: new home coverage, belongings in transit, address updates, flood questions, and the paperwork to keep.",
 });
 
@@ -502,13 +502,13 @@ const navLife = s.item("nav-life", { title: "Life", link: life });
 const navLearn = s.item("nav-learn", { title: "Learn", link: learnPage });
 
 s.brand({
-  name: "Harborline Mutual", slug: "harborline-mutual", vertical: "insurance",
+  name: "DeFeo Mutual", slug: "defeo-mutual", vertical: "insurance",
   shortDescription: "Auto, home, and life insurance for families.",
   tagline: "Steady coverage for every stage.", logo: s.logo, favicon: s.favicon,
   colorBrand: "#12355B", colorButton: "#C9472F", colorButtonText: "#FFFFFF", colorAccent: "#7FB7BE",
   colorBackground: "#F4F1EA", colorSurface: "#FFFFFF", colorText: "#253041", colorMuted: "#5E6878",
   fontHeading: "DM Serif Display", fontBody: "DM Sans", buttonRadius: 999, buttonTextCase: "normal",
-  voiceDescription: "Reassuring, honest, and plain-spoken. Harborline speaks to you and your family, explains insurance terms as it goes, and is clear about what is illustrative.",
+  voiceDescription: "Reassuring, honest, and plain-spoken. DeFeo speaks to you and your family, explains insurance terms as it goes, and is clear about what is illustrative.",
   voiceDos: [
     "Speak to you and your family.",
     "Explain each insurance term the first time you use it.",

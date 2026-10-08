@@ -1,5 +1,5 @@
 /**
- * Clearwater Health: a fictional multi-location clinic network in Oregon.
+ * St. Isaac's Health: a fictional multi-location clinic network in Oregon.
  * Funnel: home (1) -> specialties/{specialty} (2) -> providers/{provider} (3) -> book-an-appointment (4).
  * Copy describes services, visits, and logistics only. Nothing here is medical advice.
  */
@@ -7,7 +7,7 @@ import { defineBrand, md } from "../lib/builders";
 
 const s = defineBrand("clearwater-health", "ch");
 
-const name = (page: string, block: string) => `Clearwater Health - ${page} - ${block}`;
+const name = (page: string, block: string) => `St. Isaac's Health - ${page} - ${block}`;
 
 // Clinic names, used on provider profiles and location cards.
 const LARKFIELD = "Larkfield Clinic";
@@ -59,55 +59,55 @@ const locationsBand = s.cta("locations-band", {
 // ---------- People: providers (no photos, initials are shown) ----------
 const marisolVance = s.person("marisol-vance", {
   name: "Marisol Vance", slug: "marisol-vance", role: "provider", credentials: "MD", jobTitle: "Family medicine physician",
-  bio: "Dr. Marisol Vance is a family medicine physician who sees patients of all ages at our Larkfield and Mossgrove clinics. She joined Clearwater Health in 2017 after completing her residency in a community family medicine program. She likes to keep visits unhurried, leaves time at the end of each appointment for questions, and explains every next step in plain language. Family members are always welcome to join her visits. Outside the clinic, she volunteers with a local youth soccer league.",
+  bio: "Dr. Marisol Vance is a family medicine physician who sees patients of all ages at our Larkfield and Mossgrove clinics. She joined St. Isaac's Health in 2017 after completing her residency in a community family medicine program. She likes to keep visits unhurried, leaves time at the end of each appointment for questions, and explains every next step in plain language. Family members are always welcome to join her visits. Outside the clinic, she volunteers with a local youth soccer league.",
   locations: [LARKFIELD, MOSSGROVE], languages: ["English", "Spanish"], acceptingNewPatients: true,
-  seoTitle: "Marisol Vance, MD | Family medicine | Clearwater Health",
+  seoTitle: "Marisol Vance, MD | Family medicine | St. Isaac's Health",
   seoDescription: "Dr. Marisol Vance is a family medicine physician at our Larkfield and Mossgrove clinics. See her languages and availability, then book a visit.",
 });
 const priyaRaman = s.person("priya-raman", {
   name: "Priya Raman", slug: "priya-raman", role: "provider", credentials: "DO", jobTitle: "Internal medicine physician",
-  bio: "Dr. Priya Raman is an internal medicine physician who cares for adults at our Halden Springs and Sorrel Ridge clinics. Before joining Clearwater Health in 2019, she practiced at a rural community clinic in eastern Oregon. She reviews each patient's records before the appointment and sends a clear after-visit summary through the patient portal the same day. She also leads healthy aging visits for older adults and the family members who support them.",
+  bio: "Dr. Priya Raman is an internal medicine physician who cares for adults at our Halden Springs and Sorrel Ridge clinics. Before joining St. Isaac's Health in 2019, she practiced at a rural community clinic in eastern Oregon. She reviews each patient's records before the appointment and sends a clear after-visit summary through the patient portal the same day. She also leads healthy aging visits for older adults and the family members who support them.",
   locations: [HALDEN_SPRINGS, SORREL_RIDGE], languages: ["English", "Tamil", "Hindi"], acceptingNewPatients: true,
-  seoTitle: "Priya Raman, DO | Internal medicine | Clearwater Health",
+  seoTitle: "Priya Raman, DO | Internal medicine | St. Isaac's Health",
   seoDescription: "Dr. Priya Raman is an internal medicine physician at our Halden Springs and Sorrel Ridge clinics. See her languages and availability, then book a visit.",
 });
 const theoAdebayo = s.person("theo-adebayo", {
   name: "Theo Adebayo", slug: "theo-adebayo", role: "provider", credentials: "MD", jobTitle: "Cardiologist",
-  bio: "Dr. Theo Adebayo is a cardiologist who sees patients at our Larkfield and Halden Springs clinics. He joined Clearwater Health in 2015 and helped set up in-clinic heart testing at Larkfield, so more appointments can happen in one place. He works closely with primary care providers across the network and makes a point of explaining each test, why it is scheduled, and when the results will be ready. Dr. Adebayo is not taking new patients at this time. Current patients can book follow-up visits with him as usual.",
+  bio: "Dr. Theo Adebayo is a cardiologist who sees patients at our Larkfield and Halden Springs clinics. He joined St. Isaac's Health in 2015 and helped set up in-clinic heart testing at Larkfield, so more appointments can happen in one place. He works closely with primary care providers across the network and makes a point of explaining each test, why it is scheduled, and when the results will be ready. Dr. Adebayo is not taking new patients at this time. Current patients can book follow-up visits with him as usual.",
   locations: [LARKFIELD, HALDEN_SPRINGS], languages: ["English", "Yoruba"], acceptingNewPatients: false,
-  seoTitle: "Theo Adebayo, MD | Cardiology | Clearwater Health",
+  seoTitle: "Theo Adebayo, MD | Cardiology | St. Isaac's Health",
   seoDescription: "Dr. Theo Adebayo is a cardiologist at our Larkfield and Halden Springs clinics. Current patients can book follow-up visits here.",
 });
 const naomiCastellanos = s.person("naomi-castellanos", {
   name: "Naomi Castellanos", slug: "naomi-castellanos", role: "provider", credentials: "NP", jobTitle: "Nurse practitioner, cardiology",
-  bio: "Naomi Castellanos is a nurse practitioner on our cardiology team at the Larkfield and Mossgrove clinics. She sees patients for follow-up visits between appointments with a cardiologist, and she coordinates testing and referrals with the rest of the care team. Before joining Clearwater Health in 2020, she worked as a cardiac nurse for eight years. She is bilingual in English and Spanish and often helps families talk through visit plans in Spanish.",
+  bio: "Naomi Castellanos is a nurse practitioner on our cardiology team at the Larkfield and Mossgrove clinics. She sees patients for follow-up visits between appointments with a cardiologist, and she coordinates testing and referrals with the rest of the care team. Before joining St. Isaac's Health in 2020, she worked as a cardiac nurse for eight years. She is bilingual in English and Spanish and often helps families talk through visit plans in Spanish.",
   locations: [LARKFIELD, MOSSGROVE], languages: ["English", "Spanish"], acceptingNewPatients: true,
-  seoTitle: "Naomi Castellanos, NP | Cardiology | Clearwater Health",
+  seoTitle: "Naomi Castellanos, NP | Cardiology | St. Isaac's Health",
   seoDescription: "Naomi Castellanos is a cardiology nurse practitioner at our Larkfield and Mossgrove clinics. See her languages and availability, then book a visit.",
 });
 const henrikSolberg = s.person("henrik-solberg", {
   name: "Henrik Solberg", slug: "henrik-solberg", role: "provider", credentials: "PT, DPT", jobTitle: "Physical therapist",
   bio: "Henrik Solberg is a physical therapist at our Sorrel Ridge and Larkfield clinics, where he sees patients for evaluations, one-on-one sessions, and visits after surgery. He has practiced physical therapy for more than twelve years, including several years at an outpatient sports clinic. He starts each first visit by asking about the everyday activities that matter most to the patient, then builds a visit schedule around them.",
   locations: [SORREL_RIDGE, LARKFIELD], languages: ["English", "Norwegian"], acceptingNewPatients: true,
-  seoTitle: "Henrik Solberg, PT | Physical therapy | Clearwater Health",
+  seoTitle: "Henrik Solberg, PT | Physical therapy | St. Isaac's Health",
   seoDescription: "Henrik Solberg is a physical therapist at our Sorrel Ridge and Larkfield clinics. See his languages and availability, then book a visit.",
 });
 const imaniBrooks = s.person("imani-brooks", {
   name: "Imani Brooks", slug: "imani-brooks", role: "provider", credentials: "PT, DPT", jobTitle: "Physical therapist",
-  bio: "Imani Brooks is a physical therapist who sees patients at our Sorrel Ridge and Halden Springs clinics. She leads the balance and mobility sessions in our healthy aging program and works closely with primary care providers and family caregivers. She joined Clearwater Health in 2018. Imani is fluent in American Sign Language and can hold visits in ASL without an interpreter. Every patient leaves her first session with a printed home program.",
+  bio: "Imani Brooks is a physical therapist who sees patients at our Sorrel Ridge and Halden Springs clinics. She leads the balance and mobility sessions in our healthy aging program and works closely with primary care providers and family caregivers. She joined St. Isaac's Health in 2018. Imani is fluent in American Sign Language and can hold visits in ASL without an interpreter. Every patient leaves her first session with a printed home program.",
   locations: [SORREL_RIDGE, HALDEN_SPRINGS], languages: ["English", "American Sign Language"], acceptingNewPatients: true,
-  seoTitle: "Imani Brooks, PT | Physical therapy | Clearwater Health",
+  seoTitle: "Imani Brooks, PT | Physical therapy | St. Isaac's Health",
   seoDescription: "Imani Brooks is a physical therapist at our Sorrel Ridge and Halden Springs clinics. See her languages and availability, then book a visit.",
 });
 
 // ---------- People: authors (no photos) ----------
 const hannahLindqvist = s.person("hannah-lindqvist", {
   name: "Hannah Lindqvist", slug: "hannah-lindqvist", role: "author", jobTitle: "Patient experience writer",
-  bio: "Hannah Lindqvist writes patient guides for Clearwater Health. She works with our front desk and scheduling teams to explain visits, forms, and appointments in plain language.",
+  bio: "Hannah Lindqvist writes patient guides for St. Isaac's Health. She works with our front desk and scheduling teams to explain visits, forms, and appointments in plain language.",
 });
 const julianOrtega = s.person("julian-ortega", {
   name: "Julian Ortega", slug: "julian-ortega", role: "author", jobTitle: "Care coordination manager",
-  bio: "Julian Ortega manages care coordination across Clearwater Health's four clinics. He writes about scheduling, referrals, and working with your care team.",
+  bio: "Julian Ortega manages care coordination across St. Isaac's Health's four clinics. He writes about scheduling, referrals, and working with your care team.",
 });
 
 // ---------- Specialties (collections; rendered by the specialties template) ----------
@@ -116,7 +116,7 @@ const primaryCare = s.collection("primary-care", {
   summary: "Checkups, preventive visits, and ongoing care for patients of all ages, with a care team that coordinates referrals across our network.",
   description: md(`## What primary care covers
 
-Primary care is often the first place to start with Clearwater Health. Our family medicine and internal medicine providers see patients for annual checkups, preventive visits, vaccinations, and follow-up visits for ongoing conditions. When you need a specialist, your primary care provider can arrange a referral within our network and share your records, so you do not have to repeat your history.
+Primary care is often the first place to start with St. Isaac's Health. Our family medicine and internal medicine providers see patients for annual checkups, preventive visits, vaccinations, and follow-up visits for ongoing conditions. When you need a specialist, your primary care provider can arrange a referral within our network and share your records, so you do not have to repeat your history.
 
 ## What a visit involves
 
@@ -127,15 +127,15 @@ Primary care is often the first place to start with Clearwater Health. Our famil
 
 New patient visits are scheduled for about 45 minutes, and follow-up visits are usually 20 to 30 minutes. If you are not sure which provider to see, our scheduling team can help you choose based on clinic, language, and availability.`),
   image: s.img(2), items: [marisolVance, priyaRaman],
-  seoTitle: "Primary care | Clearwater Health",
-  seoDescription: "Checkups, preventive visits, and ongoing care for all ages at Clearwater Health clinics in Larkfield, Halden Springs, Sorrel Ridge, and Mossgrove.",
+  seoTitle: "Primary care | St. Isaac's Health",
+  seoDescription: "Checkups, preventive visits, and ongoing care for all ages at St. Isaac's Health clinics in Larkfield, Halden Springs, Sorrel Ridge, and Mossgrove.",
 });
 const cardiology = s.collection("cardiology", {
   name: "Cardiology", slug: "cardiology", collectionType: "specialty", eyebrow: "Heart care",
   summary: "Consultations, follow-up visits, and in-clinic heart tests with our cardiology team at the Larkfield, Halden Springs, and Mossgrove clinics.",
   description: md(`## What our cardiology team offers
 
-Clearwater Health cardiology providers see patients for consultations, ongoing follow-up visits, and in-clinic testing. Many patients come to us through a referral from their primary care provider, and you can also contact us directly. Our scheduling team will check whether your insurance plan needs a referral first.
+St. Isaac's Health cardiology providers see patients for consultations, ongoing follow-up visits, and in-clinic testing. Many patients come to us through a referral from their primary care provider, and you can also contact us directly. Our scheduling team will check whether your insurance plan needs a referral first.
 
 Services include:
 
@@ -151,15 +151,15 @@ A first consultation usually takes about 60 minutes. Your provider will review y
 
 Wear comfortable clothing with a top that is easy to remove or open, and bring a list of your current medications with doses. If another clinic has done tests for you, ask them to send the results to us before your visit, or bring copies with you.`),
   image: s.img(11), items: [theoAdebayo, naomiCastellanos],
-  seoTitle: "Cardiology | Clearwater Health",
-  seoDescription: "Cardiology consultations, follow-up visits, and in-clinic testing at Clearwater Health clinics in Larkfield, Halden Springs, and Mossgrove, Oregon.",
+  seoTitle: "Cardiology | St. Isaac's Health",
+  seoDescription: "Cardiology consultations, follow-up visits, and in-clinic testing at St. Isaac's Health clinics in Larkfield, Halden Springs, and Mossgrove, Oregon.",
 });
 const physicalTherapy = s.collection("physical-therapy", {
   name: "Physical Therapy", slug: "physical-therapy", collectionType: "specialty", eyebrow: "Movement and mobility",
   summary: "One-on-one evaluations and sessions with licensed physical therapists at our Sorrel Ridge, Larkfield, and Halden Springs clinics.",
   description: md(`## What physical therapy includes
 
-Our physical therapists see patients of all ages for evaluations and one-on-one sessions. That includes visits after surgery that follow the plan from your surgeon, and balance and mobility sessions offered through our healthy aging program. Your therapist shares notes with the rest of your Clearwater Health care team, so everyone works from the same plan.
+Our physical therapists see patients of all ages for evaluations and one-on-one sessions. That includes visits after surgery that follow the plan from your surgeon, and balance and mobility sessions offered through our healthy aging program. Your therapist shares notes with the rest of your St. Isaac's Health care team, so everyone works from the same plan.
 
 ## What a visit involves
 
@@ -171,15 +171,15 @@ Wear comfortable clothing and supportive shoes you can move in. Our Sorrel Ridge
 
 Some insurance plans require a referral or prior approval for physical therapy. Our scheduling team can check your plan before your first visit and let you know what it requires.`),
   image: s.img(4), items: [henrikSolberg, imaniBrooks],
-  seoTitle: "Physical therapy | Clearwater Health",
-  seoDescription: "One-on-one physical therapy evaluations and sessions at Clearwater Health clinics in Sorrel Ridge, Larkfield, and Halden Springs, Oregon.",
+  seoTitle: "Physical therapy | St. Isaac's Health",
+  seoDescription: "One-on-one physical therapy evaluations and sessions at St. Isaac's Health clinics in Sorrel Ridge, Larkfield, and Halden Springs, Oregon.",
 });
 const healthyAging = s.collection("healthy-aging", {
   name: "Healthy Aging", slug: "healthy-aging", collectionType: "specialty", eyebrow: "Older adults and caregivers",
   summary: "Longer appointments for older adults and the people who support them, covering wellness visits, medication reviews, and care planning.",
   description: md(`## Care with more time built in
 
-Healthy aging visits at Clearwater Health are scheduled with extra time, so there is room to talk through everything on your list. Family members and caregivers are welcome to join in person or by phone.
+Healthy aging visits at St. Isaac's Health are scheduled with extra time, so there is room to talk through everything on your list. Family members and caregivers are welcome to join in person or by phone.
 
 Services include:
 
@@ -195,8 +195,8 @@ Healthy aging appointments are usually 60 minutes. Before your visit, we send a 
 
 Healthy aging visits are offered at all four of our clinics: Larkfield, Halden Springs, Sorrel Ridge, and Mossgrove.`),
   image: s.img(9), items: [marisolVance, priyaRaman, imaniBrooks],
-  seoTitle: "Healthy aging | Clearwater Health",
-  seoDescription: "Longer visits for older adults and caregivers, including wellness visits, medication reviews, and care planning, at all four Clearwater Health clinics.",
+  seoTitle: "Healthy aging | St. Isaac's Health",
+  seoDescription: "Longer visits for older adults and caregivers, including wellness visits, medication reviews, and care planning, at all four St. Isaac's Health clinics.",
 });
 const specialties = [primaryCare, cardiology, physicalTherapy, healthyAging];
 
@@ -205,7 +205,7 @@ const emergencyNotice = s.richText("emergency-notice", {
   internalName: name("Global", "Emergency notice"), heading: "In an emergency",
   body: md(`**If you have a medical emergency, call 911.**
 
-Clearwater Health clinics do not provide emergency care. For questions that can wait, call your clinic during open hours at (541) 555-0127, or send a message to your care team through the patient portal.`),
+St. Isaac's Health clinics do not provide emergency care. For questions that can wait, call your clinic during open hours at (541) 555-0127, or send a message to your care team through the patient portal.`),
 });
 
 // ---------- Home (step 1) ----------
@@ -221,7 +221,7 @@ const homeSpecialties = s.cardGrid("home-specialties", {
 });
 const homeCareTeam = s.mediaText("home-care-team", {
   internalName: name("Home", "Connected care team"), eyebrow: "Connected care", heading: "One care team across four clinics",
-  body: "Your Clearwater Health providers use the same records system at every location, so your primary care provider, specialists, and therapists all see the same visit notes. You can book at whichever clinic suits your week without starting over.\n\nBetween visits, you can message your care team, request prescription refills, and read your after-visit summaries in the patient portal.",
+  body: "Your St. Isaac's Health providers use the same records system at every location, so your primary care provider, specialists, and therapists all see the same visit notes. You can book at whichever clinic suits your week without starting over.\n\nBetween visits, you can message your care team, request prescription refills, and read your after-visit summaries in the patient portal.",
   image: s.img(1), imagePosition: "left", cta: meetProviders,
 });
 const homeLogistics = s.cardGrid("home-visit-logistics", {
@@ -243,11 +243,11 @@ const homeLogistics = s.cardGrid("home-visit-logistics", {
   ],
 });
 const home = s.page("home", {
-  title: "Clearwater Health", slug: "home", pageType: "home", funnelStep: 1, nextStep: s.ref("page", "specialties"),
+  title: "St. Isaac's Health", slug: "home", pageType: "home", funnelStep: 1, nextStep: s.ref("page", "specialties"),
   hero: homeHero, primaryCta: bookAppointment,
   sections: [homeSpecialties, homeCareTeam, homeLogistics, emergencyNotice, homeBand],
-  seoTitle: "Clearwater Health | Primary and specialty care in Oregon",
-  seoDescription: "Primary care, cardiology, physical therapy, and healthy aging at four Clearwater Health clinics in Larkfield and nearby towns. Book online.",
+  seoTitle: "St. Isaac's Health | Primary and specialty care in Oregon",
+  seoDescription: "Primary care, cardiology, physical therapy, and healthy aging at four St. Isaac's Health clinics in Larkfield and nearby towns. Book online.",
 });
 
 // ---------- Specialties template (step 2) ----------
@@ -297,13 +297,13 @@ const visitFaq = s.faq("visit-expectations", {
 s.page("specialties", {
   title: "Specialties", slug: "specialties", pageType: "collection_detail", funnelStep: 2, nextStep: providersPage,
   hero: specialtiesHero, primaryCta: findProvider, sections: [specialtiesGrid], detailSections: [visitFaq, specialtiesBand],
-  seoTitle: "Specialties | Clearwater Health",
-  seoDescription: "Primary care, cardiology, physical therapy, and healthy aging at Clearwater Health. See what each specialty offers and what to expect at a visit.",
+  seoTitle: "Specialties | St. Isaac's Health",
+  seoDescription: "Primary care, cardiology, physical therapy, and healthy aging at St. Isaac's Health. See what each specialty offers and what to expect at a visit.",
 });
 
 // ---------- Providers template (step 3) ----------
 const providersHero = s.hero("providers", {
-  internalName: name("Providers", "Hero"), eyebrow: "Our providers", headline: "Meet the providers at Clearwater Health",
+  internalName: name("Providers", "Hero"), eyebrow: "Our providers", headline: "Meet the providers at St. Isaac's Health",
   subheadline: "Physicians, nurse practitioners, and physical therapists across our four clinics. Compare locations, languages, and availability.",
   image: s.img(3), layout: "split", cta: bookAppointment,
 });
@@ -317,7 +317,7 @@ const schedulingNote = s.richText("scheduling-and-insurance", {
   internalName: name("Providers", "Scheduling and insurance"), heading: "Scheduling and insurance",
   body: md(`You can book with this provider online, through the patient portal, or by calling (541) 555-0127. If this provider is not taking new patients, or the open times do not work for you, our scheduling team can suggest another provider in the same specialty or a different clinic.
 
-- **Insurance:** Clearwater Health works with many insurance plans. Bring your current card to every visit, and call us before your appointment if you would like us to check your coverage.
+- **Insurance:** St. Isaac's Health works with many insurance plans. Bring your current card to every visit, and call us before your appointment if you would like us to check your coverage.
 - **Referrals:** Some plans require a referral for specialty visits. We can check this for you when you book.
 - **Changes:** Please give at least 24 hours' notice if you need to cancel or reschedule.
 - **Interpreters:** Spoken language and American Sign Language interpreters are available at no cost. Ask when you book.`),
@@ -325,8 +325,8 @@ const schedulingNote = s.richText("scheduling-and-insurance", {
 s.page("providers", {
   title: "Providers", slug: "providers", pageType: "person_detail", funnelStep: 3, nextStep: goalPage,
   hero: providersHero, primaryCta: bookWithProvider, sections: [providersGrid], detailSections: [schedulingNote],
-  seoTitle: "Find a provider | Clearwater Health",
-  seoDescription: "Meet the physicians, nurse practitioners, and physical therapists at Clearwater Health. Compare clinics and languages, then book a visit.",
+  seoTitle: "Find a provider | St. Isaac's Health",
+  seoDescription: "Meet the physicians, nurse practitioners, and physical therapists at St. Isaac's Health. Compare clinics and languages, then book a visit.",
 });
 
 // ---------- Book an appointment (step 4, goal) ----------
@@ -346,7 +346,7 @@ const bookingForm = s.form("book-appointment", {
 s.page("book-an-appointment", {
   title: "Book an appointment", slug: "book-an-appointment", pageType: "goal", funnelStep: 4,
   hero: bookingHero, sections: [emergencyNotice, bookingForm],
-  seoTitle: "Book an appointment | Clearwater Health",
+  seoTitle: "Book an appointment | St. Isaac's Health",
   seoDescription: "Request an appointment at any of our four clinics in Larkfield, Halden Springs, Sorrel Ridge, and Mossgrove. New patients are welcome.",
 });
 
@@ -388,8 +388,8 @@ Clinic hours can change on holidays. Any changes are posted in the patient porta
 s.page("locations", {
   title: "Locations", slug: "locations", pageType: "standard", funnelStep: 0,
   hero: locationsHero, primaryCta: bookAppointment, sections: [locationsGrid, gettingHere, locationsBand],
-  seoTitle: "Clinic locations and hours | Clearwater Health",
-  seoDescription: "Addresses, hours, parking, and services for Clearwater Health clinics in Larkfield, Halden Springs, Sorrel Ridge, and Mossgrove, Oregon.",
+  seoTitle: "Clinic locations and hours | St. Isaac's Health",
+  seoDescription: "Addresses, hours, parking, and services for St. Isaac's Health clinics in Larkfield, Halden Springs, Sorrel Ridge, and Mossgrove, Oregon.",
 });
 
 // ---------- Health Library (article index, off-funnel) ----------
@@ -405,21 +405,21 @@ const latestArticles = s.cardGrid("health-library-latest", {
 });
 const libraryNote = s.richText("health-library-note", {
   internalName: name("Health Library", "Article note"), heading: "About the Health Library",
-  body: md(`Health Library articles explain how visits, scheduling, and paperwork work at Clearwater Health. They are not medical advice. For questions about your health, talk with your care team.
+  body: md(`Health Library articles explain how visits, scheduling, and paperwork work at St. Isaac's Health. They are not medical advice. For questions about your health, talk with your care team.
 
 If you have a medical emergency, call 911.`),
 });
 s.page("health-library", {
   title: "Health Library", slug: "health-library", pageType: "article_index", funnelStep: 0,
   hero: libraryHero, sections: [latestArticles], detailSections: [libraryNote],
-  seoTitle: "Health Library | Clearwater Health",
-  seoDescription: "Plain-language guides from Clearwater Health on booking appointments, preparing for visits, and working with your care team.",
+  seoTitle: "Health Library | St. Isaac's Health",
+  seoDescription: "Plain-language guides from St. Isaac's Health on booking appointments, preparing for visits, and working with your care team.",
 });
 
 // ---------- Articles ----------
 s.article("what-to-bring-to-your-first-visit", {
   title: "What to bring to your first visit", slug: "what-to-bring-to-your-first-visit",
-  summary: "A simple checklist for your first appointment at Clearwater Health, from ID and insurance cards to medication lists and records.",
+  summary: "A simple checklist for your first appointment at St. Isaac's Health, from ID and insurance cards to medication lists and records.",
   body: md(`## Start with the basics
 
 A first appointment at a new clinic involves a little more paperwork than a usual visit. Bringing the right things helps check-in go quickly and leaves more of the appointment for time with your provider. Here is what our front desk teams ask new patients to bring:
@@ -439,7 +439,7 @@ Bring a list of every medication you take, with the name, the dose, and how ofte
 
 If you are moving your care from another clinic, your records help your new provider understand your history without asking you to remember every detail. You have a few options:
 
-1. Ask your previous clinic to send your records to Clearwater Health before your visit. Our front desk can give you a records release form.
+1. Ask your previous clinic to send your records to St. Isaac's Health before your visit. Our front desk can give you a records release form.
 2. Bring copies of recent test results, imaging reports, or visit summaries with you.
 3. If your previous clinic has a patient portal, download a visit summary and bring it on your phone.
 
@@ -471,8 +471,8 @@ If something comes up and you need to reschedule, please call us or use the pati
 Before you leave, you will receive an after-visit summary with the plan you discussed and any next appointments. The same summary appears in your patient portal. If a question comes up later, send a message to your care team through the portal or call your clinic during open hours.`),
   heroImage: s.img(10), author: hannahLindqvist, publishDate: "2026-08-12",
   topics: ["first visit", "appointments", "planning ahead"], relatedPage: primaryCare, cta: bookAppointment,
-  seoTitle: "What to bring to your first visit | Clearwater Health",
-  seoDescription: "A checklist for your first Clearwater Health appointment: ID, insurance cards, a medication list, past records, and how to plan your arrival.",
+  seoTitle: "What to bring to your first visit | St. Isaac's Health",
+  seoDescription: "A checklist for your first St. Isaac's Health appointment: ID, insurance cards, a medication list, past records, and how to plan your arrival.",
 });
 s.article("preparing-questions-for-your-care-team", {
   title: "How to prepare questions for your care team", slug: "preparing-questions-for-your-care-team",
@@ -523,7 +523,7 @@ Your after-visit summary will be in the patient portal, usually by the end of th
 If you are helping a parent or partner with their care, the same approach works for their visits too. Keeping one shared list, with questions and answers from each appointment, makes it easier to pick up where you left off next time.`),
   heroImage: s.img(12), author: julianOrtega, publishDate: "2026-09-09",
   topics: ["care team", "appointments", "caregivers"], relatedPage: healthyAging, cta: findProvider,
-  seoTitle: "Preparing questions for your care team | Clearwater Health",
+  seoTitle: "Preparing questions for your care team | St. Isaac's Health",
   seoDescription: "How to plan your questions before an appointment, what to ask about next steps and logistics, and how to follow up after your visit.",
 });
 
@@ -532,13 +532,13 @@ const navLocations = s.item("nav-locations", { title: "Locations", link: s.ref("
 const navHealthLibrary = s.item("nav-health-library", { title: "Health Library", link: s.ref("page", "health-library") });
 
 s.brand({
-  name: "Clearwater Health", slug: "clearwater-health", vertical: "healthcare",
+  name: "St. Isaac's Health", slug: "st-isaacs-health", vertical: "healthcare",
   shortDescription: "Multi-location clinic network offering primary and specialty care.",
   tagline: "Care that keeps up with you.", logo: s.logo, favicon: s.favicon,
   colorBrand: "#163E5C", colorButton: "#0F7C8C", colorButtonText: "#FFFFFF", colorAccent: "#DDF2EE",
   colorBackground: "#FBFBF9", colorSurface: "#FFFFFF", colorText: "#1F2D3A", colorMuted: "#5A6B78",
   fontHeading: "Merriweather Sans", fontBody: "Nunito Sans", buttonRadius: 12, buttonTextCase: "normal",
-  voiceDescription: "Calm, compassionate, and inclusive. Clearwater Health speaks to patients and families in plain language and explains how services, visits, and scheduling work. It never gives medical advice and points every health question back to the care team.",
+  voiceDescription: "Calm, compassionate, and inclusive. St. Isaac's Health speaks to patients and families in plain language and explains how services, visits, and scheduling work. It never gives medical advice and points every health question back to the care team.",
   voiceDos: [
     "Say \"talk with your care team\" whenever a question is about someone's health.",
     "Include an emergency notice telling people to call 911.",

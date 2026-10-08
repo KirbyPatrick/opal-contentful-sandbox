@@ -99,20 +99,20 @@ describe("requests", () => {
 
   it("accepts a bare parameters object for manual testing, and numbers sent as text", async () => {
     const { deps: d } = deps();
-    const body = await read(await handleToolRequest(call("find-pages", { brand: "harborline-mutual", limit: "2", query: "" }), "find-pages", d));
+    const body = await read(await handleToolRequest(call("find-pages", { brand: "defeo-mutual", limit: "2", query: "" }), "find-pages", d));
     assert.equal(body.ok, true);
     assert.equal(body.count, 2);
   });
 
   it("treats null and empty-string parameters as not sent", async () => {
     const { deps: d } = deps();
-    const body = await read(await handleToolRequest(call("find-pages", { parameters: { brand: "harborline-mutual", type: null, query: "", limit: "" } }), "find-pages", d));
+    const body = await read(await handleToolRequest(call("find-pages", { parameters: { brand: "defeo-mutual", type: null, query: "", limit: "" } }), "find-pages", d));
     assert.equal(body.ok, true);
   });
 
   it("rejects unknown parameters and lists the valid ones", async () => {
     const { deps: d } = deps();
-    const body = await read(await handleToolRequest(call("find-pages", { parameters: { brand: "harborline-mutual", sql: "drop" } }), "find-pages", d));
+    const body = await read(await handleToolRequest(call("find-pages", { parameters: { brand: "defeo-mutual", sql: "drop" } }), "find-pages", d));
     assert.equal(body.ok, false);
     assert.equal(body.error?.code, "invalid_input");
     assert.match(body.error?.message ?? "", /Valid parameters: brand, query, type, limit/);
@@ -122,8 +122,8 @@ describe("requests", () => {
     const { deps: d } = deps();
     const cases: Array<[string, unknown, RegExp]> = [
       ["find-pages", { parameters: {} }, /brand/],
-      ["find-pages", { parameters: { brand: "harborline-mutual", limit: 500 } }, /limit/],
-      ["find-pages", { parameters: { brand: "harborline-mutual", type: "brand" } }, /type/],
+      ["find-pages", { parameters: { brand: "defeo-mutual", limit: 500 } }, /limit/],
+      ["find-pages", { parameters: { brand: "defeo-mutual", type: "brand" } }, /type/],
       ["get-entry", { parameters: { entry_id: "../../etc/passwd" } }, /entry_id/],
       ["update-entry", { parameters: { brand: "x", entry_id: "a", version: "abc", fields: "{}" } }, /version/],
       ["create-article", { parameters: { brand: "x", title: "t" } }, /summary|body_markdown|hero_image_id/],
@@ -216,9 +216,9 @@ describe("failures and limits", () => {
     const all = new RateLimiter(3, 60_000);
     const write = new RateLimiter(1, 60_000);
     const { deps: d } = deps({ limits: { all, write } });
-    const first = await handleToolRequest(call("unpublish-entry", { parameters: { brand: "harborline-mutual", entry_id: "article-hl-seed", version: 6 } }), "unpublish-entry", d);
+    const first = await handleToolRequest(call("unpublish-entry", { parameters: { brand: "defeo-mutual", entry_id: "article-hl-seed", version: 6 } }), "unpublish-entry", d);
     assert.equal(first.status, 200);
-    const second = await handleToolRequest(call("unpublish-entry", { parameters: { brand: "harborline-mutual", entry_id: "article-hl-seed", version: 7 } }), "unpublish-entry", d);
+    const second = await handleToolRequest(call("unpublish-entry", { parameters: { brand: "defeo-mutual", entry_id: "article-hl-seed", version: 7 } }), "unpublish-entry", d);
     assert.equal(second.status, 429);
     assert.ok(Number(second.headers.get("retry-after")) >= 1);
     assert.equal((await handleToolRequest(call("list-brands", {}), "list-brands", d)).status, 200);
