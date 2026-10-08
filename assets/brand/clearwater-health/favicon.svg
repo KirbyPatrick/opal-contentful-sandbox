@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Clearwater Health">
+  <title>Clearwater Health</title>
+  <g transform="translate(4 4)"><path d="M28 2.24 C40.32 17.92 49.28 28 49.28 35.84 A21.28 20.16 0 0 1 6.72 35.84 C6.72 28 15.680000000000001 17.92 28 2.24 Z" fill="#0F7C8C"/>
+  <rect x="24.64" y="25.76" width="6.72" height="19.040000000000003" rx="1.68" fill="#FFFFFF"/>
+  <rect x="18.48" y="31.919999999999998" width="19.040000000000003" height="6.72" rx="1.68" fill="#FFFFFF"/></g>
+</svg>

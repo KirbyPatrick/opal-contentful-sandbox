@@ -18,7 +18,10 @@
     "sandbox:create": "tsx --env-file=.env scripts/create-sandbox.ts",
     "sandbox:cleanup": "tsx --env-file=.env scripts/sandbox-cleanup.ts",
     "migrate": "tsx --env-file=.env scripts/migrate.ts",
-    "tags:setup": "tsx --env-file=.env scripts/setup-tags.ts"
+    "tags:setup": "tsx --env-file=.env scripts/setup-tags.ts",
+    "images:search": "tsx --env-file=.env scripts/images/search-candidates.ts",
+    "logos:generate": "node scripts/brand-assets/generate-logos.mjs",
+    "assets:upload": "tsx --env-file=.env scripts/images/upload-assets.ts"
   },
   "dependencies": {
     "contentful-management": "12.19.0",
@@ -35,6 +38,7 @@
     "contentful-migration": "5.1.1",
     "eslint": "9.39.5",
     "eslint-plugin-react-hooks": "7.1.1",
+    "opentype.js": "2.0.0",
     "tsx": "4.23.15",
     "typescript": "6.0.3",
     "typescript-eslint": "8.71.0"

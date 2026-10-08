@@ -13,7 +13,7 @@ A demo sandbox that shows Optimizely Opal creating, updating, and publishing con
 | 2 | Sandbox environment `opal-sandbox` and cleanup of inherited content | Done |
 | 3 | Brand kits and name conflict check ([docs/brand-kits.md](docs/brand-kits.md)) | Done |
 | 4 | Content model and migrations ([docs/content-model.md](docs/content-model.md)) | Done |
-| 5 | Images (Pexels manifest), logos, favicons | Next |
+| 5 | Images (Pixabay manifest), logos, favicons | In review |
 | 6 | Seed content and funnel verification | Planned |
 | 7 | Front end, Vercel deploy, revalidation, preview | Planned |
 | 8 | Opal API | Planned |
@@ -79,6 +79,9 @@ npm run check
 | `npm run sandbox:cleanup` | Dry run listing inherited content; add `-- --confirm` to delete exactly the reviewed list |
 | `npm run migrate` | Apply numbered migrations to the sandbox (skips ones already applied) |
 | `npm run tags:setup` | Create the seed, opal, and brand image pool tags (idempotent) |
+| `npm run images:search` | Search Pixabay for candidate photos and save previews to `.local/images/` (local only) |
+| `npm run logos:generate` | Regenerate the SVG logos and favicons in `assets/brand/` |
+| `npm run assets:upload` | Upload the reviewed photos in `assets/manifest.json` and the logos to the sandbox (idempotent) |
 
 Seed and reset scripts are added in later phases.
 

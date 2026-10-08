@@ -51,3 +51,4 @@ next-env.d.ts
 
 # local-only reports (may describe master, which is not ours)
 /.local/
+.claude/launch.json

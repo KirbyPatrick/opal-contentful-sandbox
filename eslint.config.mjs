@@ -43,6 +43,13 @@ export default defineConfig([
     },
   },
   {
+    // Plain JavaScript scripts run in Node.
+    files: ["scripts/**/*.mjs"],
+    languageOptions: {
+      globals: { console: "readonly", process: "readonly", fetch: "readonly", Buffer: "readonly", URL: "readonly" },
+    },
+  },
+  {
     files: ["src/lib/contentful/management.ts", "src/lib/contentful/migration-runner.ts", "tests/**"],
     rules: { "@typescript-eslint/no-restricted-imports": "off" },
   },
