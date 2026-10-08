@@ -2,6 +2,7 @@
  * Phase 5, step 3: upload the reviewed images and generated logos to the sandbox.
  *
  *   npm run assets:upload
+ *   npm run assets:upload -- --replace ledgerwood-bank-01   Swap one photo's file and text in place (same asset ID).
  *
  * - Photos come from assets/manifest.json. A fresh Pixabay download link is
  *   fetched for each (links expire after 24 hours), and Contentful pulls the
@@ -100,6 +101,26 @@ async function main(): Promise<void> {
   const manifest = Manifest.parse(JSON.parse(readFileSync(join("assets", "manifest.json"), "utf8")));
   const client = await getSandboxClient();
   const existing = await existingAssetIds(client);
+  const replaceIndex = process.argv.indexOf("--replace");
+  const replaceKey = replaceIndex >= 0 ? process.argv[replaceIndex + 1] : undefined;
+  if (replaceKey) {
+    const image = manifest.images.find((i) => i.key === replaceKey);
+    if (!image) throw new Error(`No manifest image with key ${replaceKey}.`);
+    const assetId = `img-${image.key}`;
+    const current = await client.asset.get({ assetId });
+    const upload = await pixabayDownloadUrl(pixabayKey, image.pixabayId);
+    await client.asset.update({ assetId }, {
+      ...current,
+      fields: {
+        title: { [LOCALE]: image.altText },
+        description: { [LOCALE]: `Photo by ${image.photographer} on Pixabay (${image.sourcePage}). Pixabay Content License.` },
+        file: { [LOCALE]: { contentType: "image/jpeg", fileName: `${image.key}.jpg`, upload } },
+      },
+    });
+    await processAndPublish(client, assetId);
+    console.log(`replaced  ${assetId}`);
+    return;
+  }
   let created = 0;
   let skipped = 0;
   const unavailable: string[] = [];

@@ -118,3 +118,37 @@ export async function createSandboxEnvironment(): Promise<"created" | "exists"> 
   await getSandboxClient();
   return "created";
 }
+
+const WEBHOOK_NAME = "opal-sandbox site revalidation";
+const WEBHOOK_TOPICS = ["Entry.publish", "Entry.unpublish", "Entry.delete", "Asset.publish", "Asset.unpublish", "Asset.delete"];
+
+/**
+ * Creates or updates the one webhook this project owns: it tells the site to
+ * refresh when sandbox content is published, unpublished, or deleted. It is
+ * filtered to the sandbox environment, so master activity never triggers it.
+ * The secret header value is marked secret in Contentful (not readable later).
+ */
+export async function upsertRevalidationWebhook(url: string, secret: string): Promise<"created" | "updated"> {
+  const target = readSandboxTarget();
+  await getSandboxClient();
+  const parsed = new URL(url);
+  if (parsed.protocol !== "https:" || !parsed.pathname.endsWith("/api/revalidate")) {
+    throw new Error("The webhook URL must be https and end with /api/revalidate.");
+  }
+  const raw = createRawClient(readManagementToken());
+  const body = {
+    name: WEBHOOK_NAME,
+    url: parsed.toString(),
+    topics: WEBHOOK_TOPICS,
+    filters: [{ equals: [{ doc: "sys.environment.sys.id" }, assertSafeEnvironmentId(target.environmentId)] }],
+    headers: [{ key: "x-revalidate-secret", value: secret, secret: true }],
+    active: true,
+  };
+  const existing = (await raw.webhook.getMany({ spaceId: target.spaceId, query: { limit: 100 } })).items.find((w) => w.name === WEBHOOK_NAME);
+  if (existing) {
+    await raw.webhook.update({ spaceId: target.spaceId, webhookDefinitionId: existing.sys.id }, { ...existing, ...body } as never);
+    return "updated";
+  }
+  await raw.webhook.create({ spaceId: target.spaceId }, body as never);
+  return "created";
+}

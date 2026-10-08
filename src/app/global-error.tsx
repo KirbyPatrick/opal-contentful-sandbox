@@ -1,0 +1,14 @@
+"use client";
+
+export default function GlobalError() {
+  return (
+    <html lang="en">
+      <body>
+        <main>
+          <h1>Something went wrong</h1>
+          <p>Please try again in a moment.</p>
+        </main>
+      </body>
+    </html>
+  );
+}

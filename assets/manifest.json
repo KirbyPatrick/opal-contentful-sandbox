@@ -4,7 +4,8 @@
   "notes": [
     "Download links from Pixabay expire after 24 hours, so this manifest stores each image page (sourcePage) and Pixabay ID. The upload script fetches a fresh download link (about 1280px wide) at upload time.",
     "On upload, altText becomes the asset title and the credit line (photographer, Pixabay, source page) becomes the asset description. Each asset is tagged seed and brand-<slug>.",
-    "lumenwork-07 was replaced on upload day because the original image was removed from Pixabay."
+    "lumenwork-07 was replaced on upload day because the original image was removed from Pixabay.",
+    "ledgerwood-bank-01 was replaced on 2026-10-08 with a more professional desk photo at the reviewer request."
   ],
   "counts": {
     "lumenwork": 11,
@@ -844,16 +845,14 @@
       "key": "ledgerwood-bank-01",
       "brand": "ledgerwood-bank",
       "intendedUse": "Home hero",
-      "altText": "Smiling woman in a knit sweater sitting with a laptop at home",
+      "altText": "Hand writing with a pencil at a tidy desk beside glasses, an envelope, and a notebook",
       "source": "Pixabay",
-      "pixabayId": 1979270,
-      "sourcePage": "https://pixabay.com/photos/bed-woman-work-laptop-computer-1979270/",
-      "photographer": "089photoshootings",
-      "photographerPage": "https://pixabay.com/users/089photoshootings-4258482/",
+      "pixabayId": 1076597,
+      "sourcePage": "https://pixabay.com/photos/hand-man-watch-work-desk-workspace-1076597/",
+      "photographer": "andrewlloydgordon",
+      "photographerPage": "https://pixabay.com/users/andrewlloydgordon-1795547/",
       "license": "Pixabay Content License",
-      "licenseUrl": "https://pixabay.com/service/license-summary/",
-      "originalWidth": 5760,
-      "originalHeight": 3840
+      "licenseUrl": "https://pixabay.com/service/license-summary/"
     },
     {
       "key": "ledgerwood-bank-02",
