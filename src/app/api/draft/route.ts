@@ -1,4 +1,4 @@
-import { draftMode } from "next/headers";
+import { cookies, draftMode } from "next/headers";
 import type { NextRequest } from "next/server";
 import { siteConfig } from "@/lib/site/config";
 import { findEntryForPreview, getBrandGraph } from "@/lib/site/contentful";
@@ -37,5 +37,12 @@ export async function GET(request: NextRequest) {
   }
 
   (await draftMode()).enable();
-  return new Response(null, { status: 307, headers: { ...NO_STORE, Location: path } });
+  const headers = new Headers({ ...NO_STORE, Location: path });
+  // Inside Contentful's Live preview frame, Chrome may block normal third-party cookies.
+  // A partitioned copy of the draft cookie (CHIPS) is kept for this frame only.
+  const bypass = (await cookies()).get("__prerender_bypass")?.value;
+  if (bypass && /^[A-Za-z0-9]+$/.test(bypass)) {
+    headers.append("Set-Cookie", `__prerender_bypass=${bypass}; Path=/; HttpOnly; Secure; SameSite=None; Partitioned`);
+  }
+  return new Response(null, { status: 307, headers });
 }
