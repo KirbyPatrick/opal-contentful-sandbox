@@ -17,7 +17,7 @@ A demo sandbox that shows Optimizely Opal creating, updating, and publishing con
 
 | 6 | Seed content and funnel verification | Done |
 | 7 | Front end, Vercel deploy, revalidation, preview ([docs/front-end.md](docs/front-end.md)) | Done |
-| 8 | Opal API | Next |
+| 8 | Opal API ([docs/opal-api.md](docs/opal-api.md)) | Built and tested; deploy and Opal registration pending |
 | 9 | Reset script, baseline export, runbook | Planned |
 
 ## Brands
@@ -37,7 +37,7 @@ A demo sandbox that shows Optimizely Opal creating, updating, and publishing con
 
 - **Contentful:** an existing space on the Free plan. All work happens in the `opal-sandbox` environment. `master` is never touched.
 - **Front end:** Next.js (App Router, TypeScript) on Vercel, reading published content from Contentful. Phase 7.
-- **Opal API:** server-side endpoints on Vercel that Opal calls to manage articles and pages. Phase 8.
+- **Opal API:** a custom tool registry served by the same Next.js app at `/api/opal`. Nine tools let Opal read content and create, update, publish, and unpublish it. No deletes. See [docs/opal-api.md](docs/opal-api.md). Phase 8.
 
 ## Safety model
 
@@ -45,8 +45,9 @@ The space's `master` environment belongs to someone else's experimentation setup
 
 1. **Static check (no network):** `CONTENTFUL_ENVIRONMENT_ID` must be set explicitly, with no default. `master` is refused in any capitalization or padding.
 2. **Live check (before the first write):** the target environment is looked up in Contentful. It is refused if it is an alias, if `master` is one of its aliases, or if `master` resolves to it. If the lookup fails, the target is refused.
-3. **One factory, two clients:** `src/lib/contentful/management.ts` is the only module that loads the Contentful Management SDK. Lint and tests enforce this.
+3. **One factory, three clients:** `src/lib/contentful/management.ts` is the only module that loads the Contentful Management SDK. Lint and tests enforce this.
    - `getSandboxClient()` is the only client that can write. Every call is pinned to the configured space and environment. A call that names another environment is refused before any request.
+   - `getOpalClient()` is the only client the Opal API may use: entries (read, create, update, publish, unpublish) and asset reads. The methods for deleting and archiving do not exist on it.
    - `getReadOnlyClient()` exposes read methods only, for preflight and the read-only inventory of `master`.
    - Anything not on a client's allowlist, including the SDK's raw request helper, does not exist on that client.
 4. **Rate limits:** clients send at most 5 requests per second (the Free plan allows 7). Rate-limited and server-error responses are retried using the wait time Contentful returns.
@@ -90,6 +91,7 @@ npm run check
 | `npm run seed` | Create or update seed content in the sandbox and publish it (idempotent) |
 | `npm run webhook:setup` | Create or update the Contentful webhook that refreshes the live site (sandbox only) |
 | `npm run verify:funnels` | Check live sandbox content and print each brand's funnel URLs |
+| `npm run opal:smoke` | Read-only smoke test of the Opal API, local or deployed (`-- <site URL>`) |
 
 The reset script is added in Phase 9.
 
@@ -101,6 +103,7 @@ The reset script is added in Phase 9.
 |---|---|
 | `src/app/` | Next.js routes |
 | `src/lib/contentful/` | Config, master guard, client allowlists, and the client factory |
+| `src/lib/opal/` | The Opal API: tools, field allowlist, Markdown checks, HTTP layer |
 | `scripts/` | Preflight, seed, and reset scripts |
 | `migrations/` | Numbered contentful-migration scripts |
 | `docs/` | Content model and other documentation |
@@ -113,7 +116,7 @@ The reset script is added in Phase 9.
 - GitHub secret scanning and push protection are enabled on this repository.
 - Dependencies are pinned to exact versions, the lockfile is committed, and third-party install scripts are disabled in `.npmrc`. New releases are adopted once they have been public for at least 7 days.
 - `eslint-config-next` is not used because its plugin depends on a glob library with an unpatched advisory (GHSA-vfj7-8cjw-p6xm). The project lints with `typescript-eslint` and `eslint-plugin-react-hooks` instead.
-- Token rotation steps for the Opal API are documented in Phase 8.
+- The Opal API requires a bearer token (`OPAL_API_TOKEN`) on every tool call. Rotation steps are in [docs/opal-api.md](docs/opal-api.md).
 
 ## Logos
 

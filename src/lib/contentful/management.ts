@@ -14,9 +14,11 @@ import { readManagementToken, readOptionalSpaceId, readSandboxTarget, type Sandb
 import { describeError, redactSecrets } from "./errors";
 import { PROTECTED_ENVIRONMENT_ID, assertDoesNotResolveToMaster, assertSafeEnvironmentId } from "./guard";
 import {
+  OPAL_API_ALLOW,
   READ_ONLY_ALLOW,
   SANDBOX_ALLOW,
   restrictClient,
+  type OpalClient,
   type ReadOnlyClient,
   type SandboxClient,
 } from "./policy";
@@ -71,6 +73,29 @@ export function getSandboxClient(): Promise<SandboxClient> {
     throw error;
   });
   return sandboxClient;
+}
+
+/** Runs the live master check, then pins a client with the narrow Opal API policy to the sandbox. Exported for tests. */
+export async function createOpalClientFrom(raw: PlainClientAPI, target: SandboxTarget): Promise<OpalClient> {
+  await assertDoesNotResolveToMaster(target.environmentId, (environmentId) =>
+    raw.environment.get({ spaceId: target.spaceId, environmentId }),
+  );
+  return restrictClient(raw, { name: "opal-api", allow: OPAL_API_ALLOW, pin: target });
+}
+
+let opalClient: Promise<OpalClient> | undefined;
+
+/** The only client the Opal API may use: no deletes, no archive, no content type or asset writes. */
+export function getOpalClient(): Promise<OpalClient> {
+  opalClient ??= (async () => {
+    const target = readSandboxTarget();
+    return createOpalClientFrom(createRawClient(readManagementToken()), target);
+  })().catch((error: unknown) => {
+    // Do not cache a failure, so a long-running server can retry the checks.
+    opalClient = undefined;
+    throw error;
+  });
+  return opalClient;
 }
 
 export function getReadOnlyClient(): ReadOnlyClient {

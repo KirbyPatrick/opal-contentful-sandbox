@@ -264,16 +264,20 @@ The cart uses the same blocks as everything else:
 - CTA destinations follow the rules above.
 - Alt text is present on every image and is at most 125 characters.
 
-## Opal access (preview, finalized in Phase 8)
+## Opal access (finalized in Phase 8)
 
-- **Create:** articles only.
-- **Update** (with version locking):
-  - article content fields
-  - hero copy and image
-  - CTA copy
-  - page title and SEO fields
-  - offering and collection descriptive copy
-- **Never:** brands, themes, slugs of published entries, page types, funnel links, content types, or deletes.
+- **Create:** articles only, as drafts tagged `opal`.
+- **Update** (with version locking), exactly these fields:
+  - article: title, summary, body, heroImage, publishDate, topics, seoTitle, seoDescription
+  - hero: eyebrow, headline, subheadline, image
+  - CTA: label, heading, body
+  - page: title, seoTitle, seoDescription
+  - offering: summary, description, features, badge, seoTitle, seoDescription
+  - collection: summary, description, eyebrow, image, seoTitle, seoDescription
+- **Publish:** articles, pages, heroes, CTAs, offerings, collections. **Unpublish:** articles only.
+- **Never:** brands, themes, slugs, page types, funnel links, prices, content types, other references, or deletes.
+
+The full tool reference is in [opal-api.md](opal-api.md). `tests/opal-fields.test.ts` fails if these limits drift from the migration.
 
 ## Migrations
 

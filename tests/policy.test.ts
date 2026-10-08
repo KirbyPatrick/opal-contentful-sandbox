@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 // Tests may build a real SDK client to check the allowlists against it. No request is ever sent.
 import { createClient } from "contentful-management";
 import {
+  OPAL_API_ALLOW,
   PolicyError,
   READ_ONLY_ALLOW,
   SANDBOX_ALLOW,
@@ -90,6 +91,25 @@ describe("policies against the real SDK", () => {
 
   it("every read-only method exists in this SDK version", () => {
     restrictClient(sdk, { name: "read-only", allow: READ_ONLY_ALLOW, pin: {} });
+  });
+
+  it("every Opal API method exists in this SDK version", () => {
+    restrictClient(sdk, { name: "opal-api", allow: OPAL_API_ALLOW, pin: pinned });
+  });
+
+  it("the Opal API policy cannot delete, archive, or change anything but entries", () => {
+    // Entries: read, create, update, publish, unpublish. Assets: read only. Nothing else exists.
+    assert.deepEqual(Object.keys(OPAL_API_ALLOW).sort(), ["asset", "entry"]);
+    assert.deepEqual([...OPAL_API_ALLOW.entry].sort(), ["create", "get", "getMany", "publish", "unpublish", "update"]);
+    assert.deepEqual([...OPAL_API_ALLOW.asset].sort(), ["get", "getMany"]);
+    for (const methods of Object.values(OPAL_API_ALLOW)) {
+      for (const method of methods) assert.doesNotMatch(method, /delete|archive/i, `${method} must not be allowed`);
+    }
+    const restricted = restrictClient(sdk, { name: "opal-api", allow: OPAL_API_ALLOW, pin: pinned });
+    assert.throws(() => (restricted.entry as unknown as Record<string, unknown>).delete, PolicyError);
+    assert.throws(() => (restricted.entry as unknown as Record<string, unknown>).archive, PolicyError);
+    assert.throws(() => (restricted as unknown as Record<string, unknown>).contentType, PolicyError);
+    assert.throws(() => (restricted.asset as unknown as Record<string, unknown>).publish, PolicyError);
   });
 
   it("the read-only policy contains only reads", () => {

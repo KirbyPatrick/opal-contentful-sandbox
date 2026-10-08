@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import type { PlainClientAPI } from "contentful-management";
 import { MasterGuardError } from "../src/lib/contentful/guard";
-import { createSandboxClientFrom, getSandboxClient } from "../src/lib/contentful/management";
+import { createOpalClientFrom, createSandboxClientFrom, getSandboxClient } from "../src/lib/contentful/management";
 
 /** A stand-in SDK client: every method exists, and environment lookups come from a fixed table. */
 function fakeRawClient(environments: Record<string, object>) {
@@ -52,6 +52,27 @@ describe("createSandboxClientFrom", () => {
     });
     await assert.rejects(createSandboxClientFrom(raw, target), MasterGuardError);
     assert.ok(requests.every((request) => request.startsWith("environment.get")));
+  });
+});
+
+describe("createOpalClientFrom", () => {
+  it("runs the live master check, then returns a pinned client without delete or archive", async () => {
+    const { raw, requests } = fakeRawClient({
+      master: { sys: { id: "master" } },
+      "opal-sandbox": { sys: { id: "opal-sandbox" } },
+    });
+    const client = await createOpalClientFrom(raw, target);
+    assert.deepEqual(requests.sort(), ["environment.get master", "environment.get opal-sandbox"]);
+    assert.throws(() => client.entry.get({ entryId: "x", environmentId: "master" }));
+    assert.throws(() => (client.entry as unknown as Record<string, unknown>).delete);
+  });
+
+  it("refuses, and hands out no client, when master resolves to the sandbox", async () => {
+    const { raw } = fakeRawClient({
+      master: { sys: { id: "master", aliasedEnvironment: { sys: { id: "opal-sandbox" } } } },
+      "opal-sandbox": { sys: { id: "opal-sandbox", aliases: [{ sys: { id: "master" } }] } },
+    });
+    await assert.rejects(createOpalClientFrom(raw, target), MasterGuardError);
   });
 });
 

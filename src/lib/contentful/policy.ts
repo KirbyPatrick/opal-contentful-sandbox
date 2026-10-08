@@ -84,8 +84,20 @@ export const READ_ONLY_ALLOW = {
   webhook: ["get", "getMany"],
 } as const satisfies MethodAllowlist;
 
+/**
+ * The Opal API (src/app/api/opal). Entries can be read, created, updated,
+ * published, and unpublished; assets are read only (agents pick existing
+ * images by ID). No delete, archive, content type, tag, webhook, or
+ * environment access. Deleting content stays a human decision.
+ */
+export const OPAL_API_ALLOW = {
+  entry: ["get", "getMany", "create", "update", "publish", "unpublish"],
+  asset: ["get", "getMany"],
+} as const satisfies MethodAllowlist;
+
 export type SandboxClient = RestrictedClient<typeof SANDBOX_ALLOW>;
 export type ReadOnlyClient = RestrictedClient<typeof READ_ONLY_ALLOW>;
+export type OpalClient = RestrictedClient<typeof OPAL_API_ALLOW>;
 
 const PINNABLE_PARAMS = ["spaceId", "environmentId"] as const;
 

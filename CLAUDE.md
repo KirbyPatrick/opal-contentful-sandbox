@@ -5,7 +5,8 @@ Contentful sandbox with six fictional brands, a Next.js front end, and an API th
 ## Contentful safety
 - Never modify, delete, publish, or uninstall anything in the `master` environment. It belongs to someone else's experimentation setup.
 - Get Contentful Management API clients only from `src/lib/contentful/management.ts`:
-  - `getSandboxClient()` for any write. It is pinned to `CONTENTFUL_ENVIRONMENT_ID` and runs the static and live master checks first.
+  - `getSandboxClient()` for any write from scripts. It is pinned to `CONTENTFUL_ENVIRONMENT_ID` and runs the static and live master checks first.
+  - `getOpalClient()` for the Opal API only (`src/app/api/opal`, `src/lib/opal`). Same checks, but it can only read, create, update, publish, and unpublish entries and read assets. Never add delete, archive, or content type methods to its policy.
   - `getReadOnlyClient()` for reads, including the read-only master inventory.
 - Ask the user before anything that writes to or deletes from Contentful, and before any deploy.
 - Free plan limits: 7 CMA requests per second, a monthly API call quota, 25 content types, 10,000 records. Keep traffic throttled and batched.
