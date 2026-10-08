@@ -21,10 +21,13 @@
     "tags:setup": "tsx --env-file=.env scripts/setup-tags.ts",
     "images:search": "tsx --env-file=.env scripts/images/search-candidates.ts",
     "logos:generate": "node scripts/brand-assets/generate-logos.mjs",
-    "assets:upload": "tsx --env-file=.env scripts/images/upload-assets.ts"
+    "assets:upload": "tsx --env-file=.env scripts/images/upload-assets.ts",
+    "seed": "tsx --env-file=.env scripts/seed.ts",
+    "seed:check": "tsx scripts/seed.ts --dry-run"
   },
   "dependencies": {
     "contentful-management": "12.19.0",
+    "marked": "18.0.14",
     "next": "16.3.8",
     "react": "19.2.8",
     "react-dom": "19.2.8",
