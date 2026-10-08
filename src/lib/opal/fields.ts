@@ -153,7 +153,7 @@ export function describeField(spec: FieldSpec): string {
     case "text":
       return `Plain text, at most ${spec.max} characters, no em dashes${spec.required ? "" : ". Send null to clear"}.`;
     case "richText":
-      return `Markdown (headings, paragraphs, bold, italic, lists, quotes, tables, and full http or https links; no raw HTML, no images)${spec.required ? "" : ". Send null to clear"}.`;
+      return `Markdown, at most 10,000 characters (headings, paragraphs, bold, italic, lists, quotes, tables, and full http or https links; no raw HTML, no images)${spec.required ? "" : ". Send null to clear"}.`;
     case "asset":
       return `An asset ID from list_brand_images for the same brand${spec.required ? "" : ". Send null to clear"}.`;
     case "list":

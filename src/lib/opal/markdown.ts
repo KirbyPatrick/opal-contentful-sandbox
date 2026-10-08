@@ -8,9 +8,16 @@
  *   agent can read a body, edit it, and send it back without losing structure or links.
  */
 import { lexer, type Token, type Tokens } from "marked";
-import { MAX_MARKDOWN_LENGTH, isSafeHttpUrl } from "../richtext/markdown";
+import { isSafeHttpUrl } from "../richtext/markdown";
 
 const EM_DASH = String.fromCharCode(0x2014);
+
+/**
+ * Longest Markdown body the API accepts. The tokenizer's cost grows faster than the length of
+ * adversarial text (repeated unmatched emphasis markers), so this is lower than the seed limit
+ * and is enforced before any tokenizing.
+ */
+export const MAX_API_MARKDOWN_LENGTH = 10_000;
 
 function walk(tokens: Token[] | undefined, issues: Set<string>): void {
   for (const token of tokens ?? []) {
@@ -32,8 +39,8 @@ function walk(tokens: Token[] | undefined, issues: Set<string>): void {
 
 /** Problems that make the text unacceptable. An empty list means it is fine to convert. */
 export function markdownIssues(markdown: string): string[] {
+  if (markdown.length > MAX_API_MARKDOWN_LENGTH) return [`longer than ${MAX_API_MARKDOWN_LENGTH} characters`];
   const issues = new Set<string>();
-  if (markdown.length > MAX_MARKDOWN_LENGTH) issues.add(`longer than ${MAX_MARKDOWN_LENGTH} characters`);
   if (markdown.includes(EM_DASH)) issues.add("contains an em dash; use a hyphen");
   walk(lexer(markdown, { gfm: true }), issues);
   return [...issues];

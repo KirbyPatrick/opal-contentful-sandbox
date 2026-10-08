@@ -29,6 +29,7 @@ import {
 } from "./context";
 import { ToolError, upstreamToToolError } from "./errors";
 import { SLUG_MAX, SLUG_PATTERN, TYPES, slugify, validateField, type FieldSpec } from "./fields";
+import { MAX_API_MARKDOWN_LENGTH } from "./markdown";
 import { assetIdParam, boolParam, brandParam, entryIdParam, intParam } from "./params";
 
 const OPAL_TAG = { sys: { type: "Link", linkType: "Tag", id: "opal" } } as const;
@@ -44,7 +45,7 @@ export const createArticleSchema = z.strictObject({
   brand: brandParam,
   title: shortText,
   summary: shortText,
-  body_markdown: z.string().max(25_000),
+  body_markdown: z.string().max(MAX_API_MARKDOWN_LENGTH),
   hero_image_id: assetIdParam,
   slug: shortText.optional(),
   publish_date: shortText.optional(),
@@ -183,7 +184,7 @@ export const updateEntrySchema = z.strictObject({
   brand: brandParam,
   entry_id: entryIdParam,
   version,
-  fields: z.union([z.string().max(60_000), z.record(z.string(), z.unknown())]),
+  fields: z.union([z.string().max(2 * MAX_API_MARKDOWN_LENGTH), z.record(z.string(), z.unknown())]),
 });
 
 function parseFields(input: string | Record<string, unknown>): Record<string, unknown> {

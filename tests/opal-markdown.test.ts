@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { markdownIssues, richTextToMarkdown } from "../src/lib/opal/markdown";
-import { markdownToRichText } from "../src/lib/richtext/markdown";
+import { MAX_API_MARKDOWN_LENGTH, markdownIssues, richTextToMarkdown } from "../src/lib/opal/markdown";
+import { isSafeHttpUrl, markdownToRichText } from "../src/lib/richtext/markdown";
 
 const EM_DASH = String.fromCharCode(0x2014);
 
@@ -35,7 +35,35 @@ describe("markdownIssues", () => {
 
   it("flags em dashes and over-long text", () => {
     assert.ok(markdownIssues(`a ${EM_DASH} b`).some((i) => /em dash/.test(i)));
-    assert.ok(markdownIssues("x".repeat(20_001)).some((i) => /longer than/.test(i)));
+    assert.deepEqual(markdownIssues("x".repeat(MAX_API_MARKDOWN_LENGTH + 1)), [`longer than ${MAX_API_MARKDOWN_LENGTH} characters`]);
+    assert.deepEqual(markdownIssues("x".repeat(MAX_API_MARKDOWN_LENGTH)), []);
+  });
+
+  it("refuses over-long text before tokenizing, so adversarial input cannot tie up the server", () => {
+    // Repeated unmatched emphasis markers make the tokenizer's cost grow much faster than the length.
+    for (const unit of ["*a ", "**a_", "[a](", "> "]) {
+      const started = Date.now();
+      const issues = markdownIssues(unit.repeat(Math.ceil(256 * 1024 / unit.length)));
+      assert.ok(Date.now() - started < 100, "an oversized body must be refused almost instantly");
+      assert.equal(issues.length, 1);
+    }
+  });
+
+  it("keeps the worst case at the size limit well under a few seconds", () => {
+    for (const unit of ["*a ", "**a_", "[a]("]) {
+      const started = Date.now();
+      markdownIssues(unit.repeat(Math.floor(MAX_API_MARKDOWN_LENGTH / unit.length)));
+      assert.ok(Date.now() - started < 3000, `${JSON.stringify(unit)} took ${Date.now() - started} ms`);
+    }
+  });
+});
+
+describe("isSafeHttpUrl", () => {
+  it("accepts only full http and https URLs", () => {
+    for (const ok of ["https://example.com", "http://example.com/a?b=1#c", "HTTPS://EXAMPLE.COM"]) assert.equal(isSafeHttpUrl(ok), true, ok);
+    for (const bad of ["http:evil.example", "https:evil.example", "https://a b.com", "https://x.test/\tpath", "//evil.test", "/relative", "javascript:alert(1)", "data:text/html,x", "ftp://x.test", "mailto:a@b.co", "", "https://"]) {
+      assert.equal(isSafeHttpUrl(bad), false, JSON.stringify(bad));
+    }
   });
 });
 

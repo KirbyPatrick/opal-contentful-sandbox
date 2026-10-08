@@ -50,7 +50,7 @@ grep '^OPAL_API_TOKEN=' .env | cut -d= -f2- | tr -d '\n' | pbcopy
 
 Every response that describes an entry includes `entry_id`, `content_type`, `brand`, `brand_name`, `title`, `status` (`draft`, `published`, or `changed`), `version`, `preview_url`, and `live_url`.
 
-- **`preview_url`** is a signed link that opens the draft for that one entry and expires after 3 days. It never contains `PREVIEW_SECRET`, because agents show these links in chat. The draft route (`/api/draft`) accepts either the secret (Contentful's own preview button) or this signed link.
+- **`preview_url`** is a signed link that opens the draft for that one entry and can only be redeemed for 24 hours. It never contains `PREVIEW_SECRET`, because agents show these links in chat. The draft route (`/api/draft`) accepts either the secret (Contentful's own preview button) or this signed link. Opening a valid link turns on draft mode for that browser, and draft mode covers every brand's drafts until the browser session ends or the next deploy, so share preview links like draft content, not in public channels.
 - **`live_url`** is set only while a published version exists and the entry has a page of its own. Heroes and CTAs have no page, so it is `null` for them.
 
 ### What can be edited
@@ -75,7 +75,7 @@ Every response that describes an entry includes `entry_id`, `content_type`, `bra
 
 - **Brand must be named, and must match.** The agent passes the brand slug (or exact name). An unknown brand returns an error telling the agent to ask the user. Writes also require the entry to belong to that brand.
 - **Strict input.** Every parameter is validated. Unknown parameters are rejected. Text limits, patterns, and dates follow the content model. No em dashes anywhere.
-- **Markdown only.** Bodies are Markdown (headings 2 to 4, paragraphs, bold, italic, lists, quotes, tables, links). Raw HTML, images, and any link that is not a full http or https URL are refused, not silently dropped.
+- **Markdown only.** Bodies are Markdown (at most 10,000 characters) (headings 2 to 4, paragraphs, bold, italic, lists, quotes, tables, links). Raw HTML, images, and any link that is not a full http or https URL are refused, not silently dropped.
 - **Images by asset ID only,** and only from the same brand's pool. URLs, other brands' images, and non-images are refused.
 - **Version locking.** `update_entry`, `publish_entry`, and `unpublish_entry` require the `version` the agent last read. A stale version returns a `version_conflict` error and nothing is written. Contentful checks the version again on its side.
 - **Draft first.** New articles and edits are drafts. A live page changes only after `publish_entry`.
@@ -103,7 +103,7 @@ Agent-fixable errors use 200 on purpose, so Opal always shows the agent the mess
 
 ## Limits
 
-- 256 KB per request. Markdown up to 20,000 characters.
+- 256 KB per request. Markdown bodies up to 10,000 characters (longer text is refused before it is parsed, because the Markdown parser slows down sharply on adversarial input).
 - 60 calls per minute per server instance, 20 of them writes. This is a best effort guard against a runaway agent loop (each serverless instance keeps its own count). The Contentful client also stays under 5 requests per second.
 - Free plan Contentful quotas still apply (7 requests per second, monthly call quota).
 
@@ -129,7 +129,7 @@ To stop all tool calls immediately without a deploy, switch the registry to inac
 | Opal does not see a new or changed tool | Click **Sync** on the registry after redeploying. |
 | `server_misconfigured` (HTTP 500) | `OPAL_API_TOKEN`, `SITE_URL`, or `PREVIEW_SECRET` is missing or too short in Vercel. |
 | `version_conflict` | The entry changed after the agent read it. The agent should call `get_entry` again and retry. |
-| The preview link says not authorized | The link expired (3 days) or was edited. Ask the agent for a fresh one with `get_entry`. |
+| The preview link says not authorized | The link expired (24 hours) or was edited. Ask the agent for a fresh one with `get_entry`. |
 
 ## Code map
 

@@ -5,10 +5,15 @@
  * own preview button). Tool responses must never contain that secret, because
  * an agent shows them in chat. They carry a link signed for one entry that
  * stops working after PREVIEW_LINK_TTL_SECONDS instead.
+ *
+ * Limit to know about: opening a valid link turns on Next.js draft mode for that browser,
+ * and draft mode is site-wide (every brand's drafts) until the browser session ends or the
+ * next deploy. The expiry bounds when a link can be redeemed, not what a redeemed link allows.
+ * Preview links should be shared like draft content: not in public channels.
  */
 import { createHmac, timingSafeEqual } from "node:crypto";
 
-export const PREVIEW_LINK_TTL_SECONDS = 3 * 24 * 60 * 60;
+export const PREVIEW_LINK_TTL_SECONDS = 24 * 60 * 60;
 
 // The prefix keeps a signature made here from being valid for any other purpose.
 const payload = (entryId: string, expires: number) => `preview-link\n${entryId}\n${expires}`;

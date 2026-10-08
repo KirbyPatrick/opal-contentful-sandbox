@@ -127,7 +127,7 @@ export const TOOLS: readonly ToolDefinition[] = [
       { name: "brand", type: "string", required: true, description: BRAND },
       { name: "title", type: "string", required: true, description: "Headline, at most 90 characters, sentence case, in the brand voice. No em dashes." },
       { name: "summary", type: "string", required: true, description: "One or two sentences, at most 200 characters, shown on cards and under the headline." },
-      { name: "body_markdown", type: "string", required: true, description: "The article body as Markdown: headings (levels 2 to 4), paragraphs, lists, bold, italic, quotes, tables, and full http or https links. No raw HTML, no images, no em dashes." },
+      { name: "body_markdown", type: "string", required: true, description: "The article body as Markdown, at most 10,000 characters: headings (levels 2 to 4), paragraphs, lists, bold, italic, quotes, tables, and full http or https links. No raw HTML, no images, no em dashes." },
       { name: "hero_image_id", type: "string", required: true, description: "asset_id of an image from list_brand_images for the same brand." },
       { name: "slug", type: "string", required: false, description: "URL part, lowercase words separated by hyphens. Defaults to a slug made from the title." },
       { name: "publish_date", type: "string", required: false, description: "Date shown on the article as YYYY-MM-DD. Defaults to today." },

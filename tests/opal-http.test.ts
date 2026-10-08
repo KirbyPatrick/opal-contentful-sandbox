@@ -127,6 +127,7 @@ describe("requests", () => {
       ["get-entry", { parameters: { entry_id: "../../etc/passwd" } }, /entry_id/],
       ["update-entry", { parameters: { brand: "x", entry_id: "a", version: "abc", fields: "{}" } }, /version/],
       ["create-article", { parameters: { brand: "x", title: "t" } }, /summary|body_markdown|hero_image_id/],
+      ["create-article", { parameters: { brand: "x", title: "t", summary: "s", hero_image_id: "i", body_markdown: "x".repeat(10_001) } }, /body_markdown/],
     ];
     for (const [tool, body, expected] of cases) {
       const response = await read(await handleToolRequest(call(tool, body), tool, d));
@@ -148,6 +149,28 @@ describe("requests", () => {
     assert.equal(byContent.status, 413);
     const byHeader = await handleToolRequest(call("list-brands", {}, { authorization: `Bearer ${TOKEN}`, "content-length": String(MAX_BODY_BYTES + 1) }), "list-brands", d);
     assert.equal(byHeader.status, 413);
+  });
+
+  it("caps attacker-controlled values before they reach the logs", async () => {
+    const { deps: d, logs } = deps();
+    const long = "x".repeat(5_000);
+    await handleToolRequest(call("list-brands", {}, { authorization: "Bearer wrong", "x-opal-thread-id": long }), long, d);
+    await handleToolRequest(call("list-brands", {}, { authorization: `Bearer ${TOKEN}`, "x-opal-thread-id": long, "x-opal-agent-execution-id": long }), "list-brands", d);
+    for (const log of logs) {
+      assert.ok(String(log.tool).length <= 64);
+      assert.ok(String(log.thread_id ?? "").length <= 64);
+      assert.ok(String(log.execution_id ?? "").length <= 64);
+    }
+    assert.ok(JSON.stringify(logs).length < 2_000);
+  });
+
+  it("counts the size limit in bytes, not characters", async () => {
+    const { deps: d } = deps();
+    // 100,000 characters of a 3-byte character is about 300 KB, over the 256 KB limit.
+    const body = JSON.stringify({ parameters: { query: "\u20ac".repeat(100_000) } });
+    assert.ok(body.length < MAX_BODY_BYTES);
+    const response = await handleToolRequest(call("find-pages", null, undefined, body), "find-pages", d);
+    assert.equal(response.status, 413);
   });
 
   it("maps tool errors to a 200 with the code and message the agent needs", async () => {

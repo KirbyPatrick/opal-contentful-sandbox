@@ -25,6 +25,8 @@ const block = (nodeType: string, content: Array<RichTextNode | Inline>): RichTex
 const text = (value: string, marks: Mark[] = []): TextNode => ({ nodeType: "text", value, marks, data: {} });
 
 export function isSafeHttpUrl(href: string): boolean {
+  // Full form only: "http:host" and URLs containing whitespace parse as valid but are not links we want.
+  if (!/^https?:\/\/[^\s]+$/i.test(href)) return false;
   try {
     const url = new URL(href);
     return url.protocol === "https:" || url.protocol === "http:";

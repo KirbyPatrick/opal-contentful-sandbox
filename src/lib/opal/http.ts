@@ -68,11 +68,12 @@ function describeIssues(issues: readonly z.core.$ZodIssue[], parameterNames: str
 
 export async function handleToolRequest(request: Request, toolSlug: string, deps: HttpDeps): Promise<Response> {
   const started = Date.now();
+  // These values arrive before authentication, so cap their length in the logs.
+  const clip = (value: string | null | undefined) => value?.slice(0, 64) || undefined;
   const base = {
-    tool: toolSlug,
-    thread_id: request.headers.get("x-opal-thread-id") ?? undefined,
-    execution_id:
-      request.headers.get("x-opal-agent-execution-id") ?? request.headers.get("x-opal-workflow-execution-id") ?? undefined,
+    tool: toolSlug.slice(0, 64),
+    thread_id: clip(request.headers.get("x-opal-thread-id")),
+    execution_id: clip(request.headers.get("x-opal-agent-execution-id") ?? request.headers.get("x-opal-workflow-execution-id")),
   };
   const finish = (result: string, extra: Record<string, unknown> = {}) =>
     deps.log({ ...base, result, ms: Date.now() - started, ...extra });
@@ -109,7 +110,7 @@ export async function handleToolRequest(request: Request, toolSlug: string, deps
 
   const declared = Number(request.headers.get("content-length") ?? 0);
   const raw = declared > MAX_BODY_BYTES ? undefined : await request.text();
-  if (raw === undefined || raw.length > MAX_BODY_BYTES) {
+  if (raw === undefined || Buffer.byteLength(raw) > MAX_BODY_BYTES) {
     finish("too_large");
     return reply(failure("payload_too_large", "The request is too large."), 413);
   }
