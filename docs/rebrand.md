@@ -18,7 +18,7 @@ Current names: StoutWare (key `lumenwork`), Stuchbery Acres (`stuchberys`), DeFe
    ```bash
    npm run tags:setup                          # creates the new brand-<slug> tag
    npm run assets:upload -- --retag            # gives every asset its brand's current tag
-   npm run assets:upload -- --replace-logos    # re-uploads logos and favicons of renamed brands
+   npm run assets:upload -- --replace-logos    # re-uploads every brand's logo and favicon
    npm run seed                                # updates names and copy, sets the new slug, republishes
    ```
 4. **Check.** `npm run verify:funnels`, then `npm run baseline:export` to record the new baseline, then `npm run opal:smoke -- https://opal-contentful-sandbox.vercel.app`.

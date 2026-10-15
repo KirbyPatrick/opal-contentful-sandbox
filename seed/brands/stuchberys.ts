@@ -852,8 +852,8 @@ s.brand({
   shortDescription: "Apparel retailer with classic seasonal collections.",
   tagline: "Made for the long season.",
   logo: s.logo, favicon: s.favicon,
-  colorBrand: "#2F4A3A", colorButton: "#2F4A3A", colorButtonText: "#F5EFE3", colorAccent: "#A04A25",
-  colorBackground: "#F5EFE3", colorSurface: "#E4D9C4", colorText: "#2B2B2B", colorMuted: "#6B645A",
+  colorBrand: "#2C3A2A", colorButton: "#2C3A2A", colorButtonText: "#F3EDE1", colorAccent: "#AD512D",
+  colorBackground: "#F3EDE1", colorSurface: "#E7DDC9", colorText: "#24231F", colorMuted: "#665F52",
   fontHeading: "Libre Caslon Text", fontBody: "Source Sans 3", buttonRadius: 0, buttonTextCase: "uppercase",
   voiceDescription: "A warm, understated outfitter from a small town in Vermont. Stuchbery Acres writes about fabric, fit, and care the way a knowledgeable shop assistant would: plainly, with specific detail about how things feel and how they wear over time.",
   voiceDos: [

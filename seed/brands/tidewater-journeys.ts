@@ -769,8 +769,8 @@ s.brand({
   shortDescription: "Curated small-group and private trips.",
   tagline: "Small groups. Long memories.",
   logo: s.logo, favicon: s.favicon,
-  colorBrand: "#0B3B4F", colorButton: "#B85A33", colorButtonText: "#FFFFFF", colorAccent: "#C9B79C",
-  colorBackground: "#F6F3EE", colorSurface: "#FFFFFF", colorText: "#1E2A30", colorMuted: "#5F6B70",
+  colorBrand: "#0F3443", colorButton: "#B1502C", colorButtonText: "#FFFFFF", colorAccent: "#D6C2A0",
+  colorBackground: "#F6F1E9", colorSurface: "#FFFFFF", colorText: "#1B2A31", colorMuted: "#5B676C",
   fontHeading: "Playfair Display", fontBody: "Lato", buttonRadius: 4, buttonTextCase: "normal",
   voiceDescription: "Sensory but grounded, knowledgeable, unhurried. We describe places through specific detail, like the morning ferry or the climb before lunch, and always give the practical facts: group size, pace, and what each day involves.",
   voiceDos: [

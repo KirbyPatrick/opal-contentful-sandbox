@@ -26,6 +26,10 @@ The brands were renamed on 2026-10-08. The names below were searched on the web;
 
 Internal IDs, seed file names, and logo folders still use the original names (see [rebrand.md](rebrand.md)).
 
+## Logos
+
+Each brand's logo mark was designed with an Opal agent on 2026-10-15. The marks, the briefs behind them, and how to replace one are in [logos.md](logos.md). Colors were refreshed the same day; the values below are current.
+
 ## Theme token reference
 
 Each Brand entry has eight color tokens:
@@ -51,7 +55,7 @@ Each Brand entry has eight color tokens:
 - **Voice:** Clear, practical, confident. Speaks to operations leads in plain language and leads with outcomes.
 - **Do:** Name real workflow moments (intake, approvals, handoffs). Use short sentences. Label any figures as illustrative.
 - **Don't:** Use hype or buzzwords. Name real customers. Mention experimentation, CMS, or marketing technology.
-- **Colors:** brand `#1F2A44`, button `#F2A33A`, button text `#1F2A44`, accent `#2F7F7A`, background `#F7F6F2`, surface `#FFFFFF`, text `#1C1F26`, muted `#5B6170`
+- **Colors:** brand `#171A3A`, button `#5446E0`, button text `#FFFFFF`, accent `#C6F16D`, background `#F6F6FA`, surface `#FFFFFF`, text `#171A2E`, muted `#5B6078`
 - **Fonts:** Space Grotesk (headings), Inter (body)
 - **Buttons:** 8px corners, normal case
 - **Photo direction:** Operations teams in daylight offices, warehouses, and field sites, working together. Screens show nothing readable. No logos.
@@ -69,7 +73,7 @@ Each Brand entry has eight color tokens:
 - **Voice:** Warm, understated outfitter. Focuses on fabric, fit, and care.
 - **Do:** Describe how things feel and wear. Use seasonal moments.
 - **Don't:** Use trend slang. Shout about discounts. Make real heritage claims.
-- **Colors:** brand `#2F4A3A`, button `#2F4A3A`, button text `#F5EFE3`, accent `#A04A25`, background `#F5EFE3`, surface `#E4D9C4`, text `#2B2B2B`, muted `#6B645A`
+- **Colors:** brand `#2C3A2A`, button `#2C3A2A`, button text `#F3EDE1`, accent `#AD512D`, background `#F3EDE1`, surface `#E7DDC9`, text `#24231F`, muted `#665F52`
 - **Fonts:** Libre Caslon Text (headings), Source Sans 3 (body)
 - **Buttons:** square corners, uppercase with letter spacing
 - **Photo direction:** Autumn outdoors. Wool knits, flannel, waxed jackets, boots, cabins, stone walls, flat lays on wood. Plain garments with no visible logos.
@@ -89,7 +93,7 @@ Each Brand entry has eight color tokens:
 - **Voice:** Reassuring, honest, plain-spoken. Explains insurance terms as it goes.
 - **Do:** Speak to "you and your family". Include clear disclaimers.
 - **Don't:** Use fear tactics. Promise savings or prices. Compare against real insurers.
-- **Colors:** brand `#12355B`, button `#C9472F`, button text `#FFFFFF`, accent `#7FB7BE`, background `#F4F1EA`, surface `#FFFFFF`, text `#253041`, muted `#5E6878`
+- **Colors:** brand `#152A4E`, button `#C2472A`, button text `#FFFFFF`, accent `#F0B9A4`, background `#FBF7F1`, surface `#FFFFFF`, text `#1D2638`, muted `#5B6474`
 - **Fonts:** DM Serif Display (headings), DM Sans (body)
 - **Buttons:** pill, normal case
 - **Photo direction:** Families at home, cars in driveways, coastal towns, moving day, warm natural light.
@@ -107,7 +111,7 @@ Each Brand entry has eight color tokens:
 - **Voice:** Calm, compassionate, inclusive. Never gives medical advice.
 - **Do:** Say "talk with your care team". Include an emergency notice telling people to call 911.
 - **Don't:** Diagnose. Promise outcomes. Quote health statistics. Use fear.
-- **Colors:** brand `#163E5C`, button `#0F7C8C`, button text `#FFFFFF`, accent `#DDF2EE`, background `#FBFBF9`, surface `#FFFFFF`, text `#1F2D3A`, muted `#5A6B78`
+- **Colors:** brand `#0E4651`, button `#0D6B77`, button text `#FFFFFF`, accent `#F5D3BC`, background `#F8FAF8`, surface `#FFFFFF`, text `#152E37`, muted `#526A72`
 - **Fonts:** Merriweather Sans (headings), Nunito Sans (body)
 - **Buttons:** 12px corners, normal case
 - **Photo direction:** Clinicians with patients of all ages in bright rooms. Nothing graphic. No hospital logos.
@@ -125,7 +129,7 @@ Each Brand entry has eight color tokens:
 - **Voice:** Precise, modern, approachable.
 - **Do:** Label every rate "Illustrative rate, not an offer". Explain fees in plain language.
 - **Don't:** Claim FDIC insurance or guaranteed approval. Use real rates.
-- **Colors:** brand `#114B3F`, button `#114B3F`, button text `#FFFFFF`, accent `#C8A24B`, background `#FFFFFF`, surface `#EEF5F1`, text `#18221F`, muted `#56625E`
+- **Colors:** brand `#0E3B2E`, button `#0E3B2E`, button text `#FFFFFF`, accent `#C3A15A`, background `#FBFAF5`, surface `#EEF2EA`, text `#14201B`, muted `#55615B`
 - **Fonts:** Manrope (headings), IBM Plex Sans (body)
 - **Buttons:** 6px corners, normal case
 - **Photo direction:** People handling money at home and in cafes, small business owners, new home keys. Phone screens left blank.
@@ -143,7 +147,7 @@ Each Brand entry has eight color tokens:
 - **Voice:** Sensory but grounded, knowledgeable, unhurried.
 - **Do:** Give group sizes, pace, and specific detail.
 - **Don't:** Use cliches like "hidden gem" or "bucket list". Make safety guarantees. Quote real prices.
-- **Colors:** brand `#0B3B4F`, button `#B85A33`, button text `#FFFFFF`, accent `#C9B79C`, background `#F6F3EE`, surface `#FFFFFF`, text `#1E2A30`, muted `#5F6B70`
+- **Colors:** brand `#0F3443`, button `#B1502C`, button text `#FFFFFF`, accent `#D6C2A0`, background `#F6F1E9`, surface `#FFFFFF`, text `#1B2A31`, muted `#5B676C`
 - **Fonts:** Playfair Display (headings), Lato (body)
 - **Buttons:** 4px corners, normal case
 - **Photo direction:** Coastlines, small boats, villages, hiking groups seen from behind, food markets. No commercial branding.

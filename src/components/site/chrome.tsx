@@ -76,6 +76,10 @@ export function SiteFooter({ g, ctx }: { g: BrandGraph; ctx: RenderContext }) {
         {disclaimer && <p>{disclaimer}</p>}
         <p className="footer-meta"><span>{name}, a fictional demo brand</span><Link href="/">All demo brands</Link></p>
       </div>
+      {/* An oversized wordmark closing the page. Decorative; sized in steps by name length so it fits. */}
+      <div className="container">
+        <p className={`footer-wordmark ${name.length <= 10 ? "is-short" : name.length <= 15 ? "is-medium" : "is-long"}`} aria-hidden="true">{name}</p>
+      </div>
     </footer>
   );
 }

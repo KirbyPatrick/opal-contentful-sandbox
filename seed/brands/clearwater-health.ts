@@ -535,8 +535,8 @@ s.brand({
   name: "St. Isaac's Health", slug: "st-isaacs-health", vertical: "healthcare",
   shortDescription: "Multi-location clinic network offering primary and specialty care.",
   tagline: "Care that keeps up with you.", logo: s.logo, favicon: s.favicon,
-  colorBrand: "#163E5C", colorButton: "#0F7C8C", colorButtonText: "#FFFFFF", colorAccent: "#DDF2EE",
-  colorBackground: "#FBFBF9", colorSurface: "#FFFFFF", colorText: "#1F2D3A", colorMuted: "#5A6B78",
+  colorBrand: "#0E4651", colorButton: "#0D6B77", colorButtonText: "#FFFFFF", colorAccent: "#F5D3BC",
+  colorBackground: "#F8FAF8", colorSurface: "#FFFFFF", colorText: "#152E37", colorMuted: "#526A72",
   fontHeading: "Merriweather Sans", fontBody: "Nunito Sans", buttonRadius: 12, buttonTextCase: "normal",
   voiceDescription: "Calm, compassionate, and inclusive. St. Isaac's Health speaks to patients and families in plain language and explains how services, visits, and scheduling work. It never gives medical advice and points every health question back to the care team.",
   voiceDos: [

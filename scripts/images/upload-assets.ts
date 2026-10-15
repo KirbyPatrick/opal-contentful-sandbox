@@ -11,7 +11,7 @@
  * - Logos and favicons come from assets/brand/<slug>/ and are uploaded as files.
  * - Asset IDs are deterministic, so re-running skips anything already uploaded.
  *   npm run assets:upload -- --retag            After a rebrand: give every asset its brand's current brand-<slug> tag.
- *   npm run assets:upload -- --replace-logos    After a rebrand: re-upload the logo and favicon of each rebranded brand (same asset IDs).
+ *   npm run assets:upload -- --replace-logos    Re-upload every brand's logo and favicon from assets/brand/ (same asset IDs).
  *
  * - Alt text goes in the asset title, attribution in the description, and every
  *   asset is tagged seed and brand-<slug>. Assets are published.
@@ -118,10 +118,9 @@ async function retagAssets(client: SandboxClient): Promise<void> {
   console.log(`retagged  ${moved} assets`);
 }
 
-/** Re-uploads the logo and favicon of every rebranded brand into the existing assets (IDs unchanged, titles updated). */
+/** Re-uploads every brand's logo and favicon into the existing assets (IDs unchanged, titles updated). */
 async function replaceLogos(client: SandboxClient): Promise<void> {
-  for (const { key, slug, name } of BRAND_INFO) {
-    if (slug === key) continue;
+  for (const { key, name } of BRAND_INFO) {
     for (const kind of ["logo", "favicon"] as const) {
       const assetId = `${kind}-${key}`;
       const current = await client.asset.get({ assetId });

@@ -18,8 +18,10 @@ export interface RenderContext {
 
 const WIDTHS = [480, 800, 1200, 1600];
 
-export function Img({ asset, sizes = "100vw", className, priority = false }: {
+export function Img({ asset, sizes = "100vw", className, priority = false, decorative = false }: {
   asset: SiteAsset | undefined; sizes?: string; className?: string; priority?: boolean;
+  /** For an extra photo that repeats what is already described, such as a hover image. Screen readers skip it. */
+  decorative?: boolean;
 }) {
   if (!asset) return <Placeholder className={className} />;
   const isSvg = asset.contentType === "image/svg+xml";
@@ -32,7 +34,7 @@ export function Img({ asset, sizes = "100vw", className, priority = false }: {
       src={src}
       srcSet={srcSet}
       sizes={srcSet ? sizes : undefined}
-      alt={asset.alt}
+      alt={decorative ? "" : asset.alt}
       width={asset.width}
       height={asset.height}
       loading={priority ? "eager" : "lazy"}

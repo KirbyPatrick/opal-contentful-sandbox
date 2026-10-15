@@ -654,8 +654,8 @@ s.brand({
   name: "StoutWare", slug: "stoutware", vertical: "b2b_saas",
   shortDescription: "Workflow and operations software for operations teams.",
   tagline: "Operations, in clear view.", logo: s.logo, favicon: s.favicon,
-  colorBrand: "#1F2A44", colorButton: "#F2A33A", colorButtonText: "#1F2A44", colorAccent: "#2F7F7A",
-  colorBackground: "#F7F6F2", colorSurface: "#FFFFFF", colorText: "#1C1F26", colorMuted: "#5B6170",
+  colorBrand: "#171A3A", colorButton: "#5446E0", colorButtonText: "#FFFFFF", colorAccent: "#C6F16D",
+  colorBackground: "#F6F6FA", colorSurface: "#FFFFFF", colorText: "#171A2E", colorMuted: "#5B6078",
   fontHeading: "Space Grotesk", fontBody: "Inter", buttonRadius: 8, buttonTextCase: "normal",
   voiceDescription: "Clear, practical, confident. Speaks to operations leads in plain language and leads with outcomes.",
   voiceDos: [

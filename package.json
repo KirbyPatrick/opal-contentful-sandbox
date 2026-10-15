@@ -20,6 +20,7 @@
     "migrate": "tsx --env-file=.env scripts/migrate.ts",
     "tags:setup": "tsx --env-file=.env scripts/setup-tags.ts",
     "images:search": "tsx --env-file=.env scripts/images/search-candidates.ts",
+    "logos:prepare": "node scripts/brand-assets/prepare-mark.mjs",
     "logos:generate": "node scripts/brand-assets/generate-logos.mjs",
     "assets:upload": "tsx --env-file=.env scripts/images/upload-assets.ts",
     "seed": "tsx --env-file=.env scripts/seed.ts",

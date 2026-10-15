@@ -591,8 +591,8 @@ s.brand({
   name: "Ledgerwood Bank", slug: "ledgerwood-bank", vertical: "financial_services",
   shortDescription: "Retail bank offering checking, savings, credit cards, and personal loans.",
   tagline: "Banking that adds up.", logo: s.logo, favicon: s.favicon,
-  colorBrand: "#114B3F", colorButton: "#114B3F", colorButtonText: "#FFFFFF", colorAccent: "#C8A24B",
-  colorBackground: "#FFFFFF", colorSurface: "#EEF5F1", colorText: "#18221F", colorMuted: "#56625E",
+  colorBrand: "#0E3B2E", colorButton: "#0E3B2E", colorButtonText: "#FFFFFF", colorAccent: "#C3A15A",
+  colorBackground: "#FBFAF5", colorSurface: "#EEF2EA", colorText: "#14201B", colorMuted: "#55615B",
   fontHeading: "Manrope", fontBody: "IBM Plex Sans", buttonRadius: 6, buttonTextCase: "normal",
   voiceDescription: "Precise, modern, and approachable. Ledgerwood explains money the way a patient, well-informed banker would: exact figures, plain words, and no pressure. Every rate is labeled illustrative, and every fee comes with what triggers it.",
   voiceDos: [

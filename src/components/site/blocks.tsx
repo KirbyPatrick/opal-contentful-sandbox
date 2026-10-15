@@ -62,6 +62,17 @@ export function DetailHero({ eyebrow, title, summary, image, children, crumbs }:
   );
 }
 
+/** A slow band repeating the brand's tagline under the home page hero (decorative; shown for some verticals). */
+export function Marquee({ phrase }: { phrase: string | undefined }) {
+  if (!phrase) return null;
+  const items = Array.from({ length: 6 }, (_, i) => <span key={i}>{phrase}</span>);
+  return (
+    <div className="marquee" aria-hidden="true">
+      <div className="marquee-track">{items}{items}</div>
+    </div>
+  );
+}
+
 // ---------- Sections ----------
 
 export function Sections({ entries, ctx }: { entries: SiteEntry[]; ctx: BlockContext }) {
@@ -236,7 +247,7 @@ function LogoStrip({ entry, ctx }: { entry: SiteEntry; ctx: BlockContext }) {
 
 // ---------- Card grids ----------
 
-interface Card { id: string; title: string; text?: string; href?: string; image?: ReturnType<BlockContext["g"]["asset"]>; meta?: string; badge?: string; person?: SiteEntry; entry: SiteEntry }
+interface Card { id: string; title: string; text?: string; href?: string; image?: ReturnType<BlockContext["g"]["asset"]>; image2?: ReturnType<BlockContext["g"]["asset"]>; meta?: string; badge?: string; person?: SiteEntry; entry: SiteEntry }
 
 function toCard(entry: SiteEntry, ctx: BlockContext): Card {
   const g = ctx.g;
@@ -246,7 +257,7 @@ function toCard(entry: SiteEntry, ctx: BlockContext): Card {
       return { id: entry.id, entry, title: text(entry, "title") ?? "", text: text(entry, "text"), href: g.urlFor(target), image: g.asset(entry.fields.image) };
     }
     case "offering":
-      return { id: entry.id, entry, title: text(entry, "name") ?? "", text: text(entry, "summary"), href: g.urlFor(entry), image: g.assetList(entry.fields.images)[0], meta: text(entry, "priceLabel"), badge: text(entry, "badge") };
+      return { id: entry.id, entry, title: text(entry, "name") ?? "", text: text(entry, "summary"), href: g.urlFor(entry), image: g.assetList(entry.fields.images)[0], image2: g.assetList(entry.fields.images)[1], meta: text(entry, "priceLabel"), badge: text(entry, "badge") };
     case "collection":
       return { id: entry.id, entry, title: text(entry, "name") ?? "", text: text(entry, "summary"), href: g.urlFor(entry), image: g.asset(entry.fields.image), meta: text(entry, "eyebrow") };
     case "article":
@@ -350,6 +361,8 @@ function CardView({ card, layout, ctx, index }: { card: Card; layout: string; ct
     <div className={`card ${layout === "products" ? "card-product" : ""}`}>
       <div className="card-media">
         <Img asset={card.image} sizes="(min-width: 900px) 33vw, 100vw" />
+        {/* Products show their second photo on hover. */}
+        {layout === "products" && card.image2 && <Img asset={card.image2} className="card-media-alt" sizes="(min-width: 900px) 33vw, 100vw" decorative />}
         {card.badge && <span className="badge">{card.badge}</span>}
       </div>
       <div className="card-body">

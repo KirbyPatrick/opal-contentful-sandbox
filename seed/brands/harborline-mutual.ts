@@ -505,8 +505,8 @@ s.brand({
   name: "DeFeo Mutual", slug: "defeo-mutual", vertical: "insurance",
   shortDescription: "Auto, home, and life insurance for families.",
   tagline: "Steady coverage for every stage.", logo: s.logo, favicon: s.favicon,
-  colorBrand: "#12355B", colorButton: "#C9472F", colorButtonText: "#FFFFFF", colorAccent: "#7FB7BE",
-  colorBackground: "#F4F1EA", colorSurface: "#FFFFFF", colorText: "#253041", colorMuted: "#5E6878",
+  colorBrand: "#152A4E", colorButton: "#C2472A", colorButtonText: "#FFFFFF", colorAccent: "#F0B9A4",
+  colorBackground: "#FBF7F1", colorSurface: "#FFFFFF", colorText: "#1D2638", colorMuted: "#5B6474",
   fontHeading: "DM Serif Display", fontBody: "DM Sans", buttonRadius: 999, buttonTextCase: "normal",
   voiceDescription: "Reassuring, honest, and plain-spoken. DeFeo speaks to you and your family, explains insurance terms as it goes, and is clear about what is illustrative.",
   voiceDos: [

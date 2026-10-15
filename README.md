@@ -84,7 +84,8 @@ npm run check
 | `npm run migrate` | Apply numbered migrations to the sandbox (skips ones already applied) |
 | `npm run tags:setup` | Create the seed, opal, and brand image pool tags (idempotent) |
 | `npm run images:search` | Search Pixabay for candidate photos and save previews to `.local/images/` (local only) |
-| `npm run logos:generate` | Regenerate the SVG logos and favicons in `assets/brand/` |
+| `npm run logos:prepare -- <image> <key>` | Turn a logo mark image from Opal into `assets/brand/<key>/mark.png` |
+| `npm run logos:generate` | Rebuild the SVG logos and favicons in `assets/brand/` from each `mark.png` |
 | `npm run assets:upload` | Upload the reviewed photos in `assets/manifest.json` and the logos to the sandbox (idempotent) |
 
 | `npm run seed:check` | Validate all seed content offline (no network) |
@@ -125,4 +126,4 @@ After a demo, `npm run reset` puts the sandbox back (see [RUNBOOK.md](RUNBOOK.md
 
 ## Logos
 
-The SVG logos and favicons in `assets/brand/` are generated placeholders. Final logos will be supplied later. To swap one, replace `assets/brand/<slug>/logo.svg` or `favicon.svg` and update the existing asset (`logo-<slug>` or `favicon-<slug>`) in the sandbox so every reference stays intact.
+Each brand has a logo (mark plus name) and a favicon (mark on a rounded tile) in `assets/brand/<key>/`. The marks were designed with an Opal agent from short briefs. How they were made, the briefs, and how to replace one are in [docs/logos.md](docs/logos.md). Uploads update the existing assets (`logo-<key>`, `favicon-<key>`), so every reference stays intact.

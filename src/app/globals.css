@@ -11,7 +11,7 @@
   --btn-radius: 6px; --btn-case: none; --btn-tracking: 0;
   --radius: 10px; --radius-lg: 14px;
   --gap: clamp(18px, 2.4vw, 32px); --max: 1240px;
-  --section-y: clamp(64px, 8.5vw, 128px);
+  --section-y: clamp(56px, 7vw, 108px);
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
@@ -24,6 +24,10 @@
   --c-tint-strong: color-mix(in srgb, var(--c-brand) 11%, var(--c-bg));
   --c-on-brand: var(--c-bg);
   --c-on-brand-muted: color-mix(in srgb, var(--c-bg) 74%, var(--c-brand));
+  /* Dark bands keep the original brand color here, then reuse --c-brand for their bright accents. */
+  --c-band: var(--c-brand);
+  --c-band-button: var(--c-button);
+  --c-highlight: var(--c-on-brand);
   --shadow-sm: 0 1px 2px color-mix(in srgb, var(--c-brand) 7%, transparent), 0 2px 10px color-mix(in srgb, var(--c-brand) 5%, transparent);
   --shadow-md: 0 2px 6px color-mix(in srgb, var(--c-brand) 7%, transparent), 0 14px 36px -8px color-mix(in srgb, var(--c-brand) 16%, transparent);
   --shadow-lg: 0 10px 24px -10px color-mix(in srgb, var(--c-brand) 22%, transparent), 0 34px 70px -20px color-mix(in srgb, var(--c-brand) 30%, transparent);
@@ -120,7 +124,6 @@ main { flex: 1; }
 
 /* Sections */
 .section { padding: var(--section-y) 0; position: relative; }
-.section + .section:not(.section-surface):not(.section-brand):not(.cta-band) { padding-top: calc(var(--section-y) * 0.55); }
 .section-surface { background: var(--c-surface); }
 .section-brand { background: var(--c-brand); color: var(--c-on-brand); }
 .section-brand h2, .section-brand p { color: var(--c-on-brand); }
@@ -479,7 +482,7 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
 [data-vertical="healthcare"] .hero-media::before, [data-vertical="healthcare"] .media-text-image::before { background: var(--c-accent); }
 [data-vertical="healthcare"] .eyebrow::before { background: var(--c-button); }
 [data-vertical="healthcare"] .icon-badge, [data-vertical="healthcare"] .card-index { background: var(--c-accent); color: var(--c-button); }
-[data-vertical="healthcare"] .section-surface { background: color-mix(in srgb, var(--c-accent) 45%, var(--c-bg)); }
+[data-vertical="healthcare"] .section-surface { background: color-mix(in srgb, var(--c-button) 6%, var(--c-bg)); }
 
 /* Finance: precise. Fine gold rules, tabular figures, restrained color. */
 [data-vertical="financial_services"] .hero::before {
@@ -499,3 +502,129 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
 [data-vertical="travel"] .eyebrow { font-weight: 600; letter-spacing: 0.2em; }
 [data-vertical="travel"] .testimonial blockquote p { font-style: italic; font-weight: 400; }
 [data-vertical="travel"] .card-text .card-index { background: color-mix(in srgb, var(--c-accent) 35%, var(--c-bg)); }
+
+/* ================= Art direction: color bands, motifs, and signature details ================= */
+
+/* Bright accent used inside dark bands, per vertical. */
+:is([data-vertical="b2b_saas"], [data-vertical="financial_services"], [data-vertical="healthcare"], [data-vertical="insurance"], [data-vertical="travel"]) { --c-highlight: var(--c-accent); }
+
+/* Dark bands. Inside, text tokens flip to light and --c-brand becomes the bright accent, so every block adapts. */
+:is(
+  [data-vertical="b2b_saas"] :is(.stats, .hero-split:not(.hero-detail)),
+  [data-vertical="financial_services"] :is(.stats, .hero-split:not(.hero-detail)),
+  [data-vertical="healthcare"] .stats,
+  [data-vertical="insurance"] .testimonial,
+  [data-vertical="apparel_retail"] .testimonial,
+  [data-vertical="travel"] .testimonial
+) {
+  background-color: var(--c-band); color: var(--c-on-brand);
+  --c-brand: var(--c-highlight); --c-text: var(--c-on-brand); --c-muted: var(--c-on-brand-muted);
+  --c-line: color-mix(in srgb, var(--c-on-brand) 16%, transparent); --c-line-strong: color-mix(in srgb, var(--c-on-brand) 30%, transparent);
+  --c-tint: color-mix(in srgb, var(--c-on-brand) 8%, transparent); --c-tint-strong: color-mix(in srgb, var(--c-on-brand) 14%, transparent);
+}
+:is([data-vertical] .stats, [data-vertical] .testimonial) .stat { border-top-color: color-mix(in srgb, var(--c-on-brand) 26%, transparent); }
+:is([data-vertical="b2b_saas"], [data-vertical="financial_services"], [data-vertical="healthcare"]) .stats .stat dd { color: var(--c-highlight); }
+:is([data-vertical="insurance"], [data-vertical="apparel_retail"], [data-vertical="travel"]) .testimonial blockquote::before { color: var(--c-highlight); }
+:is([data-vertical="insurance"], [data-vertical="apparel_retail"], [data-vertical="travel"]) .testimonial .stars { color: var(--c-highlight); }
+:is([data-vertical="insurance"], [data-vertical="apparel_retail"], [data-vertical="travel"]) .testimonial .avatar-initials { background: color-mix(in srgb, var(--c-on-brand) 16%, transparent); color: var(--c-on-brand); }
+:is([data-vertical="insurance"], [data-vertical="apparel_retail"], [data-vertical="travel"]) .testimonial .avatar { box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-on-brand) 25%, transparent); }
+
+/* A slow tagline band under the home hero (B2C apparel and travel). */
+.marquee { display: none; overflow: hidden; background: var(--c-band); color: var(--c-on-brand); border-top: 1px solid color-mix(in srgb, var(--c-on-brand) 12%, transparent); }
+[data-vertical="apparel_retail"] .marquee, [data-vertical="travel"] .marquee { display: block; }
+.marquee-track { display: flex; width: max-content; animation: marquee 48s linear infinite; }
+.marquee span { display: inline-flex; align-items: center; gap: 34px; padding: 17px 0 17px 34px; font: 600 0.78rem/1 var(--font-body); letter-spacing: 0.24em; text-transform: uppercase; white-space: nowrap; }
+.marquee span::after { content: "\2726"; color: var(--c-accent); font-size: 0.9em; letter-spacing: 0; }
+[data-vertical="travel"] .marquee span { font: italic 500 1.05rem/1 var(--font-heading); letter-spacing: 0.02em; text-transform: none; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
+
+/* An oversized wordmark closing every page. */
+.footer-wordmark { margin: clamp(28px, 4vw, 56px) 0 calc(-0.2em - 28px); font: 700 1rem/0.9 var(--font-heading); letter-spacing: -0.045em; white-space: nowrap; overflow: hidden; color: color-mix(in srgb, var(--c-on-brand) 9%, transparent); user-select: none; }
+.footer-wordmark.is-short { font-size: min(17vw, 214px); }
+.footer-wordmark.is-medium { font-size: min(11.2vw, 140px); }
+.footer-wordmark.is-long { font-size: min(9.2vw, 114px); }
+@media (max-width: 640px) { .footer-wordmark { display: none; } }
+.site-footer { overflow: hidden; }
+
+/* Products show their second photo on hover. */
+.card-media-alt { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.5s var(--ease), transform 0.6s var(--ease); }
+.card:hover .card-media-alt { opacity: 1; }
+
+/* ---------- StoutWare (B2B software): dark product hero, app window, floating status card ---------- */
+[data-vertical="b2b_saas"] .hero-split:not(.hero-detail) { padding: clamp(64px, 9vw, 132px) 0 clamp(72px, 10vw, 148px); --c-button: var(--c-accent); --c-button-text: var(--c-band); }
+[data-vertical="b2b_saas"] .hero-split:not(.hero-detail)::before {
+  background:
+    radial-gradient(42% 60% at 82% 18%, color-mix(in srgb, var(--c-band-button) 55%, transparent), transparent 70%),
+    radial-gradient(30% 40% at 96% 92%, color-mix(in srgb, var(--c-accent) 26%, transparent), transparent 70%),
+    linear-gradient(color-mix(in srgb, #fff 6%, transparent) 1px, transparent 1px) 0 0 / 56px 56px,
+    linear-gradient(90deg, color-mix(in srgb, #fff 6%, transparent) 1px, transparent 1px) 0 0 / 56px 56px;
+  -webkit-mask-image: radial-gradient(120% 100% at 70% 30%, #000 45%, transparent 90%); mask-image: radial-gradient(120% 100% at 70% 30%, #000 45%, transparent 90%); }
+[data-vertical="b2b_saas"] .hero-split:not(.hero-detail) h1 { color: #fff; }
+[data-vertical="b2b_saas"] .hero-split:not(.hero-detail) .hero-media { padding: 38px 10px 10px; border-radius: var(--radius-lg); background: color-mix(in srgb, #fff 8%, transparent); border: 1px solid color-mix(in srgb, #fff 16%, transparent); box-shadow: 0 50px 90px -30px rgba(0, 0, 0, 0.65); }
+[data-vertical="b2b_saas"] .hero-split:not(.hero-detail) .hero-media::after { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 38px;
+  background: radial-gradient(circle, #FF6B6B 0 5px, transparent 5.5px) 12px 13px / 12px 12px no-repeat, radial-gradient(circle, #F7C948 0 5px, transparent 5.5px) 30px 13px / 12px 12px no-repeat, radial-gradient(circle, #5BD36F 0 5px, transparent 5.5px) 48px 13px / 12px 12px no-repeat; }
+[data-vertical="b2b_saas"] .hero-split:not(.hero-detail) .hero-media img { aspect-ratio: 16 / 10; border-radius: calc(var(--radius-lg) - 6px); box-shadow: none; }
+[data-vertical="b2b_saas"] .hero-split:not(.hero-detail) .hero-media::before { inset: auto auto 34px -34px; width: 216px; height: 76px; border-radius: 16px; z-index: 2; background-color: #fff; box-shadow: 0 24px 50px -16px rgba(0, 0, 0, 0.45);
+  background-image: radial-gradient(circle at 38px 38px, var(--c-accent) 0 16px, transparent 16.5px), linear-gradient(#DADCE8, #DADCE8), linear-gradient(#ECEDF4, #ECEDF4);
+  background-size: auto, 112px 9px, 78px 9px; background-position: 0 0, 68px 26px, 68px 43px; background-repeat: no-repeat; animation: float 7s ease-in-out infinite; }
+@keyframes float { 50% { transform: translateY(-10px); } }
+@media (max-width: 960px) { [data-vertical="b2b_saas"] .hero-split:not(.hero-detail) .hero-media::before { left: 10px; } }
+[data-vertical="b2b_saas"] .hero-split:not(.hero-detail) .btn-secondary { color: #fff; border-color: color-mix(in srgb, #fff 34%, transparent); }
+[data-vertical="b2b_saas"] .hero-split:not(.hero-detail) .btn-secondary:hover { background: color-mix(in srgb, #fff 10%, transparent); border-color: #fff; }
+[data-vertical="b2b_saas"] .stats { background-image: radial-gradient(50% 120% at 100% 0%, color-mix(in srgb, var(--c-band-button) 40%, transparent), transparent 60%); }
+[data-vertical="b2b_saas"] .cta-band-inner { --c-button: var(--c-accent); --c-button-text: var(--c-band); background: radial-gradient(60% 140% at 100% 0%, color-mix(in srgb, var(--c-accent) 30%, transparent), transparent 55%), linear-gradient(120deg, var(--c-band-button), var(--c-band) 75%); }
+[data-vertical="b2b_saas"] .testimonial blockquote::before { color: var(--c-band-button); }
+[data-vertical="b2b_saas"] .card:has(.card-link):hover { border-color: color-mix(in srgb, var(--c-band-button) 45%, transparent); }
+
+/* ---------- Ledgerwood Bank (finance): private-bank green, engraved rosette, brass ---------- */
+[data-vertical="financial_services"] .hero-split:not(.hero-detail) { --c-button: var(--c-on-brand); --c-button-text: var(--c-band); }
+[data-vertical="financial_services"] .hero-split:not(.hero-detail)::before { background: radial-gradient(50% 70% at 85% 10%, color-mix(in srgb, var(--c-accent) 22%, transparent), transparent 70%); }
+[data-vertical="financial_services"] :is(.hero-split:not(.hero-detail), .stats, .cta-band-inner)::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background-color: var(--c-accent); opacity: 0.16;
+  mask: url("/motifs/rosette.svg") 0 0 / 340px 340px repeat; }
+[data-vertical="financial_services"] .stats, [data-vertical="financial_services"] .cta-band-inner { isolation: isolate; }
+[data-vertical="financial_services"] .hero-split:not(.hero-detail) .hero-media::before { background: transparent; border: 1.5px solid var(--c-accent); inset: 6% -4% -6% 8%; }
+[data-vertical="financial_services"] .hero-split:not(.hero-detail) .btn-secondary { color: var(--c-on-brand); border-color: var(--c-accent); }
+[data-vertical="financial_services"] .card { border-top: 2px solid var(--c-accent); }
+[data-vertical="financial_services"] .cta-band-inner { background: var(--c-band); border: 1px solid color-mix(in srgb, var(--c-accent) 60%, transparent); }
+
+/* ---------- DeFeo Mutual (insurance): arched photo with a sunrise disc, like the logo ---------- */
+[data-vertical="insurance"] .hero-split:not(.hero-detail) .hero-media::before { inset: -7% -7% auto auto; width: 58%; aspect-ratio: 1; height: auto; border-radius: 50%; background: color-mix(in srgb, var(--c-button) 22%, var(--c-accent)); }
+[data-vertical="insurance"] .hero-split:not(.hero-detail) .hero-media img { aspect-ratio: 4 / 4.4; border-radius: 999px 999px var(--radius-lg) var(--radius-lg); }
+[data-vertical="b2b_saas"] .media-text-image::before { width: 42%; height: 48%; border-radius: 0; background: radial-gradient(color-mix(in srgb, var(--c-button) 55%, transparent) 1.6px, transparent 1.8px) 0 0 / 16px 16px; }
+[data-vertical="insurance"] .media-text-image img { border-radius: 999px 999px var(--radius-lg) var(--radius-lg); aspect-ratio: 1; }
+[data-vertical="insurance"] .media-text-image::before { border-radius: 50%; width: 40%; height: auto; aspect-ratio: 1; background: color-mix(in srgb, var(--c-accent) 70%, var(--c-bg)); }
+[data-vertical="insurance"] .testimonial { background-image: radial-gradient(40% 90% at 50% 0%, color-mix(in srgb, var(--c-accent) 18%, transparent), transparent 70%); }
+[data-vertical="insurance"] .cta-band-inner { background: radial-gradient(45% 120% at 100% 100%, color-mix(in srgb, var(--c-button) 55%, transparent), transparent 60%), radial-gradient(40% 90% at 0% 0%, color-mix(in srgb, var(--c-accent) 22%, transparent), transparent 60%), var(--c-band); }
+
+/* ---------- St. Isaac's Health (healthcare): organic shapes, warm apricot, calm teal ---------- */
+[data-vertical="healthcare"] .hero::before { background: radial-gradient(45% 60% at 88% 18%, color-mix(in srgb, var(--c-accent) 85%, transparent), transparent 70%), radial-gradient(35% 50% at 70% 95%, color-mix(in srgb, var(--c-button) 12%, transparent), transparent 70%), radial-gradient(40% 60% at 0% 10%, color-mix(in srgb, var(--c-button) 7%, transparent), transparent 70%); }
+[data-vertical="healthcare"] .hero-split:not(.hero-detail) .hero-media img { border-radius: 46% 54% 42% 58% / 52% 44% 56% 48%; aspect-ratio: 1; box-shadow: none; }
+[data-vertical="healthcare"] .hero-split:not(.hero-detail) .hero-media::before { inset: auto -4% -6% auto; width: 44%; aspect-ratio: 1; height: auto; border-radius: 58% 42% 50% 50% / 46% 54% 46% 54%; background: var(--c-accent); }
+[data-vertical="healthcare"] .media-text-image img { border-radius: 34% 66% 44% 56% / 48% 40% 60% 52%; box-shadow: none; }
+[data-vertical="healthcare"] .media-text-image::before { background: color-mix(in srgb, var(--c-accent) 80%, var(--c-bg)); border-radius: 50%; }
+[data-vertical="healthcare"] .icon-badge, [data-vertical="healthcare"] .card-index { background: var(--c-accent); color: var(--c-band); border-radius: 50%; }
+[data-vertical="healthcare"] .block-rich-text .narrow { padding: clamp(28px, 4vw, 44px) clamp(24px, 4.5vw, 56px); border-radius: var(--radius-lg); background: color-mix(in srgb, var(--c-accent) 24%, var(--c-surface)); }
+[data-vertical="healthcare"] .stats { background-image: radial-gradient(40% 120% at 0% 100%, color-mix(in srgb, var(--c-button) 60%, transparent), transparent 60%); }
+
+/* ---------- Stuchbery Acres (B2C apparel): paper grain, editorial quiet ---------- */
+[data-vertical="apparel_retail"]::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 60; opacity: 0.07; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); mix-blend-mode: multiply; }
+[data-vertical="apparel_retail"] .hero-full_bleed h1 { font-size: clamp(2.8rem, 6.4vw, 5.4rem); }
+[data-vertical="apparel_retail"] .testimonial blockquote p { font-size: clamp(1.5rem, 3vw, 2.3rem); }
+[data-vertical="apparel_retail"] .media-text-image img { border-radius: 0; }
+[data-vertical="apparel_retail"] .section-head h2::after { content: ""; display: block; width: 42px; height: 1px; margin: 22px auto 0; background: var(--c-accent); }
+
+/* ---------- Tidewater Journeys (travel): text over tall photos, contour lines ---------- */
+[data-vertical="travel"] .hero-full_bleed h1 { font-size: clamp(2.8rem, 6vw, 5.2rem); font-weight: 500; }
+[data-vertical="travel"] .layout-cards .card { border: 0; background: var(--c-band); }
+[data-vertical="travel"] .layout-cards .card-media img { aspect-ratio: 3 / 4; }
+[data-vertical="travel"] .layout-cards .card-body { position: absolute; inset: auto 0 0 0; padding: 120px 26px 26px; background: linear-gradient(180deg, transparent, rgba(6, 20, 27, 0.55) 30%, rgba(6, 20, 27, 0.9)); }
+[data-vertical="travel"] .layout-cards .card-body :is(h3, p, .card-more, .eyebrow) { color: #fff; }
+[data-vertical="travel"] .layout-cards .card-body p { color: rgba(255, 255, 255, 0.84); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+[data-vertical="travel"] .layout-cards .card-body h3 { font-size: 1.45rem; }
+[data-vertical="travel"] .layout-cards .card-body .eyebrow { color: var(--c-accent); }
+[data-vertical="travel"] :is(.section-surface, .cta-band-inner) { position: relative; isolation: isolate; }
+[data-vertical="travel"] :is(.section-surface, .cta-band-inner)::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background-color: var(--c-accent); opacity: 0.32;
+  mask: url("/motifs/contours.svg") 0 0 / 420px 420px repeat; }
+[data-vertical="travel"] .cta-band-inner { background: var(--c-band); }
+[data-vertical="travel"] .testimonial { background-image: radial-gradient(50% 100% at 50% 0%, color-mix(in srgb, var(--c-button) 26%, transparent), transparent 70%); }
