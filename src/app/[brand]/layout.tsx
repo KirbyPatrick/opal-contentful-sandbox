@@ -4,7 +4,7 @@ import { CartProvider, type CatalogItem } from "@/components/site/cart";
 import { DraftBanner, SiteFooter, SiteHeader } from "@/components/site/chrome";
 import { num, text } from "@/lib/site/graph";
 import { isPreview, loadBrand, nonce } from "@/lib/site/load";
-import { themeCss } from "@/lib/site/theme";
+import { themeCss, verticalOf } from "@/lib/site/theme";
 
 export default async function BrandLayout({ children, params }: { children: ReactNode; params: Promise<{ brand: string }> }) {
   const { brand: slug } = await params;
@@ -18,7 +18,7 @@ export default async function BrandLayout({ children, params }: { children: Reac
       {preview && <DraftBanner />}
       <SiteHeader g={g} ctx={{ g }} />
       <main id="main">{children}</main>
-      <SiteFooter g={g} />
+      <SiteFooter g={g} ctx={{ g }} />
     </>
   );
 
@@ -40,7 +40,7 @@ export default async function BrandLayout({ children, params }: { children: Reac
   }
   // The theme wraps everything, including the cart drawer.
   return (
-    <div className="brand-theme">
+    <div className="brand-theme" data-vertical={verticalOf(g.brand)}>
       <style nonce={styleNonce}>{themeCss(g.brand)}</style>
       {shell}
     </div>

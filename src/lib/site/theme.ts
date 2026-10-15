@@ -34,6 +34,17 @@ const COLOR_FIELDS: Array<[string, string, string]> = [
   ["colorMuted", "--c-muted", "#5c5c5c"],
 ];
 
+/** Card and image corners follow the brand's button corners: square brands stay square, pill brands go soft. */
+const CORNERS: Record<number, [number, number]> = { 0: [2, 2], 4: [6, 10], 6: [10, 14], 8: [12, 18], 12: [16, 24], 999: [20, 28] };
+
+const VERTICALS = new Set(["b2b_saas", "apparel_retail", "insurance", "healthcare", "financial_services", "travel"]);
+
+/** The brand's vertical, used as a data attribute for vertical-specific styling. Unknown values get none. */
+export function verticalOf(brand: SiteEntry): string | undefined {
+  const vertical = String(brand.fields.vertical ?? "");
+  return VERTICALS.has(vertical) ? vertical : undefined;
+}
+
 export function safeHex(value: unknown, fallback: string): string {
   return typeof value === "string" && HEX.test(value) ? value : fallback;
 }
@@ -47,6 +58,8 @@ export function themeCss(brand: SiteEntry): string {
   vars.push(`--font-heading:var(${heading}),Georgia,serif`);
   vars.push(`--font-body:var(${body}),system-ui,sans-serif`);
   vars.push(`--btn-radius:${radius}px`);
+  const [corner, cornerLarge] = CORNERS[radius] ?? [10, 14];
+  vars.push(`--radius:${corner}px`, `--radius-lg:${cornerLarge}px`);
   vars.push(`--btn-case:${f.buttonTextCase === "uppercase" ? "uppercase" : "none"}`);
   vars.push(`--btn-tracking:${f.buttonTextCase === "uppercase" ? "0.08em" : "0"}`);
   return `.brand-theme{${vars.join(";")}}`;

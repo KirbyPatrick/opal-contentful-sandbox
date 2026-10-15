@@ -130,8 +130,11 @@ function Faq({ entry, ctx }: { entry: SiteEntry; ctx: BlockContext }) {
   const items = ctx.g.entries(entry.fields.items);
   return (
     <Section className="faq">
-      <div className="narrow">
-        {text(entry, "heading") && <h2>{text(entry, "heading")}</h2>}
+      <div className="faq-layout">
+        <div className="faq-head">
+          <p className="eyebrow">Questions</p>
+          {text(entry, "heading") && <h2>{text(entry, "heading")}</h2>}
+        </div>
         <div className="faq-list">
           {items.map((item) => (
             <details key={item.id} className="faq-item">
@@ -284,7 +287,7 @@ export function CardGrid({ entry, ctx }: { entry: SiteEntry; ctx: BlockContext }
       )}
       {cards.length === 0 ? <p className="muted">Nothing here yet.</p> : (
         <ul className={`grid cols-${columns}`}>
-          {cards.map((card) => <li key={card.id}><CardView card={card} layout={layout} ctx={ctx} /></li>)}
+          {cards.map((card, index) => <li key={card.id}><CardView card={card} layout={layout} ctx={ctx} index={index} /></li>)}
         </ul>
       )}
       <div className="actions center"><CtaButton cta={ctx.g.entry(entry.fields.cta)} ctx={ctx} fallbackStyle="secondary" /></div>
@@ -292,14 +295,17 @@ export function CardGrid({ entry, ctx }: { entry: SiteEntry; ctx: BlockContext }
   );
 }
 
-function CardView({ card, layout, ctx }: { card: Card; layout: string; ctx: BlockContext }) {
+function CardView({ card, layout, ctx, index }: { card: Card; layout: string; ctx: BlockContext; index: number }) {
   const title = card.href ? <Link href={card.href} className="card-link">{card.title}</Link> : card.title;
+  // The whole card is clickable (card-link stretches over it); this is only a visual cue.
+  const more = card.href ? <span className="card-more" aria-hidden="true">{card.entry.type === "article" ? "Read the article" : "Learn more"}</span> : null;
   if (layout === "icons") {
     return (
       <div className="card card-icon">
-        {card.image ? <Img asset={card.image} className="icon" sizes="64px" /> : <span className="icon-dot" aria-hidden="true" />}
+        {card.image ? <Img asset={card.image} className="icon" sizes="64px" /> : <IconBadge />}
         <h3>{title}</h3>
         {card.text && <p>{card.text}</p>}
+        {more}
       </div>
     );
   }
@@ -311,6 +317,7 @@ function CardView({ card, layout, ctx }: { card: Card; layout: string; ctx: Bloc
         <h3>{title}</h3>
         {card.meta && <p className="muted">{card.meta}</p>}
         {card.text && <p>{card.text}</p>}
+        {more}
       </div>
     );
   }
@@ -327,6 +334,18 @@ function CardView({ card, layout, ctx }: { card: Card; layout: string; ctx: Bloc
       </div>
     );
   }
+  if (!card.image && layout === "cards") {
+    // No photo: a numbered text card instead of an empty image frame.
+    return (
+      <div className="card card-text">
+        <span className="card-index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+        {card.meta && <p className="eyebrow">{card.meta}</p>}
+        <h3>{title}</h3>
+        {card.text && <p>{card.text}</p>}
+        {more}
+      </div>
+    );
+  }
   return (
     <div className={`card ${layout === "products" ? "card-product" : ""}`}>
       <div className="card-media">
@@ -338,8 +357,18 @@ function CardView({ card, layout, ctx }: { card: Card; layout: string; ctx: Bloc
         <h3>{title}</h3>
         {layout === "products" && card.meta && <p className="price">{card.meta}</p>}
         {card.text && layout !== "products" && <p>{card.text}</p>}
+        {layout !== "products" && more}
       </div>
     </div>
+  );
+}
+
+/** A small check mark in a tinted tile, for icon cards without their own image. */
+function IconBadge() {
+  return (
+    <span className="icon-badge" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+    </span>
   );
 }
 

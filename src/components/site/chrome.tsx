@@ -37,21 +37,24 @@ export function SiteHeader({ g, ctx }: { g: BrandGraph; ctx: RenderContext }) {
   );
 }
 
-export function SiteFooter({ g }: { g: BrandGraph }) {
+export function SiteFooter({ g, ctx }: { g: BrandGraph; ctx: RenderContext }) {
   const links = g.entries(g.brand.fields.footerLinks);
   const disclaimer = text(g.brand, "legalDisclaimer") ?? "";
+  const name = text(g.brand, "name") ?? "";
+  const cta = g.entry(g.brand.fields.headerCta);
   return (
     <footer className="site-footer">
       <div className="container footer-grid">
-        <div>
-          <p className="footer-name">{text(g.brand, "name")}</p>
-          {text(g.brand, "tagline") && <p className="muted">{text(g.brand, "tagline")}</p>}
+        <div className="footer-brand">
+          <p className="footer-name">{name}</p>
+          {text(g.brand, "tagline") && <p className="footer-tagline">{text(g.brand, "tagline")}</p>}
           <address>
             {(text(g.brand, "address") ?? "").split("\n").map((line, i) => <span key={i}>{line}</span>)}
             {text(g.brand, "phone") && <span>{text(g.brand, "phone")}</span>}
           </address>
         </div>
-        <nav aria-label="Footer">
+        <nav aria-label="Footer" className="footer-nav">
+          <p className="footer-heading">Explore</p>
           <ul>
             {links.map((item) => {
               const href = g.urlFor(g.entry(item.fields.link));
@@ -59,12 +62,19 @@ export function SiteFooter({ g }: { g: BrandGraph }) {
             })}
           </ul>
         </nav>
+        {cta && (
+          <div className="footer-cta">
+            <p className="footer-heading">Get started</p>
+            {text(g.brand, "shortDescription") && <p>{text(g.brand, "shortDescription")}</p>}
+            <CtaButton cta={cta} ctx={ctx} />
+          </div>
+        )}
       </div>
       <div className="container footer-legal">
         {/* The standard line always shows, even if the brand's disclaimer is edited. */}
         {!disclaimer.startsWith(STANDARD_DISCLAIMER) && <p>{STANDARD_DISCLAIMER}</p>}
         {disclaimer && <p>{disclaimer}</p>}
-        <p><Link href="/">All demo brands</Link></p>
+        <p className="footer-meta"><span>{name}, a fictional demo brand</span><Link href="/">All demo brands</Link></p>
       </div>
     </footer>
   );
