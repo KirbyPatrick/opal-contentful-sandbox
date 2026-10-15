@@ -2,7 +2,7 @@ import Link from "next/link";
 import { list, text } from "@/lib/site/graph";
 import { swatchCss } from "@/lib/site/theme";
 import type { SiteEntry } from "@/lib/site/types";
-import { CardGrid, DetailHero, Hero, Marquee, Sections, formatDate, type BlockContext } from "./blocks";
+import { CardGrid, DetailHero, Hero, Sections, formatDate, type BlockContext } from "./blocks";
 import { ProductPurchase } from "./cart";
 import { Avatar, CtaButton, Img, Paragraphs, RichText, Section } from "./primitives";
 
@@ -26,9 +26,8 @@ export function PageView({ page, ctx }: { page: SiteEntry; ctx: BlockContext }) 
   }
   return (
     <>
-      <Hero hero={ctx.g.entry(page.fields.hero)} ctx={ctx} />
+      <Hero hero={ctx.g.entry(page.fields.hero)} ctx={ctx} mark={page.fields.pageType === "home" ? text(ctx.g.brand, "tagline") : undefined} />
       {!page.fields.hero && <TitleOnly title={text(page, "title") ?? ""} ctx={ctx} page={page} />}
-      {page.fields.pageType === "home" && <Marquee phrase={text(ctx.g.brand, "tagline")} />}
       <Sections entries={ctx.g.entries(page.fields.sections)} ctx={ctx} />
     </>
   );

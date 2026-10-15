@@ -14,6 +14,13 @@ Next.js 16 (App Router, TypeScript) on Vercel, reading published content from th
 | `/api/draft/disable` | Leaves draft preview (POST) |
 | `/api/revalidate` | Contentful webhook target (secret header required) |
 
+## Design
+
+- One stylesheet, `src/app/globals.css`, serves every brand. Brand colors, fonts, and button corners arrive as CSS variables, and each brand's signature look sits in an "Art direction" block keyed by `data-vertical` (for example the StoutWare app window, the Ledgerwood rosette, the Stuchbery woven labels, the Tidewater postcard).
+- Pattern and stamp art used by those blocks lives in `public/motifs/` as SVG files used as CSS masks, so the brand color can tint them.
+- On home pages, the hero gets the brand's tagline as a decorative mark: a round seal for travel and a stitched label for apparel. Other verticals hide it.
+- Photos are about 1280 pixels wide (the most the Pixabay API provides). Split heroes keep them sharp; a full-bleed hero stretches them across a wide screen and looks soft, so the home heroes use the split layout.
+
 ## How updates reach the site
 
 - Pages render per request, because the Content Security Policy uses a fresh nonce on every response.

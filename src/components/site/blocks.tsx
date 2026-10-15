@@ -12,7 +12,8 @@ export interface BlockContext extends RenderContext {
 
 // ---------- Hero ----------
 
-export function Hero({ hero, ctx }: { hero: SiteEntry | undefined; ctx: BlockContext }) {
+/** `mark` is the brand's tagline, passed on the home page only, for a decorative mark on the hero photo. */
+export function Hero({ hero, ctx, mark }: { hero: SiteEntry | undefined; ctx: BlockContext; mark?: string }) {
   if (!hero) return null;
   const layout = text(hero, "layout") ?? "split";
   const image = ctx.g.asset(hero.fields.image);
@@ -29,9 +30,40 @@ export function Hero({ hero, ctx }: { hero: SiteEntry | undefined; ctx: BlockCon
             <CtaButton cta={ctx.g.entry(hero.fields.secondaryCta)} ctx={ctx} fallbackStyle="secondary" />
           </div>
         </div>
-        {layout === "split" && <div className="hero-media"><Img asset={image} sizes="(min-width: 900px) 50vw, 100vw" priority /></div>}
+        {layout === "split" && (
+          <div className="hero-media">
+            <Img asset={image} sizes="(min-width: 900px) 50vw, 100vw" priority />
+            {mark && <HeroMark tagline={mark} />}
+          </div>
+        )}
       </div>
     </section>
+  );
+}
+
+/**
+ * The tagline as a round seal and as a stitched label, laid over the home hero photo. Decorative only.
+ * Each vertical's styles show at most one of the two (travel the seal, apparel the label); others show neither.
+ */
+function HeroMark({ tagline }: { tagline: string }) {
+  const ring = `${tagline.replace(/[.!]+\s*$/, "").replace(/[.!]\s+/g, " · ").toUpperCase()} · `;
+  return (
+    <span className="hero-mark" aria-hidden="true">
+      {ring.length <= 44 && (
+        <svg className="hero-seal" viewBox="0 0 200 200">
+          <defs><path id="hero-seal-ring" d="M26 100a74 74 0 1 1 148 0a74 74 0 1 1-148 0" /></defs>
+          <circle className="hero-seal-disc" cx="100" cy="100" r="98" />
+          <circle className="hero-seal-line" cx="100" cy="100" r="91" />
+          <circle className="hero-seal-line" cx="100" cy="100" r="64" />
+          <text className="hero-seal-text"><textPath href="#hero-seal-ring" textLength="458" lengthAdjust="spacing">{ring}</textPath></text>
+          <path className="hero-seal-rays" d="M80 80L100 95.5L120 80L104.5 100L120 120L100 104.5L80 120L95.5 100Z" />
+          <path className="hero-seal-star" d="M100 52L106.5 93.5L148 100L106.5 106.5L100 148L93.5 106.5L52 100L93.5 93.5Z" />
+          <path className="hero-seal-north" d="M100 52L106.5 93.5L100 100L93.5 93.5Z" />
+          <circle className="hero-seal-disc" cx="100" cy="100" r="3.5" />
+        </svg>
+      )}
+      <span className="hero-label">{tagline}</span>
+    </span>
   );
 }
 
@@ -59,17 +91,6 @@ export function DetailHero({ eyebrow, title, summary, image, children, crumbs }:
         {image !== null && <div className="hero-media"><Img asset={image} sizes="(min-width: 900px) 50vw, 100vw" priority /></div>}
       </div>
     </section>
-  );
-}
-
-/** A slow band repeating the brand's tagline under the home page hero (decorative; shown for some verticals). */
-export function Marquee({ phrase }: { phrase: string | undefined }) {
-  if (!phrase) return null;
-  const items = Array.from({ length: 6 }, (_, i) => <span key={i}>{phrase}</span>);
-  return (
-    <div className="marquee" aria-hidden="true">
-      <div className="marquee-track">{items}{items}</div>
-    </div>
   );
 }
 

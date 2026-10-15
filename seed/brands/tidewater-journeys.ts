@@ -418,7 +418,7 @@ const homeHero = s.hero("home", {
   internalName: "Tidewater Journeys - Home - Hero", eyebrow: "2027 departures now open",
   headline: "Slow journeys along Europe's Atlantic edge",
   subheadline: "Small-group and private trips in Portugal, Norway, and Scotland, led by local guides, with never more than 12 travelers.",
-  image: s.img(12), layout: "full_bleed", cta: exploreDestinations, secondaryCta: planPrivate,
+  image: s.img(7), layout: "split", cta: exploreDestinations, secondaryCta: planPrivate,
 });
 const homeDestinations = s.cardGrid("home-destinations", {
   internalName: "Tidewater Journeys - Home - Destinations grid", heading: "Where we travel",

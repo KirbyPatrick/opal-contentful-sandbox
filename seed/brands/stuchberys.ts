@@ -494,7 +494,7 @@ const homeHero = s.hero("home", {
   eyebrow: "The Fieldstone Collection, Fall 2026",
   headline: "Good coats for cold mornings",
   subheadline: "Twelve pieces in wool, flannel, and leather, cut to layer with one another and made to wear for many seasons.",
-  image: s.img(6), layout: "full_bleed", cta: shopCollection, secondaryCta: findYourSize,
+  image: s.img(12), layout: "split", cta: shopCollection, secondaryCta: findYourSize,
 });
 const collectionHero = s.hero("collection", {
   internalName: "Stuchbery Acres - Collection - Hero",

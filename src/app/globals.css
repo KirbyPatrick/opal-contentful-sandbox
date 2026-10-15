@@ -28,6 +28,10 @@
   --c-band: var(--c-brand);
   --c-band-button: var(--c-button);
   --c-highlight: var(--c-on-brand);
+  /* The page's own ink and paper, for light elements placed inside dark bands (a postcard, a label). */
+  --c-ink: var(--c-text);
+  --c-ink-muted: var(--c-muted);
+  --c-paper: var(--c-bg);
   --shadow-sm: 0 1px 2px color-mix(in srgb, var(--c-brand) 7%, transparent), 0 2px 10px color-mix(in srgb, var(--c-brand) 5%, transparent);
   --shadow-md: 0 2px 6px color-mix(in srgb, var(--c-brand) 7%, transparent), 0 14px 36px -8px color-mix(in srgb, var(--c-brand) 16%, transparent);
   --shadow-lg: 0 10px 24px -10px color-mix(in srgb, var(--c-brand) 22%, transparent), 0 34px 70px -20px color-mix(in srgb, var(--c-brand) 30%, transparent);
@@ -146,7 +150,7 @@ main { flex: 1; }
 .hero-copy .lede { margin-bottom: 0; }
 .hero-media { position: relative; }
 .hero-media::before { content: ""; position: absolute; inset: 9% -3.5% -5% 12%; border-radius: var(--radius-lg); background: color-mix(in srgb, var(--c-accent) 32%, var(--c-bg)); z-index: 0; }
-.hero-media img, .hero-media svg { position: relative; z-index: 1; width: 100%; aspect-ratio: 5 / 4; object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); }
+.hero-media > img, .hero-media > svg { position: relative; z-index: 1; width: 100%; aspect-ratio: 5 / 4; object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); }
 .hero-full_bleed { min-height: clamp(560px, 80vh, 820px); display: flex; align-items: flex-end; color: #fff; padding-bottom: clamp(56px, 8vw, 104px); }
 .hero-full_bleed::before { display: none; }
 .hero-full_bleed .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transform: scale(1.02); }
@@ -461,7 +465,6 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
 [data-vertical="apparel_retail"] .section-head { text-align: center; margin-left: auto; margin-right: auto; }
 [data-vertical="apparel_retail"] .section-head:has(h2 + .lede) { display: block; max-width: 760px; }
 [data-vertical="apparel_retail"] .section-head .lede { margin-left: auto; margin-right: auto; }
-[data-vertical="apparel_retail"] .hero-media::before, [data-vertical="apparel_retail"] .media-text-image::before { display: none; }
 [data-vertical="apparel_retail"] .media-text-image img, [data-vertical="apparel_retail"] .hero-media img { box-shadow: none; }
 [data-vertical="apparel_retail"] .testimonial blockquote p { font-weight: 400; font-style: italic; }
 [data-vertical="apparel_retail"] .cta-band-inner { box-shadow: none; }
@@ -495,12 +498,10 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
 [data-vertical="financial_services"] .stat dd { font-weight: 800; }
 [data-vertical="financial_services"] .card-body .eyebrow { color: color-mix(in srgb, var(--c-accent) 55%, var(--c-text)); }
 
-/* Travel: immersive. Taller photography, portrait cards, unhurried serif type. */
+/* Travel: unhurried. Portrait cards and serif type; the art direction block below adds the rest. */
 [data-vertical="travel"] .hero-full_bleed { min-height: clamp(600px, 88vh, 900px); }
-[data-vertical="travel"] h1, [data-vertical="travel"] h2 { font-weight: 600; letter-spacing: -0.012em; }
-[data-vertical="travel"] .layout-cards .card-media img { aspect-ratio: 4 / 5; }
+[data-vertical="travel"] h1, [data-vertical="travel"] h2 { font-weight: 500; letter-spacing: -0.015em; }
 [data-vertical="travel"] .eyebrow { font-weight: 600; letter-spacing: 0.2em; }
-[data-vertical="travel"] .testimonial blockquote p { font-style: italic; font-weight: 400; }
 [data-vertical="travel"] .card-text .card-index { background: color-mix(in srgb, var(--c-accent) 35%, var(--c-bg)); }
 
 /* ================= Art direction: color bands, motifs, and signature details ================= */
@@ -529,15 +530,8 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
 :is([data-vertical="insurance"], [data-vertical="apparel_retail"], [data-vertical="travel"]) .testimonial .avatar-initials { background: color-mix(in srgb, var(--c-on-brand) 16%, transparent); color: var(--c-on-brand); }
 :is([data-vertical="insurance"], [data-vertical="apparel_retail"], [data-vertical="travel"]) .testimonial .avatar { box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-on-brand) 25%, transparent); }
 
-/* A slow tagline band under the home hero (B2C apparel and travel). */
-.marquee { display: none; overflow: hidden; background: var(--c-band); color: var(--c-on-brand); border-top: 1px solid color-mix(in srgb, var(--c-on-brand) 12%, transparent); }
-[data-vertical="apparel_retail"] .marquee, [data-vertical="travel"] .marquee { display: block; }
-.marquee-track { display: flex; width: max-content; animation: marquee 48s linear infinite; }
-.marquee span { display: inline-flex; align-items: center; gap: 34px; padding: 17px 0 17px 34px; font: 600 0.78rem/1 var(--font-body); letter-spacing: 0.24em; text-transform: uppercase; white-space: nowrap; }
-.marquee span::after { content: "\2726"; color: var(--c-accent); font-size: 0.9em; letter-spacing: 0; }
-[data-vertical="travel"] .marquee span { font: italic 500 1.05rem/1 var(--font-heading); letter-spacing: 0.02em; text-transform: none; }
-@keyframes marquee { to { transform: translateX(-50%); } }
-@media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
+/* The tagline mark on the home hero photo (a seal or a stitched label). Hidden unless a vertical shows one. */
+.hero-mark, .hero-seal, .hero-label { display: none; }
 
 /* An oversized wordmark closing every page. */
 .footer-wordmark { margin: clamp(28px, 4vw, 56px) 0 calc(-0.2em - 28px); font: 700 1rem/0.9 var(--font-heading); letter-spacing: -0.045em; white-space: nowrap; overflow: hidden; color: color-mix(in srgb, var(--c-on-brand) 9%, transparent); user-select: none; }
@@ -607,24 +601,187 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
 [data-vertical="healthcare"] .block-rich-text .narrow { padding: clamp(28px, 4vw, 44px) clamp(24px, 4.5vw, 56px); border-radius: var(--radius-lg); background: color-mix(in srgb, var(--c-accent) 24%, var(--c-surface)); }
 [data-vertical="healthcare"] .stats { background-image: radial-gradient(40% 120% at 0% 100%, color-mix(in srgb, var(--c-button) 60%, transparent), transparent 60%); }
 
-/* ---------- Stuchbery Acres (B2C apparel): paper grain, editorial quiet ---------- */
+/* ---------- Stuchbery Acres (B2C apparel): a heritage catalogue. Hairline frames, woven labels, stitching ---------- */
 [data-vertical="apparel_retail"]::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 60; opacity: 0.07; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); mix-blend-mode: multiply; }
+[data-vertical="apparel_retail"] h2 { font-size: clamp(2.1rem, 3.8vw, 3.2rem); }
 [data-vertical="apparel_retail"] .hero-full_bleed h1 { font-size: clamp(2.8rem, 6.4vw, 5.4rem); }
-[data-vertical="apparel_retail"] .testimonial blockquote p { font-size: clamp(1.5rem, 3vw, 2.3rem); }
-[data-vertical="apparel_retail"] .media-text-image img { border-radius: 0; }
 [data-vertical="apparel_retail"] .section-head h2::after { content: ""; display: block; width: 42px; height: 1px; margin: 22px auto 0; background: var(--c-accent); }
+[data-vertical="apparel_retail"] .section-head .lede { font: italic 400 1.16rem/1.6 var(--font-heading); text-wrap: balance; }
 
-/* ---------- Tidewater Journeys (travel): text over tall photos, contour lines ---------- */
+/* Header: the logo centered between the menu and the bag, like a shop front. */
+@media (min-width: 1200px) {
+  [data-vertical="apparel_retail"] .header-inner { display: grid; grid-template-columns: 1fr auto 1fr; min-height: 92px; }
+  [data-vertical="apparel_retail"] .logo-link { grid-area: 1 / 2; }
+  [data-vertical="apparel_retail"] .main-nav { grid-area: 1 / 1; }
+  [data-vertical="apparel_retail"] .main-nav ul { gap: 4px 26px; }
+  [data-vertical="apparel_retail"] .header-actions { grid-area: 1 / 3; justify-self: end; }
+  [data-vertical="apparel_retail"] .logo { height: 40px; }
+}
+
+/* Woven labels: brand-colored tags with a stitched edge, for badges and the hero tagline. */
+[data-vertical="apparel_retail"] :is(.badge, .hero-label) { background: var(--c-brand); color: var(--c-on-brand); border-radius: 0; box-shadow: none; font: 600 0.62rem/1 var(--font-body); letter-spacing: 0.22em; text-transform: uppercase; padding: 8px 12px 7px; outline: 1px dashed color-mix(in srgb, var(--c-on-brand) 55%, transparent); outline-offset: -4px; }
+
+/* Secondary actions read as underlined text links, not boxes. */
+[data-vertical="apparel_retail"] .btn-secondary { border-color: transparent; background: none; padding-left: 2px; padding-right: 2px; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 8px; }
+[data-vertical="apparel_retail"] .btn-secondary:hover { background: none; border-color: transparent; text-decoration-thickness: 2px; }
+
+/* Hero: a catalogue cover. Large serif type; the photo in a hairline frame over an oat panel, with a woven label. */
+[data-vertical="apparel_retail"] .hero-split:not(.hero-detail) { padding: clamp(48px, 6vw, 96px) 0 clamp(64px, 8vw, 120px); }
+[data-vertical="apparel_retail"] .hero-split:not(.hero-detail)::before { background: linear-gradient(180deg, transparent 0 64%, var(--c-surface) 64%); }
+@media (min-width: 960px) {
+  [data-vertical="apparel_retail"] .hero-split:not(.hero-detail)::before { background: linear-gradient(90deg, transparent 0 69%, var(--c-surface) 69%); }
+  [data-vertical="apparel_retail"] .hero-split:not(.hero-detail) .hero-inner { grid-template-columns: 1.15fr 0.85fr; }
+}
+[data-vertical="apparel_retail"] .hero-split:not(.hero-detail) h1 { font-size: clamp(2.9rem, 6.2vw, 5.6rem); line-height: 0.98; letter-spacing: -0.022em; color: var(--c-brand); }
+[data-vertical="apparel_retail"] .hero-split:not(.hero-detail) .lede { font: italic 400 clamp(1.12rem, 1.5vw, 1.32rem)/1.6 var(--font-heading); max-width: 42ch; }
+[data-vertical="apparel_retail"] .hero-split .hero-media { width: 100%; max-width: 470px; justify-self: center; }
+[data-vertical="apparel_retail"] .hero-split .hero-media img { aspect-ratio: 4 / 5; }
+[data-vertical="apparel_retail"] :is(.hero-media, .media-text .media-text-image)::before { display: block; inset: -14px; width: auto; height: auto; background: none; border: 1px solid color-mix(in srgb, var(--c-brand) 32%, transparent); border-radius: 0; }
+[data-vertical="apparel_retail"] .hero-mark { display: block; position: absolute; z-index: 2; left: clamp(-42px, -3vw, -12px); bottom: 54px; rotate: -4deg; }
+[data-vertical="apparel_retail"] .hero-label { display: block; padding: 14px 22px 13px; font-size: 0.66rem; box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.5); }
+
+/* Story blocks sit on oat with a drop cap; journal cards and service notes lose their boxes. */
+[data-vertical="apparel_retail"] .media-text { background: var(--c-surface); }
+[data-vertical="apparel_retail"] .media-text-image img { border-radius: 0; }
+[data-vertical="apparel_retail"] .media-text-copy > div > p:first-child::first-letter { float: left; font: 400 3.5em/0.8 var(--font-heading); padding: 0.07em 0.09em 0 0; color: var(--c-accent); }
+[data-vertical="apparel_retail"] .layout-cards .card { background: transparent; border: 0; border-radius: 0; overflow: visible; }
+[data-vertical="apparel_retail"] .layout-cards .card:has(.card-link):hover { transform: none; box-shadow: none; }
+[data-vertical="apparel_retail"] .layout-cards .card-media { border-radius: 0; }
+[data-vertical="apparel_retail"] .layout-cards .card-body { padding: 22px 0 0; }
+[data-vertical="apparel_retail"] .layout-cards .card-body h3 { font-weight: 400; font-size: 1.45rem; }
+[data-vertical="apparel_retail"] .card-more { text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.7rem; }
+[data-vertical="apparel_retail"] .layout-icons .card-icon { background: transparent; border: 0; border-top: 1px solid var(--c-line-strong); border-radius: 0; padding: 28px 4px 0; }
+[data-vertical="apparel_retail"] .layout-icons .icon-badge { width: auto; height: auto; background: none; color: var(--c-accent); margin-bottom: 14px; }
+[data-vertical="apparel_retail"] .layout-icons .card-icon h3 { font-weight: 400; font-size: 1.3rem; }
+
+/* Products: catalogue plates on oat, prices in small caps, and a staggered four-up grid. */
+[data-vertical="apparel_retail"] .card-product .card-media { background: var(--c-surface); border-radius: 0; }
+[data-vertical="apparel_retail"] .card-product .card-body h3 { font-size: 1.16rem; margin-bottom: 0.3em; }
+[data-vertical="apparel_retail"] .card-product .price { font: 600 0.76rem/1.4 var(--font-body); letter-spacing: 0.16em; color: var(--c-muted); }
+[data-vertical="apparel_retail"] .card-media .badge { top: 12px; left: 12px; }
+@media (min-width: 980px) {
+  [data-vertical="apparel_retail"] .layout-products .grid.cols-4 { align-items: start; row-gap: clamp(40px, 4vw, 64px); }
+  [data-vertical="apparel_retail"] .layout-products .grid.cols-4 > li:nth-child(even) { margin-top: 64px; }
+}
+[data-vertical="apparel_retail"] .product-gallery img { border-radius: 0; background: var(--c-surface); }
+[data-vertical="apparel_retail"] .product-info .price { font: 600 0.95rem/1.4 var(--font-body); letter-spacing: 0.14em; }
+[data-vertical="apparel_retail"] .product-info .badge { margin: 0 0 14px; }
+[data-vertical="apparel_retail"] .article-image img { border-radius: 0; box-shadow: none; }
+
+/* The customer quote as a stitched patch; the closing panel as a pale woven label; a stitch line atop the footer. */
+[data-vertical="apparel_retail"] .testimonial .testimonial-inner { max-width: 1000px; padding: clamp(40px, 5vw, 72px) clamp(24px, 5vw, 80px); outline: 1px dashed color-mix(in srgb, var(--c-on-brand) 34%, transparent); outline-offset: -1px; }
+[data-vertical="apparel_retail"] .testimonial blockquote p { font-size: clamp(1.5rem, 3vw, 2.3rem); }
+[data-vertical="apparel_retail"] .cta-band-inner { flex-direction: column; justify-content: center; text-align: center; gap: 24px; background: var(--c-surface); box-shadow: none; outline: 1px dashed color-mix(in srgb, var(--c-brand) 42%, transparent); outline-offset: -12px; }
+[data-vertical="apparel_retail"] .cta-band-inner > div { margin: 0 auto; }
+[data-vertical="apparel_retail"] .cta-band h2 { color: var(--c-brand); font-size: clamp(2rem, 3.6vw, 3rem); }
+[data-vertical="apparel_retail"] .cta-band p { color: var(--c-muted); }
+[data-vertical="apparel_retail"] .cta-band-inner .btn-primary { background: var(--c-button); color: var(--c-button-text); border-color: var(--c-button); }
+[data-vertical="apparel_retail"] .site-footer { position: relative; }
+[data-vertical="apparel_retail"] .site-footer::before { content: ""; position: absolute; left: 12px; right: 12px; top: 12px; border-top: 1px dashed color-mix(in srgb, var(--c-on-brand) 30%, transparent); }
+[data-vertical="apparel_retail"] .footer-wordmark { font-weight: 400; letter-spacing: -0.02em; }
+
+/* ---------- Tidewater Journeys (travel): a logbook of the Atlantic coast. Photo prints, a compass seal, a postcard ---------- */
+[data-vertical="travel"] :is(.hero-split, .hero-text_only, .media-text-copy, .faq-head) .eyebrow { font: italic 400 1.12rem/1.3 var(--font-heading); letter-spacing: 0; text-transform: none; color: var(--c-button); }
+[data-vertical="travel"] .eyebrow::before { width: 34px; height: 1px; background: var(--c-button); }
 [data-vertical="travel"] .hero-full_bleed h1 { font-size: clamp(2.8rem, 6vw, 5.2rem); font-weight: 500; }
-[data-vertical="travel"] .layout-cards .card { border: 0; background: var(--c-band); }
+[data-vertical="travel"] .footer-wordmark { font-style: italic; font-weight: 400; letter-spacing: -0.02em; }
+
+/* Hero: big serif type over faint contour lines, the photo as a print with a compass seal. */
+[data-vertical="travel"] .hero-split:not(.hero-detail) { padding: clamp(56px, 7vw, 112px) 0 clamp(88px, 10vw, 148px); }
+[data-vertical="travel"] .hero-split:not(.hero-detail)::before { background: var(--c-accent); opacity: 0.55;
+  mask: url("/motifs/contours.svg") 0 0 / 420px 420px repeat, linear-gradient(100deg, transparent 30%, #000 78%); mask-composite: intersect; }
+@media (min-width: 960px) { [data-vertical="travel"] .hero-split:not(.hero-detail) .hero-inner { grid-template-columns: 1.06fr 0.94fr; } }
+[data-vertical="travel"] .hero-split:not(.hero-detail) h1 { font-size: clamp(2.8rem, 5.5vw, 4.9rem); line-height: 1.04; color: var(--c-brand); }
+
+/* Photos as prints: a white border, a slight turn, and a second print underneath. */
+[data-vertical="travel"] :is(.hero-split .hero-media, .media-text-image) img { border: clamp(7px, 0.9vw, 12px) solid #fff; border-radius: 1px; background: #fff; box-shadow: 0 1px 2px rgba(15, 33, 41, 0.12), 0 22px 44px -18px rgba(15, 33, 41, 0.42); }
+[data-vertical="travel"] .hero-split .hero-media { width: 100%; max-width: 560px; justify-self: center; rotate: 2deg; }
+[data-vertical="travel"] .hero-split.hero-detail .hero-media { max-width: 600px; rotate: 1.2deg; }
+[data-vertical="travel"] :is(.hero-split .hero-media, .media-text .media-text-image)::before { inset: 0; width: auto; height: auto; border-radius: 1px; background: color-mix(in srgb, var(--c-accent) 62%, #fff); box-shadow: 0 18px 36px -20px rgba(15, 33, 41, 0.4); rotate: -6deg; translate: -14px 8px; }
+[data-vertical="travel"] .media-text-image { rotate: -1.5deg; }
+[data-vertical="travel"] .media-text:not(.media-left) .media-text-image { rotate: 1.5deg; }
+[data-vertical="travel"] .media-text:not(.media-left) .media-text-image::before { rotate: 6deg; translate: 14px 8px; }
+[data-vertical="travel"] .hero-split .hero-media::before { rotate: 7deg; translate: 16px -6px; }
+[data-vertical="travel"] :is(.aside-image, .article-image img) { border: 8px solid #fff; border-radius: 1px; box-shadow: var(--shadow-md); }
+
+/* The compass seal, set around with the brand's tagline. */
+[data-vertical="travel"] .hero-mark { display: block; position: absolute; z-index: 3; width: clamp(124px, 12.5vw, 172px); left: clamp(-70px, -4.8vw, -14px); bottom: clamp(-60px, -4vw, -36px); rotate: -14deg; filter: drop-shadow(0 12px 18px rgba(15, 33, 41, 0.35)); }
+[data-vertical="travel"] .hero-seal { display: block; width: 100%; height: auto; }
+@media (max-width: 700px) { [data-vertical="travel"] .hero-mark { width: 104px; left: 10px; bottom: -40px; } }
+.hero-seal-disc { fill: var(--c-brand); }
+.hero-seal-line { fill: none; stroke: var(--c-accent); stroke-width: 1.4; opacity: 0.75; }
+.hero-seal-text { fill: var(--c-paper); font: 700 14.5px/1 var(--font-body); }
+.hero-seal-rays { fill: var(--c-accent); }
+.hero-seal-star { fill: var(--c-paper); }
+.hero-seal-north { fill: var(--c-button); }
+
+/* Destination cards: tall photos with a fine inner frame, a running number, and the text laid over the image. */
+[data-vertical="travel"] .layout-cards .grid { counter-reset: tw-card; }
+[data-vertical="travel"] .layout-cards .grid > li { counter-increment: tw-card; }
+[data-vertical="travel"] .layout-cards .card:not(.card-text) { border: 0; border-radius: 2px; background: var(--c-band); }
+[data-vertical="travel"] .layout-cards .card:not(.card-text)::before { content: ""; position: absolute; inset: 12px; z-index: 3; border: 1px solid rgba(255, 255, 255, 0.34); pointer-events: none; }
+[data-vertical="travel"] .layout-cards .card:not(.card-text)::after { content: counter(tw-card, decimal-leading-zero); position: absolute; top: 28px; left: 30px; z-index: 3; font: italic 400 1.35rem/1 var(--font-heading); color: #fff; pointer-events: none; }
 [data-vertical="travel"] .layout-cards .card-media img { aspect-ratio: 3 / 4; }
-[data-vertical="travel"] .layout-cards .card-body { position: absolute; inset: auto 0 0 0; padding: 120px 26px 26px; background: linear-gradient(180deg, transparent, rgba(6, 20, 27, 0.55) 30%, rgba(6, 20, 27, 0.9)); }
-[data-vertical="travel"] .layout-cards .card-body :is(h3, p, .card-more, .eyebrow) { color: #fff; }
+[data-vertical="travel"] .layout-cards .card-body { position: absolute; inset: auto 0 0 0; padding: 130px 30px 30px; background: linear-gradient(180deg, transparent, rgba(6, 20, 27, 0.5) 30%, rgba(6, 20, 27, 0.9)); }
+[data-vertical="travel"] .layout-cards .card-body :is(h3, p, .card-more) { color: #fff; }
 [data-vertical="travel"] .layout-cards .card-body p { color: rgba(255, 255, 255, 0.84); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-[data-vertical="travel"] .layout-cards .card-body h3 { font-size: 1.45rem; }
+[data-vertical="travel"] .layout-cards .card-body h3 { font-size: 1.6rem; font-weight: 500; }
 [data-vertical="travel"] .layout-cards .card-body .eyebrow { color: var(--c-accent); }
+
+/* Principles as numbered columns between hairlines, instead of icon boxes. */
+[data-vertical="travel"] .layout-icons .grid { counter-reset: tw-step; column-gap: 0; }
+[data-vertical="travel"] .layout-icons .grid > li { counter-increment: tw-step; }
+[data-vertical="travel"] .layout-icons .card-icon { background: none; border: 0; border-radius: 0; box-shadow: none; padding: 4px clamp(0px, 3vw, 44px) 4px 0; }
+[data-vertical="travel"] .layout-icons :is(.icon-badge, .icon) { display: none; }
+[data-vertical="travel"] .layout-icons .card-icon::before { content: counter(tw-step, lower-roman) "."; display: block; margin-bottom: 18px; font: italic 400 2.7rem/1 var(--font-heading); color: var(--c-button); }
+[data-vertical="travel"] .layout-icons .card-icon h3 { font-size: 1.5rem; font-weight: 500; }
+@media (min-width: 980px) { [data-vertical="travel"] .layout-icons .grid > li + li .card-icon { border-left: 1px solid var(--c-line-strong); padding-left: clamp(28px, 3vw, 44px); } }
+@media (max-width: 979px) {
+  [data-vertical="travel"] .layout-icons .grid { grid-template-columns: 1fr; row-gap: 28px; }
+  [data-vertical="travel"] .layout-icons .grid > li + li .card-icon { border-top: 1px solid var(--c-line-strong); padding-top: 28px; }
+}
+
+/* Trips as prints with a caption. */
+[data-vertical="travel"] .card-product { padding: 10px; background: #fff; border: 0; border-radius: 1px; }
+[data-vertical="travel"] .card-product .card-media { border-radius: 0; }
+[data-vertical="travel"] .card-product .card-body { padding: 20px 10px 12px; }
+[data-vertical="travel"] .card-product .card-body h3 { font-size: 1.3rem; font-weight: 500; }
+[data-vertical="travel"] .card-product .price { font: 400 0.98rem/1.4 var(--font-body); color: var(--c-muted); }
+
+/* Contour lines on surface bands and the closing panel. */
 [data-vertical="travel"] :is(.section-surface, .cta-band-inner) { position: relative; isolation: isolate; }
 [data-vertical="travel"] :is(.section-surface, .cta-band-inner)::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background-color: var(--c-accent); opacity: 0.32;
   mask: url("/motifs/contours.svg") 0 0 / 420px 420px repeat; }
-[data-vertical="travel"] .cta-band-inner { background: var(--c-band); }
-[data-vertical="travel"] .testimonial { background-image: radial-gradient(50% 100% at 50% 0%, color-mix(in srgb, var(--c-button) 26%, transparent), transparent 70%); }
+
+/* The traveler's quote as a postcard on the dark band: message on the left, stamp, postmark, and address on the right. */
+[data-vertical="travel"] .testimonial { padding: clamp(72px, 9vw, 132px) 0; background-image: radial-gradient(50% 100% at 50% 0%, color-mix(in srgb, var(--c-button) 26%, transparent), transparent 70%); }
+[data-vertical="travel"] .testimonial .testimonial-inner { --c-text: var(--c-ink); --c-muted: var(--c-ink-muted);
+  max-width: 1060px; display: grid; grid-template-columns: 1fr; text-align: left; color: var(--c-ink);
+  padding: 112px clamp(24px, 4.5vw, 64px) clamp(28px, 4.5vw, 64px); background: color-mix(in srgb, var(--c-paper) 50%, #fff); border-radius: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18), 0 44px 80px -34px rgba(0, 0, 0, 0.7); rotate: -1.2deg; }
+[data-vertical="travel"] .testimonial .stars { color: var(--c-button); margin-bottom: 18px; }
+[data-vertical="travel"] .testimonial blockquote { margin: 0 0 28px; }
+[data-vertical="travel"] .testimonial blockquote::before { display: none; }
+[data-vertical="travel"] .testimonial blockquote p { font: italic 500 clamp(1.2rem, 2vw, 1.62rem)/1.6 var(--font-heading); letter-spacing: 0; color: var(--c-ink); margin: 0; }
+[data-vertical="travel"] .testimonial figcaption { display: block; text-align: left; padding-top: 4px; }
+[data-vertical="travel"] .testimonial figcaption .avatar { display: none; }
+[data-vertical="travel"] .testimonial figcaption > span { display: grid; }
+[data-vertical="travel"] .testimonial figcaption :is(strong, .muted) { display: block; padding: 10px 2px 7px; border-bottom: 1px solid color-mix(in srgb, var(--c-ink) 26%, transparent); }
+[data-vertical="travel"] .testimonial figcaption strong { font: italic 400 1.2rem/1.3 var(--font-heading); }
+[data-vertical="travel"] .testimonial figcaption .muted { color: var(--c-ink-muted); font-size: 0.92rem; }
+[data-vertical="travel"] .testimonial figcaption > span::after { content: ""; display: block; height: 40px; border-bottom: 1px solid color-mix(in srgb, var(--c-ink) 26%, transparent); }
+[data-vertical="travel"] .testimonial .testimonial-inner::before { content: ""; position: absolute; top: clamp(22px, 3vw, 40px); right: clamp(22px, 3vw, 40px); width: clamp(62px, 7vw, 88px); aspect-ratio: 120 / 144; background: var(--c-button); mask: url("/motifs/stamp.svg") center / contain no-repeat; rotate: 4deg; }
+[data-vertical="travel"] .testimonial .testimonial-inner::after { content: ""; position: absolute; top: clamp(40px, 5vw, 66px); right: clamp(56px, 7.4vw, 104px); width: clamp(118px, 13vw, 176px); aspect-ratio: 236 / 120; background: var(--c-ink); opacity: 0.45; mask: url("/motifs/postmark.svg") center / contain no-repeat; rotate: -10deg; }
+@media (min-width: 860px) {
+  [data-vertical="travel"] .testimonial .testimonial-inner { grid-template-columns: 1.55fr 1fr; grid-template-rows: auto 1fr; column-gap: clamp(32px, 4vw, 60px); padding-top: clamp(40px, 4.5vw, 64px); }
+  [data-vertical="travel"] .testimonial .stars { grid-area: 1 / 1; }
+  [data-vertical="travel"] .testimonial blockquote { grid-area: 2 / 1; margin: 0; }
+  [data-vertical="travel"] .testimonial figcaption { grid-area: 1 / 2 / 3 / 3; display: flex; flex-direction: column; justify-content: flex-end; padding: 190px 0 6px clamp(26px, 3.4vw, 48px); border-left: 1px solid color-mix(in srgb, var(--c-ink) 18%, transparent); }
+}
+
+/* The closing panel in sand, with a compass rose. */
+[data-vertical="travel"] .cta-band-inner { background: color-mix(in srgb, var(--c-accent) 40%, var(--c-paper)); box-shadow: none; border-radius: 2px; }
+[data-vertical="travel"] .cta-band-inner::after { background-color: var(--c-brand); opacity: 0.1; }
+[data-vertical="travel"] .cta-band-inner::before { content: ""; position: absolute; z-index: -1; right: clamp(-90px, -5vw, -40px); top: 50%; width: clamp(240px, 26vw, 340px); aspect-ratio: 1; translate: 0 -50%; background: var(--c-brand); opacity: 0.16; mask: url("/motifs/compass.svg") center / contain no-repeat; pointer-events: none; }
+[data-vertical="travel"] .cta-band h2 { color: var(--c-brand); }
+[data-vertical="travel"] .cta-band p { color: var(--c-muted); }

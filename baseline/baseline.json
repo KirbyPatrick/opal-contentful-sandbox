@@ -1,7 +1,7 @@
 {
  "version": 1,
  "environmentId": "opal-sandbox",
- "exportedAt": "2026-10-15T15:56:05.806Z",
+ "exportedAt": "2026-10-15T16:44:34.942Z",
  "entries": [
   {
    "id": "brand-clearwater-health",
@@ -1836,7 +1836,7 @@
   {
    "id": "sb-he-home",
    "type": "hero",
-   "hash": "f1f49bf54856d2df32b2b6351855a0b794f519360ec34c94e1b3756298d6e121",
+   "hash": "54b04b017b3578995620e9ccef25bf3deb6e4dc2ae6b769e45c4ffb7081c3c8f",
    "published": true
   },
   {
@@ -2268,7 +2268,7 @@
   {
    "id": "tj-he-home",
    "type": "hero",
-   "hash": "43e7a21c33201c6a36707ab2c03f494e254626a0a31809285354fe6987994cb4",
+   "hash": "94bd331d903b9100350cf64f5289ed51a8b9eb275f3d17641a53d19fcb14a6f6",
    "published": true
   },
   {
