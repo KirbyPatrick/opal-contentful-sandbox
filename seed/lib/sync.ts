@@ -6,11 +6,11 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { markdownToRichText } from "../../src/lib/richtext/markdown";
-import { BRAND_INFO, BRAND_KEYS, type BrandKey } from "./brands";
+import { BRAND_INFO, SEED_BRAND_KEYS, type BrandKey } from "./brands";
 import type { SeedEntry } from "./builders";
 
 export const LOCALE = "en-US";
-export const BRANDS: BrandKey[] = BRAND_KEYS;
+export const BRANDS: BrandKey[] = SEED_BRAND_KEYS;
 
 export async function loadSeedEntries(keys: readonly BrandKey[]): Promise<SeedEntry[]> {
   const all: SeedEntry[] = [];

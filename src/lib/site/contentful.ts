@@ -13,6 +13,8 @@ import type { BrandGraphData, BrandSummary, SiteAsset, SiteEntry } from "./types
 
 export const CACHE_TAG_ALL = "contentful";
 export const brandTag = (slug: string) => `brand:${slug}`;
+/** Sandbox brands (seed/lib/brands.ts) have their own fixed route and are not listed with the six brands. */
+export const EXAMPLE_BRAND_SLUG = "example";
 const FALLBACK_REVALIDATE_SECONDS = 30;
 const BRAND_SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 

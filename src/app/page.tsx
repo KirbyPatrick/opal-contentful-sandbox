@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Img } from "@/components/site/primitives";
-import { getBrandList } from "@/lib/site/contentful";
+import { EXAMPLE_BRAND_SLUG, getBrandList } from "@/lib/site/contentful";
 import { isPreview, nonce } from "@/lib/site/load";
 import { safeHex } from "@/lib/site/theme";
 
@@ -16,7 +16,8 @@ const VERTICALS: Record<string, string> = {
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export default async function Directory() {
-  const [brands, styleNonce] = await Promise.all([getBrandList(await isPreview()), nonce()]);
+  const [allBrands, styleNonce] = await Promise.all([getBrandList(await isPreview()), nonce()]);
+  const brands = allBrands.filter((brand) => brand.slug !== EXAMPLE_BRAND_SLUG);
   // Each card shows its brand's colors. Inline styles are blocked by the CSP, so they go in a nonce'd
   // style element; slugs and colors are validated before they are written into it.
   const css = brands
@@ -54,7 +55,7 @@ export default async function Directory() {
               <span className="directory-info">
                 <span className="eyebrow">Sandbox</span>
                 <span className="directory-name">Example</span>
-                <span className="directory-desc">A blank page for building example templates during demos.</span>
+                <span className="directory-desc">A sandbox page for recreating a prospect's page during a demo.</span>
                 <span className="directory-visit" aria-hidden="true">Open page</span>
               </span>
             </Link>

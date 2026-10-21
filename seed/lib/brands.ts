@@ -19,9 +19,22 @@ export const BRAND_INFO = [
   { key: "tidewater-journeys", slug: "tidewater-journeys", name: "Tidewater Journeys" },
 ] as const;
 
-export type BrandKey = (typeof BRAND_INFO)[number]["key"];
+/**
+ * Sandbox brands: a single off-funnel page with no logo, photos, or funnel of its own, seeded with the six
+ * brands so Opal can edit it and npm run reset restores it. The Example brand holds the /example page, used
+ * to recreate a prospect's page during a demo. Its URL is a fixed route (src/app/example), not /[brand].
+ */
+export const SANDBOX_BRAND_INFO = [
+  { key: "example", slug: "example", name: "Example" },
+] as const;
 
+export type BrandKey = (typeof BRAND_INFO)[number]["key"] | (typeof SANDBOX_BRAND_INFO)[number]["key"];
+
+/** The six full brands. Logos, photo pools, and tags exist only for these. */
 export const BRAND_KEYS: BrandKey[] = BRAND_INFO.map((brand) => brand.key);
+
+/** Every brand the seed writes: the six full brands, then the sandbox brands. */
+export const SEED_BRAND_KEYS: BrandKey[] = [...BRAND_KEYS, ...SANDBOX_BRAND_INFO.map((brand) => brand.key)];
 
 export function brandInfo(key: string): (typeof BRAND_INFO)[number] {
   const found = BRAND_INFO.find((brand) => brand.key === key);

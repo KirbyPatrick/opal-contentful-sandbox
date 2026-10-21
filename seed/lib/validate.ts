@@ -9,6 +9,7 @@
 import { MIGRATIONS } from "../../migrations";
 import { recordMigration, type RecordedField, type RecordedType, type RecordedValidation } from "../../migrations/lib/record";
 import { markdownToRichText, richTextPlainText, isSafeHttpUrl, type RichTextDocument } from "../../src/lib/richtext/markdown";
+import { SANDBOX_BRAND_INFO } from "./brands";
 
 export interface GraphEntry {
   id: string;
@@ -25,7 +26,8 @@ interface Link { sys: { type: "Link"; linkType: "Entry" | "Asset"; id: string } 
 
 const EM_DASH = String.fromCharCode(0x2014);
 const DISCLAIMER = "Fictional company. Sample content for illustration only.";
-const GOAL_CTA_TYPES = new Set(["book_demo", "get_quote", "book_appointment", "start_application", "request_booking"]);
+const SANDBOX_SLUGS = new Set<string>(SANDBOX_BRAND_INFO.map((brand) => brand.slug));
+const GOAL_CTA_TYPES =new Set(["book_demo", "get_quote", "book_appointment", "start_application", "request_booking"]);
 const TEMPLATE_KIND: Record<string, string> = {
   offering_detail: "offering",
   collection_detail: "collection",
@@ -229,6 +231,16 @@ export function validateGraph(entries: readonly GraphEntry[], options: ValidateO
     const pages = brandEntries.filter((entry) => entry.contentType === "page");
     const pageType = (page: GraphEntry) => String(page.fields.pageType);
     const step = (page: GraphEntry) => Number(page.fields.funnelStep);
+
+    // Sandbox brands are a single off-funnel page (see SANDBOX_BRAND_INFO), so the funnel rules below do not apply.
+    if (SANDBOX_SLUGS.has(label)) {
+      const sandboxHome = isLink(brand.fields.homePage) ? byId.get(brand.fields.homePage.sys.id) : undefined;
+      if (!sandboxHome || sandboxHome.contentType !== "page" || pageType(sandboxHome) !== "home" || step(sandboxHome) !== 0) {
+        errors.push(`${brand.id}.homePage: sandbox brands need a page of type home at funnel step 0.`);
+      }
+      if (pages.length !== 1) errors.push(`${label}: sandbox brands have exactly one page.`);
+      continue;
+    }
 
     // Home page.
     const home = isLink(brand.fields.homePage) ? byId.get(brand.fields.homePage.sys.id) : undefined;

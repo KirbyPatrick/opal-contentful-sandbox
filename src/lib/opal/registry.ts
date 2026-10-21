@@ -95,7 +95,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     run: getContentRules,
     parameters: [
       { name: "brand", type: "string", required: true, description: BRAND },
-      { name: "content_type", type: "string", required: false, description: "Optional: article, page, hero, cta, offering, collection, or person. Default is all." },
+      { name: "content_type", type: "string", required: false, description: "Optional: article, page, hero, cta, richTextSection, offering, collection, or person. Default is all." },
     ],
     description:
       "Returns the rules for writing and editing a brand's content: its voice (description, do and don't lists, photo direction), the global content rules, " +

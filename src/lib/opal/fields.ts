@@ -100,6 +100,19 @@ export const TYPES: Readonly<Record<string, TypeSpec>> = {
     canPublish: true,
     canUnpublish: false,
   },
+  richTextSection: {
+    label: "Rich text section",
+    titleField: "internalName",
+    editable: {
+      heading: { kind: "text", max: 70 },
+      body: { kind: "richText", required: true },
+    },
+    readOnly: ["internalName"],
+    links: [],
+    canCreate: false,
+    canPublish: true,
+    canUnpublish: false,
+  },
   offering: {
     label: "Offering",
     titleField: "name",

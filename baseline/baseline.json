@@ -1,12 +1,18 @@
 {
  "version": 1,
  "environmentId": "opal-sandbox",
- "exportedAt": "2026-10-15T16:44:34.942Z",
+ "exportedAt": "2026-10-21T13:43:39.147Z",
  "entries": [
   {
    "id": "brand-clearwater-health",
    "type": "brand",
    "hash": "deae0dd6d0ea6c94abeef49e34cf2a6ad88e37983d9b2627607da5439e6c8542",
+   "published": true
+  },
+  {
+   "id": "brand-example",
+   "type": "brand",
+   "hash": "b9c2605743300b92410a5e12e5dfe49d56b57a1d90d282fe436b5de29dcf7097",
    "published": true
   },
   {
@@ -463,6 +469,168 @@
    "id": "ch-rt-scheduling-and-insurance",
    "type": "richTextSection",
    "hash": "29b085a92a13b395c6c5f9bd6f745b2ca8f53b169c9d7ddaf9970348ce4cd04a",
+   "published": true
+  },
+  {
+   "id": "ex-cg-facts",
+   "type": "cardGrid",
+   "hash": "f7506226dda3bc7651a9ec1abf4f45f83a519afed44032c22c864daecaf5db40",
+   "published": true
+  },
+  {
+   "id": "ex-cg-key-reasons",
+   "type": "cardGrid",
+   "hash": "899af81485a038042713ef82ab40428ac2901621c0e091c0ac54bff73875ce21",
+   "published": true
+  },
+  {
+   "id": "ex-cg-resources",
+   "type": "cardGrid",
+   "hash": "9cc8f5c07872b8876a276e2ec311cfe75a5c9b831213cb2a64c9e26c14a382cf",
+   "published": true
+  },
+  {
+   "id": "ex-cg-team",
+   "type": "cardGrid",
+   "hash": "0d8b9042ead28b92608c58f5b7a64e3cb039c217217e202df7b27e59ccdb68ee",
+   "published": true
+  },
+  {
+   "id": "ex-fq-investment-process",
+   "type": "faq",
+   "hash": "71f6f1fef7acfb9c4c97fb7c0936577e625bbe30c294262899abc7dfee1b1896",
+   "published": true
+  },
+  {
+   "id": "ex-he-home",
+   "type": "hero",
+   "hash": "74ce48e2883ac605868af08e750eb2fe61dac1f24ed44fef54806f7051b6e8b3",
+   "published": true
+  },
+  {
+   "id": "ex-it-fact-approach",
+   "type": "item",
+   "hash": "ac1a08f7ee62c4ce2b0d5d6578e9d14e526adc7c618924ea616af5cbc0589686",
+   "published": true
+  },
+  {
+   "id": "ex-it-fact-benchmark",
+   "type": "item",
+   "hash": "a23665f19a9587488cbe7e4dc0d2059ef04e3dfd5762487ac383ed1d76a40e54",
+   "published": true
+  },
+  {
+   "id": "ex-it-fact-cap",
+   "type": "item",
+   "hash": "249595d41eed5272781e44247ae86c250aa17119a0724d4dcf30e6541fd81434",
+   "published": true
+  },
+  {
+   "id": "ex-it-fact-inception",
+   "type": "item",
+   "hash": "2d4f9819d0c56123969d965cd5a0543b84cad83352b8864a915348f69ef0b14a",
+   "published": true
+  },
+  {
+   "id": "ex-it-reason-process",
+   "type": "item",
+   "hash": "d696e18fad8b8ee4715e4769f877ccb7175a681e865595e7eefcaaaf1da3f34f",
+   "published": true
+  },
+  {
+   "id": "ex-it-reason-secular-themes",
+   "type": "item",
+   "hash": "c870733f82351183b41a48c28650f5dd6c9044a14c14f1fddd692b470d55ad4e",
+   "published": true
+  },
+  {
+   "id": "ex-it-reason-solution-providers",
+   "type": "item",
+   "hash": "8c11f4efb436f788ad744ba9ce50fc78d057c312aab07385b0e2f6a23892972c",
+   "published": true
+  },
+  {
+   "id": "ex-it-resource-commentary",
+   "type": "item",
+   "hash": "e9e49fb604b5677ff335605b3a6551ebc69baab1b49ee55fb8d8be86bd8a2bb9",
+   "published": true
+  },
+  {
+   "id": "ex-it-resource-fact-sheet",
+   "type": "item",
+   "hash": "9e3af8a9c7c8afbff1d25a4dfb1e189386aec8dec2c47fc3d471a61a99dfe4d0",
+   "published": true
+  },
+  {
+   "id": "ex-it-step-construction",
+   "type": "item",
+   "hash": "549d18dff8bf89b62be38e343115b7f5c00b7f4537bfdab403e65b675b2741e4",
+   "published": true
+  },
+  {
+   "id": "ex-it-step-selection",
+   "type": "item",
+   "hash": "3e13848382669e0897959911494777fb06425569ab072aba5875700e5d9d30f5",
+   "published": true
+  },
+  {
+   "id": "ex-it-step-universe",
+   "type": "item",
+   "hash": "d9af1db63e97e723b3bfb16250567a1bac676852f22160a26a3123940bda2fc0",
+   "published": true
+  },
+  {
+   "id": "ex-it-team-analysts",
+   "type": "item",
+   "hash": "2ad0be0557e2fd9faf606f147b20262277bb0ed591cd149c0f9c82cfd4186aee",
+   "published": true
+  },
+  {
+   "id": "ex-it-team-portfolio-manager",
+   "type": "item",
+   "hash": "9a125b66fd96180465fa737449f5dd8f05542cc8cd3beca09dd4d1cee7684db4",
+   "published": true
+  },
+  {
+   "id": "ex-pg-home",
+   "type": "page",
+   "hash": "48ec780d6c006388be4304181bf0f3815f31aaee171af2c32019d646064f31c9",
+   "published": true
+  },
+  {
+   "id": "ex-rt-define-opportunities",
+   "type": "richTextSection",
+   "hash": "ccd6a5a62892f313f2b9f6ff6e306ca98273169fcf16b63a0455b330b0409582",
+   "published": true
+  },
+  {
+   "id": "ex-rt-disclosures",
+   "type": "richTextSection",
+   "hash": "4c04b874debb0e4d3539f69bf6cb8d1773d1180c8371b0df091b17e0fecd3155",
+   "published": true
+  },
+  {
+   "id": "ex-rt-philosophy",
+   "type": "richTextSection",
+   "hash": "7caef2016732e1c6a1b3ac78b080d91de11539156bfc457042313804f1de9d40",
+   "published": true
+  },
+  {
+   "id": "ex-rt-portfolio-construction",
+   "type": "richTextSection",
+   "hash": "1b7685779f36b49957f01fe19eb7e774c8a0bb454c2b0d89adc500c94c2d530e",
+   "published": true
+  },
+  {
+   "id": "ex-rt-process",
+   "type": "richTextSection",
+   "hash": "e63fa849a6663b0fbbc44247c13ab267e22e146b825429d11207b4baf53abc19",
+   "published": true
+  },
+  {
+   "id": "ex-rt-strategy",
+   "type": "richTextSection",
+   "hash": "7cbcc78ae8823043f3bf88ae96ab2fe9ff4e1960577023500912b683ac00a20c",
    "published": true
   },
   {
