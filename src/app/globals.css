@@ -396,6 +396,19 @@ main { flex: 1; }
 .directory-visit { margin-top: 10px; font-weight: 600; font-size: 0.92rem; color: var(--dir-brand); display: inline-flex; gap: 8px; }
 .directory-visit::after { content: "\2192"; transition: transform 0.25s var(--ease); }
 .directory-card:hover .directory-visit::after { transform: translateX(4px); }
+.directory-jump { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+.directory-jump a { color: #f5f4f0; text-decoration: none; font-weight: 600; font-size: 0.95rem; padding: 10px 18px; border: 1px solid rgba(245, 244, 240, 0.32); border-radius: 999px; transition: background 0.2s var(--ease), border-color 0.2s var(--ease); }
+.directory-jump a:hover, .directory-jump a:focus-visible { background: rgba(245, 244, 240, 0.12); border-color: rgba(245, 244, 240, 0.7); }
+.directory-section { scroll-margin-top: 24px; }
+.directory-section + .directory-section { margin-top: clamp(40px, 6vw, 72px); }
+.directory-section-head { display: grid; gap: 8px; margin: 0 0 22px; padding: 22px 26px; background: #fff; border-radius: 18px; box-shadow: 0 2px 6px rgba(20, 22, 26, 0.06), 0 18px 44px -14px rgba(20, 22, 26, 0.22); }
+.directory-section-head h2 { margin: 0; font-size: clamp(1.4rem, 2.6vw, 1.9rem); letter-spacing: -0.02em; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+.directory-section-head p { margin: 0; color: var(--c-muted); max-width: 70ch; }
+.env-badge { justify-self: start; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; }
+.env-contentful { background: #e8eefc; color: #1d3f9e; }
+.env-optimizely { background: #ece6ff; color: #4a2fb0; }
+.directory-unavailable { background: #fff; padding: 22px 26px; border-radius: 18px; color: var(--c-muted); }
+.directory-unavailable a { color: inherit; font-weight: 600; }
 .error-page { padding: 96px 0; font-family: system-ui, sans-serif; }
 
 /* Small screens: compact header. The header CTA is repeated in each page's hero. */
