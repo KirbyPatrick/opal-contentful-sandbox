@@ -18,7 +18,7 @@ export function proxy(request: NextRequest) {
     "default-src 'self'",
     `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""}`,
     `style-src 'self' 'nonce-${nonce}'`,
-    "img-src 'self' data: https://images.ctfassets.net",
+    "img-src 'self' data: https://images.ctfassets.net https://app-epsakirbyas29ma1p001.cms.optimizely.com",
     "font-src 'self'",
     "connect-src 'self'",
     "object-src 'none'",
