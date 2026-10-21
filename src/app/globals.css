@@ -819,7 +819,7 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
 .agf-share svg { width: 16px; height: 16px; display: block; }
 .agf-hero { background: var(--agf-orange); color: #fff; min-height: 200px; display: flex; align-items: center; }
 .agf-hero .agf-wrap { width: 100%; }
-.agf-hero h1 { color: #fff; font-size: 46px; line-height: 1.2; font-weight: 700; max-width: 66%; padding: 24px 0; }
+.agf-hero h1 { color: #fff; font-size: 46px; line-height: 1.2; font-weight: 700; max-width: min(15em, 100%); padding: 24px 0; }
 .agf-info { display: grid; grid-template-columns: 2fr 1fr; min-height: 176px; margin: 20px -13px 0; }
 .agf-facts { background: var(--agf-grey); display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; padding: 26px; }
 .agf-resources { background: var(--agf-grey-2); border-left: 1px solid #fff; padding: 26px; }
