@@ -48,6 +48,17 @@ export default async function Directory() {
               </Link>
             </li>
           ))}
+          <li>
+            <Link href="/example" className="directory-card directory-card-example">
+              <span className="directory-logo"><span className="directory-example-mark">Example</span></span>
+              <span className="directory-info">
+                <span className="eyebrow">Sandbox</span>
+                <span className="directory-name">Example</span>
+                <span className="directory-desc">A blank page for building example templates during demos.</span>
+                <span className="directory-visit" aria-hidden="true">Open page</span>
+              </span>
+            </Link>
+          </li>
         </ul>
         <p className="footnote">Fictional companies. Sample content for illustration only.</p>
       </div>

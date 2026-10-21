@@ -785,3 +785,8 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
 [data-vertical="travel"] .cta-band-inner::before { content: ""; position: absolute; z-index: -1; right: clamp(-90px, -5vw, -40px); top: 50%; width: clamp(240px, 26vw, 340px); aspect-ratio: 1; translate: 0 -50%; background: var(--c-brand); opacity: 0.16; mask: url("/motifs/compass.svg") center / contain no-repeat; pointer-events: none; }
 [data-vertical="travel"] .cta-band h2 { color: var(--c-brand); }
 [data-vertical="travel"] .cta-band p { color: var(--c-muted); }
+
+/* The blank Example page and its directory card. */
+.example-page { min-height: 100vh; background: #fff; }
+.directory-card-example .directory-logo { background: #f6f5f1; }
+.directory-example-mark { font: 700 1.6rem/1 system-ui, sans-serif; letter-spacing: -0.02em; color: #14161a; }
