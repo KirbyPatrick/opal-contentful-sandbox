@@ -789,7 +789,8 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
 /* The Example page (src/app/example): blank until the Example brand has content, then the recreated prospect page. */
 .example-page { min-height: 100vh; background: #fff; }
 .agf { --agf-orange: #ed5a36; --agf-ink: #203232; --agf-grey: #e8eaea; --agf-grey-2: #f4f5f5; --agf-tab: #a6adad; --agf-book: 460; background: #fff; color: var(--agf-ink); font-family: var(--font-dm-sans), "Helvetica Neue", Arial, sans-serif; font-size: 16px; font-weight: var(--agf-book); line-height: 1.5; }
-.agf h1, .agf h2, .agf h3 { font-family: inherit; margin: 0; }
+/* Zero specificity, so the .agf-* classes below win, but later than the site-wide heading rule. */
+:where(.agf) :is(h1, h2, h3) { font-family: inherit; color: inherit; margin: 0; text-wrap: wrap; }
 :where(.agf) ul, :where(.agf) ol { list-style: none; margin: 0; padding: 0; }
 .agf-wrap { max-width: 1706px; margin: 0 auto; padding: 0 20px; }
 .agf-header { background: #fff; }
@@ -818,7 +819,7 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
 .agf-share svg { width: 16px; height: 16px; display: block; }
 .agf-hero { background: var(--agf-orange); color: #fff; min-height: 200px; display: flex; align-items: center; }
 .agf-hero .agf-wrap { width: 100%; }
-.agf-hero h1 { font-size: 46px; line-height: 1.2; font-weight: 700; max-width: 66%; padding: 24px 0; }
+.agf-hero h1 { color: #fff; font-size: 46px; line-height: 1.2; font-weight: 700; max-width: 66%; padding: 24px 0; }
 .agf-info { display: grid; grid-template-columns: 2fr 1fr; min-height: 176px; margin: 20px -13px 0; }
 .agf-facts { background: var(--agf-grey); display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; padding: 26px; }
 .agf-resources { background: var(--agf-grey-2); border-left: 1px solid #fff; padding: 26px; }
