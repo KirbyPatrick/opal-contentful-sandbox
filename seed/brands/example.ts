@@ -14,7 +14,7 @@ const ESTIMATOR_URL = "https://www.gs1us.org/upcs-barcodes-prefixes";
 // ---------- Get barcodes: intro and the three products ----------
 const intro = s.richText("get-barcodes", {
   internalName: "Example - Home - Get barcodes", heading: "Get Barcodes",
-  body: md("Barcodes from GS1 US give your products and locations a unique, authentic identity across the supply chain and in e-commerce."),
+  body: md("Barcodes from GS1 US give your products and locations an authentic, unique identity that works across the supply chain and in e-commerce."),
 });
 
 const prefix = s.offering("company-prefix", {
@@ -88,7 +88,7 @@ const overview = s.richText("overview", {
 
 1. Choose a GS1 US GTIN, a Global Location Number, or a GS1 Company Prefix and add it to your cart.
 2. Enter your contact information.
-3. Pay. Within minutes you will receive a welcome email from GS1 US with everything you need to get started, including access to myGS1 US, your online member center.`),
+3. Pay for your order online. Within minutes you will receive a welcome email from GS1 US with all of the important information you need to get started, including access to myGS1 US, your online member center.`),
 });
 
 // ---------- Why ----------
@@ -97,11 +97,11 @@ const why = s.cardGrid("why", {
   intro: "GS1 US is a not-for-profit information standards organization, and GS1 Standards are the most widely used supply chain standards in the world. If you have a question, Customer Support is ready to help.",
   source: "manual", layout: "icons", columns: 4,
   items: [
-    s.item("why-accepted", { title: "Accepted by every retailer and supplier" }),
-    s.item("why-marketplaces", { title: "Sell your products worldwide on any marketplace" }),
+    s.item("why-accepted", { title: "Accepted by every retailer & supplier" }),
+    s.item("why-marketplaces", { title: "Sell your products worldwide on any Marketplace" }),
     s.item("why-support", { title: "Get free live support" }),
-    s.item("why-datahub", { title: "Instantly create and print your barcodes with the Data Hub tool" }),
-    s.item("why-unique", { title: "Globally unique codes that improve supply chain efficiency and visibility" }),
+    s.item("why-datahub", { title: "Instantly create and print your barcodes with our Data Hub tool" }),
+    s.item("why-unique", { title: "Globally unique codes to improve your supply chain efficiency & visibility" }),
   ],
 });
 
@@ -113,7 +113,7 @@ const howTo = s.cardGrid("how-to", {
     s.item("how-gtin-or-gln", { title: "GTIN or GLN?", text: "Find out what to do once you have your GS1 Company Prefix.", image: assetLink("img-example-01") }),
     s.item("how-barcode-type", { title: "Determine Barcode Type", text: "Check which type of barcode your retailers need from you.", image: assetLink("img-example-02") }),
     s.item("how-place", { title: "Place Barcodes on Products", text: "Create the barcode image and print it correctly on your items.", image: assetLink("img-example-03") }),
-    s.item("how-share", { title: "Share Information Electronically", text: "Share your product and location details with your trading partners.", image: assetLink("img-example-04") }),
+    s.item("how-share", { title: "Share Information Electronically", text: "Share your product and location information with all of your trading partners.", image: assetLink("img-example-04") }),
   ],
 });
 

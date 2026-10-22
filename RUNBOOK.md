@@ -98,7 +98,7 @@ It currently recreates a standards organization's "UPC, Barcodes & Prefixes" pag
 
 To rebuild it for another prospect:
 
-1. Look at their page (read its text and styles in the browser, take a screenshot) and write the new layout in `src/app/example/page.tsx` and the CSS block (replace the `.gs1-*` rules; use a new prefix).
+1. Look at their page (read its text and styles in the browser, take a screenshot) and write the new layout in `src/app/example/page.tsx` and the CSS block (replace the `.gs1-*` rules; use a new prefix). For a close match, copy the pixel sizes, colors and spacing from the live page's computed styles at 1440px wide, then compare element positions on both pages. If their font is not available, pick the nearest Google font and tune `letter-spacing` until text widths match (the GS1 page uses Montserrat at `0.032em` for Gotham SSm).
 2. Rewrite `seed/brands/example.ts` with the new copy. Use the standard content types (rich text, card grid, FAQ, offerings, CTAs). A sandbox brand may have exactly one page.
 3. Photos: search Pixabay, add the picks to `assets/manifest.json` with `"brand": "example"` (keys `example-01` and so on), then `npm run assets:upload`. For a new brand tag, `npm run tags:setup` first.
 4. `npm run seed -- --dry-run`, then `npm run seed`.
