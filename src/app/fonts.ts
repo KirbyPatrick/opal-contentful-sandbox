@@ -21,7 +21,7 @@ const nunitoSans = Nunito_Sans({ subsets: ["latin"], display: "swap", preload: f
 const manrope = Manrope({ subsets: ["latin"], display: "swap", preload: false, variable: "--font-manrope" });
 const ibmPlex = IBM_Plex_Sans({ subsets: ["latin"], display: "swap", preload: false, variable: "--font-ibm-plex-sans", weight: ["400", "500", "600"] });
 const playfair = Playfair_Display({ subsets: ["latin"], display: "swap", preload: false, variable: "--font-playfair", style: ["normal", "italic"] });
-const montserrat = Montserrat({ subsets: ["latin"], display: "swap", preload: false, variable: "--font-montserrat", weight: ["300", "400", "500", "600", "700", "800"] });
+const montserrat = Montserrat({ subsets: ["latin"], display: "swap", preload: false, variable: "--font-montserrat", weight: ["300", "400", "500", "600", "700", "800", "900"] });
 const lato = Lato({ subsets: ["latin"], display: "swap", preload: false, variable: "--font-lato", weight: ["400", "700"] });
 
 export const fontVariables = [
