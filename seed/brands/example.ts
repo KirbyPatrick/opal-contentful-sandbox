@@ -4,148 +4,173 @@ const s = defineBrand("example", "ex");
 
 /**
  * Example: a sandbox brand with one page, rendered at /example by src/app/example.
- * It currently recreates an asset manager's strategy page for a compliance demo, so it
- * deliberately ships with two problems for Opal to fix:
- * - the disclosures section shows an unrendered <disclaimer/> template tag
- * - there is no performance, risk, or regulatory disclosure copy anywhere on the page
- * npm run reset puts both back after a demo. The copy is written for this sandbox.
+ * It currently recreates a standards organization's "UPC, Barcodes & Prefixes" page for a demo. The layout
+ * lives in src/app/example; the copy below lives in Contentful so Opal can edit it, and npm run reset puts it
+ * back after a demo. The copy is written for this sandbox, and the mockup is not an official page.
  */
 
-// ---------- Facts and resources ----------
-const facts = s.cardGrid("facts", {
-  internalName: "Example - Home - Strategy facts", heading: "Strategy facts", source: "manual", layout: "icons", columns: 4,
-  items: [
-    s.item("fact-approach", { title: "Approach", text: "Thematic, Fundamental, Bottom up" }),
-    s.item("fact-cap", { title: "Cap", text: "All-Cap, Agnostic" }),
-    s.item("fact-benchmark", { title: "Benchmark", text: "Solactive U.S. Energy Transition and Adaptation Opportunities Index" }),
-    s.item("fact-inception", { title: "Inception Date", text: "February 2023" }),
+const ESTIMATOR_URL = "https://www.gs1us.org/upcs-barcodes-prefixes";
+
+// ---------- Get barcodes: intro and the three products ----------
+const intro = s.richText("get-barcodes", {
+  internalName: "Example - Home - Get barcodes", heading: "Get Barcodes",
+  body: md("Barcodes from GS1 US give your products and locations a unique, authentic identity across the supply chain and in e-commerce."),
+});
+
+const prefix = s.offering("company-prefix", {
+  name: "Get Several UPC Barcodes", slug: "company-prefix", offeringType: "saas_plan",
+  summary: "A GS1 Company Prefix lets you create many barcodes yourself as your product line grows.",
+  priceLabel: "Starting at $250",
+  features: ["Get a GS1 Company Prefix"],
+  specs: [
+    "Supports growing product lines: Yes",
+    "Uniquely identifies locations (GLN): Yes",
+    "Uniquely identifies products: Yes",
+    "Supports mixed cases and pallets: Yes",
+    "Supports coupon creation: Yes",
+    "Identifies pharmaceutical products: Yes",
+  ],
+  finePrint: "*Annual renewal fee",
+});
+
+const single = s.offering("single-gtin", {
+  name: "Get a Single UPC Barcode", slug: "single-gtin", offeringType: "saas_plan",
+  summary: "One GS1 US GTIN for a single product.",
+  priceLabel: "$30 Each",
+  features: ["Get a GS1 US GTIN"],
+  specs: [
+    "Supports growing product lines: No",
+    "Uniquely identifies locations (GLN): No",
+    "Uniquely identifies products: Yes",
+    "Supports mixed cases and pallets: No",
+    "Supports coupon creation: No",
+    "Identifies pharmaceutical products: No",
   ],
 });
 
-const resources = s.cardGrid("resources", {
-  internalName: "Example - Home - Resources", heading: "Resources", source: "manual", layout: "cards", columns: 2,
-  items: [
-    s.item("resource-fact-sheet", { title: "AGF U.S. Energy Transition and Adaptation Strategy Fact Sheet" }),
-    s.item("resource-commentary", { title: "AGF U.S. Energy Transition and Adaptation Strategy Commentary" }),
+const gln = s.offering("gln", {
+  name: "Global Location Number (GLN)", slug: "gln", offeringType: "saas_plan",
+  summary: "A GLN identifies a physical or legal location, such as a warehouse or store.",
+  priceLabel: "$30 Each",
+  features: ["Get a GLN"],
+  specs: [
+    "Supports growing product lines: No",
+    "Uniquely identifies locations (GLN): Yes",
+    "Uniquely identifies products: No",
+    "Supports mixed cases and pallets: No",
+    "Supports coupon creation: No",
+    "Identifies pharmaceutical products: No",
   ],
 });
 
-// ---------- Key reasons ----------
-const reasons = s.cardGrid("key-reasons", {
-  internalName: "Example - Home - Key reasons to invest", heading: "Key Reasons to Invest", source: "manual", layout: "cards", columns: 3,
-  items: [
-    s.item("reason-secular-themes", {
-      title: "Long-term secular themes",
-      text: "Targets durable growth themes that play out over decades, concentrating on businesses we believe are positioned to benefit as North America rebuilds its energy system and adapts its infrastructure.",
-    }),
-    s.item("reason-solution-providers", {
-      title: "Solution providers",
-      text: "Owns the companies supplying the building blocks of change, from grid and power infrastructure, storage, hydrogen and carbon capture to advanced materials, cleaner fuels, and flood and wildfire defenses*, which we expect to keep growing as the transition gathers pace.",
-    }),
-    s.item("reason-process", {
-      title: "A differentiated process",
-      text: "Applies a distinctive research discipline to find well-placed companies whose products make energy systems cleaner and critical infrastructure more resilient.",
-    }),
+const compare = s.comparisonTable("compare", {
+  internalName: "Example - Home - Barcode options", heading: "Compare barcode options",
+  offerings: [prefix, single, gln],
+  rows: [
+    "Supports growing product lines",
+    "Uniquely identifies locations (GLN)",
+    "Uniquely identifies products",
+    "Supports mixed cases and pallets",
+    "Supports coupon creation",
+    "Identifies pharmaceutical products",
   ],
+});
+
+const estimator = s.cta("estimator", {
+  internalName: "Example - Home - Estimator", heading: "Not sure how many barcodes you need?",
+  label: "Go to Barcode Estimator", goalType: "link", destinationUrl: ESTIMATOR_URL, style: "primary",
 });
 
 // ---------- Overview ----------
-const strategy = s.richText("strategy", {
-  internalName: "Example - Home - Strategy", heading: "Strategy",
-  body: md("The strategy seeks long-term capital growth. It invests mainly in the shares of companies whose products and services help reduce the environmental footprint of today's energy system, or help communities and infrastructure adapt to a changing climate."),
+const overview = s.richText("overview", {
+  internalName: "Example - Home - Overview", heading: "Overview",
+  body: md(`Getting a barcode is easy! Checkout takes three simple steps.
+
+1. Choose a GS1 US GTIN, a Global Location Number, or a GS1 Company Prefix and add it to your cart.
+2. Enter your contact information.
+3. Pay. Within minutes you will receive a welcome email from GS1 US with everything you need to get started, including access to myGS1 US, your online member center.`),
 });
 
-const philosophy = s.richText("philosophy", {
-  internalName: "Example - Home - Philosophy", heading: "Philosophy",
-  body: md("Two forces shape our view. The first is electrification: as more of the economy runs on power, North America needs a grid that can carry far more load, far more reliably. The second is a harsher climate, which is testing utilities, roads and buildings that were never designed for today's storms, floods and fires. Together they create what we believe is a generational investment cycle in clean generation, transmission, storage and resilience, and one that much of the market still underestimates."),
-});
-
-const process = s.richText("process", {
-  internalName: "Example - Home - Process", heading: "Process",
-  body: md(`We start from the top down, mapping the themes behind North America's energy transition and adaptation, then do the bottom-up work on individual companies. Our proven thematic framework covers established leaders as well as emerging pure-play innovators.
-
-For each candidate we weigh business quality and maturity, policy and macroeconomic tailwinds, technology trends, competitive position, cost curves, and how the market currently prices the opportunity. Only companies where we see attractive long-term growth make it into the portfolio, which typically holds 10 to 30 names across the capitalization spectrum.
-
-AGF Investments worked with Solactive to develop the Solactive U.S. Energy Transition and Adaptation Opportunities Index, which tracks this opportunity set. Solactive's ARTIS natural language processing tool helped define the index universe, reaching beyond a conventional rules-based screen.`),
-});
-
-// ---------- Investment process ----------
-const defineOpportunities = s.richText("define-opportunities", {
-  internalName: "Example - Home - Define opportunities", heading: "Define Opportunities",
-  body: md("We look for opportunities created by the ongoing energy transition and climate adaptation across North America.\n\nThey are driven by new energy technologies, shifting regulation and policy, and changes in the competitive landscape."),
-});
-
-const investmentProcess = s.faq("investment-process", {
-  internalName: "Example - Home - Investment process", heading: "Investment Process",
+// ---------- Why ----------
+const why = s.cardGrid("why", {
+  internalName: "Example - Home - Why choose us", heading: "Why GS1 US?",
+  intro: "GS1 US is a not-for-profit information standards organization, and GS1 Standards are the most widely used supply chain standards in the world. If you have a question, Customer Support is ready to help.",
+  source: "manual", layout: "icons", columns: 4,
   items: [
-    s.item("step-universe", {
-      title: "1. Create Investment Universe",
-      text: "We screen listed North American companies for meaningful exposure to energy transition and adaptation themes, building a focused universe of potential holdings.",
-    }),
-    s.item("step-selection", {
-      title: "2. Security Selection",
-      text: "Thematic and fundamental research narrows the universe to companies with strong competitive positions, sound balance sheets, and growth we believe the market has not fully priced.",
-    }),
-    s.item("step-construction", {
-      title: "3. Portfolio Construction and Ongoing Stewardship",
-      text: "Position sizes reflect our conviction in each company. The team monitors every holding, engages with management, and rebalances as themes and valuations change.",
-    }),
+    s.item("why-accepted", { title: "Accepted by every retailer and supplier" }),
+    s.item("why-marketplaces", { title: "Sell your products worldwide on any marketplace" }),
+    s.item("why-support", { title: "Get free live support" }),
+    s.item("why-datahub", { title: "Instantly create and print your barcodes with the Data Hub tool" }),
+    s.item("why-unique", { title: "Globally unique codes that improve supply chain efficiency and visibility" }),
   ],
 });
 
-const portfolioConstruction = s.richText("portfolio-construction", {
-  internalName: "Example - Home - Portfolio construction", heading: "Portfolio Construction",
-  body: md("A concentrated portfolio of 10 to 30 investments."),
-});
-
-// ---------- Team and disclosures ----------
-const team = s.cardGrid("team", {
-  internalName: "Example - Home - Investment team", heading: "Investment Team", source: "manual", layout: "profiles", columns: 3,
+// ---------- How to use ----------
+const howTo = s.cardGrid("how-to", {
+  internalName: "Example - Home - How to use barcodes", heading: "How to Use Your GS1 Barcodes",
+  source: "manual", layout: "cards", columns: 4,
   items: [
-    s.item("team-portfolio-manager", { title: "Daniel Ferrante, MES, MBA", text: "VP & Portfolio Manager, AGF Investments" }),
-    s.item("team-analysts", { title: "Analysts", text: "Investment Team" }),
+    s.item("how-gtin-or-gln", { title: "GTIN or GLN?", text: "Find out what to do once you have your GS1 Company Prefix.", image: assetLink("img-example-01") }),
+    s.item("how-barcode-type", { title: "Determine Barcode Type", text: "Check which type of barcode your retailers need from you.", image: assetLink("img-example-02") }),
+    s.item("how-place", { title: "Place Barcodes on Products", text: "Create the barcode image and print it correctly on your items.", image: assetLink("img-example-03") }),
+    s.item("how-share", { title: "Share Information Electronically", text: "Share your product and location details with your trading partners.", image: assetLink("img-example-04") }),
   ],
 });
 
-// The template tag is escaped so it reaches the page as visible text, the way a broken CMS tag would.
-const disclosures = s.richText("disclosures", {
-  internalName: "Example - Home - Disclosures",
-  body: md("\\*Subject to change\n\n&lt;disclaimer/&gt;"),
+// ---------- Pricing ----------
+const pricing = s.richText("pricing", {
+  internalName: "Example - Home - Pricing", heading: "GS1 Company Prefix Pricing",
+  body: md(`| Number of items needing a barcode/GTIN | Initial fee | Annual renewal fee |
+| --- | --- | --- |
+| 1 GS1 US GTIN | $30 | $0 |
+| 10 | $250 | $50 |
+| 100 | $750 | $150 |
+| 1,000 | $2,500 | $500 |
+| 10,000 | $6,500 | $1,300 |
+| 100,000 | $10,500 | $2,100 |
+| GS1 Company Prefix including U.S. FDA NDC Labeler Code | $2,100 | $2,100 |`),
+});
+
+// ---------- Help ----------
+const help = s.cta("help", {
+  internalName: "Example - Home - Need a hand", heading: "Need a hand?",
+  body: "If you need help getting started, or support with any part of your GS1 US membership, please get in touch.",
+  label: "Get in Touch", goalType: "link", destinationUrl: ESTIMATOR_URL, style: "primary",
 });
 
 // ---------- Page and brand ----------
 const hero = s.hero("home", {
-  internalName: "Example - Home - Hero", eyebrow: "Separately Managed Accounts",
-  headline: "AGF U.S. Energy Transition and Adaptation Strategy", layout: "text_only",
+  internalName: "Example - Home - Hero", eyebrow: "Get a Barcode",
+  headline: "UPC, Barcodes & Prefixes", layout: "text_only",
 });
 
 const home = s.page("home", {
-  title: "AGF U.S. Energy Transition and Adaptation Strategy", slug: "home", pageType: "home", funnelStep: 0, hero,
-  sections: [facts, resources, reasons, strategy, philosophy, process, defineOpportunities, investmentProcess, portfolioConstruction, team, disclosures],
-  seoTitle: "AGF U.S. Energy Transition and Adaptation Strategy",
-  seoDescription: "A thematic, all-cap separately managed account strategy investing in North America's energy transition and climate adaptation.",
+  title: "UPC, Barcodes & Prefixes", slug: "home", pageType: "home", funnelStep: 0, hero,
+  sections: [intro, compare, estimator, overview, why, howTo, pricing, help],
+  seoTitle: "UPC, Barcodes & Prefixes",
+  seoDescription: "Get UPC barcodes, a GS1 Company Prefix, or a Global Location Number, and learn how to use them with your products.",
 });
 
 s.brand({
   name: "Example",
   slug: "example",
-  vertical: "financial_services",
-  shortDescription: "Sandbox page for recreating a prospect's web page in a demo. Currently an asset manager's energy transition strategy page.",
+  vertical: "b2b_saas",
+  shortDescription: "Sandbox page for recreating a prospect's web page in a demo. Currently a standards organization's UPC, barcodes and prefixes page.",
   // A logo is required, but the Example page draws its own header, so it borrows an existing one.
   logo: assetLink("logo-ledgerwood-bank"),
-  colorBrand: "#ED5A36", colorButton: "#203232", colorButtonText: "#FFFFFF", colorAccent: "#ED5A36",
-  colorBackground: "#FFFFFF", colorSurface: "#E8EAEA", colorText: "#203232", colorMuted: "#5C6666",
-  fontHeading: "DM Sans", fontBody: "DM Sans", buttonRadius: 0, buttonTextCase: "normal",
-  voiceDescription: "Institutional, measured, and research-led. Writes for financial advisors and investors about long-term thematic strategies, explaining objective, philosophy, and process in precise investment language with a confident, unhurried tone.",
+  colorBrand: "#002C6C", colorButton: "#CD3C0D", colorButtonText: "#FFFFFF", colorAccent: "#CD3C0D",
+  colorBackground: "#FFFFFF", colorSurface: "#C4D7ED", colorText: "#262626", colorMuted: "#5C6670",
+  fontHeading: "Manrope", fontBody: "Manrope", buttonRadius: 0, buttonTextCase: "normal",
+  voiceDescription: "Clear, friendly, and practical. Speaks to small business owners and brand managers who need barcodes, explaining each option and step in plain language without jargon.",
   voiceDos: [
-    "Use precise investment terms such as thematic, fundamental, and bottom up",
-    "Lead with the strategy's objective, then its philosophy and process",
-    "Name sectors and solution areas specifically",
-    "Write complete, formal sentences in the first person plural",
+    "Lead with what the reader can do next",
+    "Explain each barcode option in plain terms",
+    "Keep sentences short and direct",
+    "Use exact fees and counts from the pricing table",
   ],
   voiceDonts: [
-    "No slang, exclamation marks, or consumer marketing tone",
-    "No vague buzzwords without a concrete example",
+    "No hype or exclamation marks beyond the single reassuring one in the overview",
+    "No unexplained acronyms; spell out GTIN and GLN on first use",
     "No em dashes",
   ],
   address: "75 Placeholder Way, Floor 12\nBoston, MA 02110",
