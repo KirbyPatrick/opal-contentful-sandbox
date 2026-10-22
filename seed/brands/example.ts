@@ -14,7 +14,7 @@ const ESTIMATOR_URL = "https://www.gs1us.org/upcs-barcodes-prefixes";
 // ---------- Get barcodes: intro and the three products ----------
 const intro = s.richText("get-barcodes", {
   internalName: "Example - Home - Get barcodes", heading: "Get Barcodes",
-  body: md("Barcodes from GS1 US give your products and locations an authentic, unique identity that works across the supply chain and in e-commerce."),
+  body: md("Barcodes from GS1 US give your products and locations an authentic and unique identity in the supply chain and in e-commerce."),
 });
 
 const prefix = s.offering("company-prefix", {

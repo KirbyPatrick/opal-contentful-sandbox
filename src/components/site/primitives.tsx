@@ -81,9 +81,14 @@ const richTextOptions: Options = {
   },
 };
 
-export function RichText({ document, className }: { document: unknown; className?: string }) {
+export function RichText({ document, className, renderText }: {
+  document: unknown; className?: string;
+  /** Optional renderer for each run of text, for page-specific typography. */
+  renderText?: (text: string) => ReactNode;
+}) {
   if (!document || typeof document !== "object" || (document as Document).nodeType !== "document") return null;
-  return <div className={`rich-text ${className ?? ""}`}>{documentToReactComponents(document as Document, richTextOptions)}</div>;
+  const options = renderText ? { ...richTextOptions, renderText } : richTextOptions;
+  return <div className={`rich-text ${className ?? ""}`}>{documentToReactComponents(document as Document, options)}</div>;
 }
 
 /** Plain multi-paragraph text (blank line between paragraphs). */
