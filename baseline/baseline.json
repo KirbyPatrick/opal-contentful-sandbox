@@ -1,7 +1,7 @@
 {
  "version": 1,
  "environmentId": "opal-sandbox",
- "exportedAt": "2026-10-21T13:43:39.147Z",
+ "exportedAt": "2026-10-22T15:01:49.506Z",
  "entries": [
   {
    "id": "brand-clearwater-health",
@@ -12,7 +12,7 @@
   {
    "id": "brand-example",
    "type": "brand",
-   "hash": "b9c2605743300b92410a5e12e5dfe49d56b57a1d90d282fe436b5de29dcf7097",
+   "hash": "76abcbae60f90a154059fcb7bd6787256f651d228ce100688ae10b185eb42e21",
    "published": true
   },
   {
@@ -472,165 +472,135 @@
    "published": true
   },
   {
-   "id": "ex-cg-facts",
+   "id": "ex-cg-how-to",
    "type": "cardGrid",
-   "hash": "f7506226dda3bc7651a9ec1abf4f45f83a519afed44032c22c864daecaf5db40",
+   "hash": "aa8c3e7d984228953f8e0fb39ef5034b4f9376dd918f41229b7d78c156aad737",
    "published": true
   },
   {
-   "id": "ex-cg-key-reasons",
+   "id": "ex-cg-why",
    "type": "cardGrid",
-   "hash": "899af81485a038042713ef82ab40428ac2901621c0e091c0ac54bff73875ce21",
+   "hash": "620e3b53d394159ae5f07031d5b01a13c4f020825430e542c3492777928db954",
    "published": true
   },
   {
-   "id": "ex-cg-resources",
-   "type": "cardGrid",
-   "hash": "9cc8f5c07872b8876a276e2ec311cfe75a5c9b831213cb2a64c9e26c14a382cf",
+   "id": "ex-cm-compare",
+   "type": "comparisonTable",
+   "hash": "92e024f05f24fbd6e40b716c95fd61b4d8c17829f8f38e854cac3f3961812400",
    "published": true
   },
   {
-   "id": "ex-cg-team",
-   "type": "cardGrid",
-   "hash": "0d8b9042ead28b92608c58f5b7a64e3cb039c217217e202df7b27e59ccdb68ee",
+   "id": "ex-ct-estimator",
+   "type": "cta",
+   "hash": "25f6166e2a6b99aa246ffd34715e7db8869b4ea46fffbb16248f6ad9cd49897d",
    "published": true
   },
   {
-   "id": "ex-fq-investment-process",
-   "type": "faq",
-   "hash": "71f6f1fef7acfb9c4c97fb7c0936577e625bbe30c294262899abc7dfee1b1896",
+   "id": "ex-ct-help",
+   "type": "cta",
+   "hash": "25d499c7a6bae955609a32913290b9f3985f50bd02aab2839f4130bba911e50e",
    "published": true
   },
   {
    "id": "ex-he-home",
    "type": "hero",
-   "hash": "74ce48e2883ac605868af08e750eb2fe61dac1f24ed44fef54806f7051b6e8b3",
+   "hash": "71dc18213efc31b80681bbae94704c4cf0b3b3ec64217444c9bdeffb93c98668",
    "published": true
   },
   {
-   "id": "ex-it-fact-approach",
+   "id": "ex-it-how-barcode-type",
    "type": "item",
-   "hash": "ac1a08f7ee62c4ce2b0d5d6578e9d14e526adc7c618924ea616af5cbc0589686",
+   "hash": "04454eea5de171344d558cd25508cc469582e02fd2c59778ca93304eb736d937",
    "published": true
   },
   {
-   "id": "ex-it-fact-benchmark",
+   "id": "ex-it-how-gtin-or-gln",
    "type": "item",
-   "hash": "a23665f19a9587488cbe7e4dc0d2059ef04e3dfd5762487ac383ed1d76a40e54",
+   "hash": "725734bff68298454c5f5f20bae3f9c70062312cbaa13035b16139b1bd1c2a05",
    "published": true
   },
   {
-   "id": "ex-it-fact-cap",
+   "id": "ex-it-how-place",
    "type": "item",
-   "hash": "249595d41eed5272781e44247ae86c250aa17119a0724d4dcf30e6541fd81434",
+   "hash": "0e101fb6b6b7256dd71dcdf3cff52f46f017b94e2102730614c44e3c805dbc88",
    "published": true
   },
   {
-   "id": "ex-it-fact-inception",
+   "id": "ex-it-how-share",
    "type": "item",
-   "hash": "2d4f9819d0c56123969d965cd5a0543b84cad83352b8864a915348f69ef0b14a",
+   "hash": "18bd3198053af783545e1aed1c5da1723461c46283aa682ec7f9bde58d1f690b",
    "published": true
   },
   {
-   "id": "ex-it-reason-process",
+   "id": "ex-it-why-accepted",
    "type": "item",
-   "hash": "d696e18fad8b8ee4715e4769f877ccb7175a681e865595e7eefcaaaf1da3f34f",
+   "hash": "daf4a30bb71c05e73e8780a15762f134036078b6961416a8c08770608510debf",
    "published": true
   },
   {
-   "id": "ex-it-reason-secular-themes",
+   "id": "ex-it-why-datahub",
    "type": "item",
-   "hash": "c870733f82351183b41a48c28650f5dd6c9044a14c14f1fddd692b470d55ad4e",
+   "hash": "f22b6829443fefab2fd8fd2301cb1bce102f7aa34ec5108798e4a573c4dcc732",
    "published": true
   },
   {
-   "id": "ex-it-reason-solution-providers",
+   "id": "ex-it-why-marketplaces",
    "type": "item",
-   "hash": "8c11f4efb436f788ad744ba9ce50fc78d057c312aab07385b0e2f6a23892972c",
+   "hash": "88ecfa4c24ddc2d95afd363f531b8d368e85f0fce90c5fbc4819cd449a8bd1c0",
    "published": true
   },
   {
-   "id": "ex-it-resource-commentary",
+   "id": "ex-it-why-support",
    "type": "item",
-   "hash": "e9e49fb604b5677ff335605b3a6551ebc69baab1b49ee55fb8d8be86bd8a2bb9",
+   "hash": "290a35804549489b134f9024176956fad91a1335895032acc19873a959584e5d",
    "published": true
   },
   {
-   "id": "ex-it-resource-fact-sheet",
+   "id": "ex-it-why-unique",
    "type": "item",
-   "hash": "9e3af8a9c7c8afbff1d25a4dfb1e189386aec8dec2c47fc3d471a61a99dfe4d0",
+   "hash": "d1650e233ada06eda0a06fe345fb489775d3a358f7d658a036e6e00ef71ab4e7",
    "published": true
   },
   {
-   "id": "ex-it-step-construction",
-   "type": "item",
-   "hash": "549d18dff8bf89b62be38e343115b7f5c00b7f4537bfdab403e65b675b2741e4",
+   "id": "ex-of-company-prefix",
+   "type": "offering",
+   "hash": "e78e35af7a57287258eed89f16028b084082f6cdca11132ae5ed1f2fd65a105c",
    "published": true
   },
   {
-   "id": "ex-it-step-selection",
-   "type": "item",
-   "hash": "3e13848382669e0897959911494777fb06425569ab072aba5875700e5d9d30f5",
+   "id": "ex-of-gln",
+   "type": "offering",
+   "hash": "0299946c71ec7f25d4d2b7526efcf022a744eae765080d0f615255decc2229f6",
    "published": true
   },
   {
-   "id": "ex-it-step-universe",
-   "type": "item",
-   "hash": "d9af1db63e97e723b3bfb16250567a1bac676852f22160a26a3123940bda2fc0",
-   "published": true
-  },
-  {
-   "id": "ex-it-team-analysts",
-   "type": "item",
-   "hash": "2ad0be0557e2fd9faf606f147b20262277bb0ed591cd149c0f9c82cfd4186aee",
-   "published": true
-  },
-  {
-   "id": "ex-it-team-portfolio-manager",
-   "type": "item",
-   "hash": "9a125b66fd96180465fa737449f5dd8f05542cc8cd3beca09dd4d1cee7684db4",
+   "id": "ex-of-single-gtin",
+   "type": "offering",
+   "hash": "5b29a2ea75a6c441131006c5046a95dbdcaf0ae6ba0169de7e055fc9ffbfcc18",
    "published": true
   },
   {
    "id": "ex-pg-home",
    "type": "page",
-   "hash": "48ec780d6c006388be4304181bf0f3815f31aaee171af2c32019d646064f31c9",
+   "hash": "3a8432d766e50cab6cae99864d9823185a6142435a4243b5e26c7ebc8b373259",
    "published": true
   },
   {
-   "id": "ex-rt-define-opportunities",
+   "id": "ex-rt-get-barcodes",
    "type": "richTextSection",
-   "hash": "ccd6a5a62892f313f2b9f6ff6e306ca98273169fcf16b63a0455b330b0409582",
+   "hash": "de75a025f0e59153d1acc22218c7805f7fbcf574a9a7b605c3acf4d52c32f9c2",
    "published": true
   },
   {
-   "id": "ex-rt-disclosures",
+   "id": "ex-rt-overview",
    "type": "richTextSection",
-   "hash": "4c04b874debb0e4d3539f69bf6cb8d1773d1180c8371b0df091b17e0fecd3155",
+   "hash": "98440ce277d1ee9ddadf184a1e53dc6e4e1880515bdff123852d36516d0b7833",
    "published": true
   },
   {
-   "id": "ex-rt-philosophy",
+   "id": "ex-rt-pricing",
    "type": "richTextSection",
-   "hash": "7caef2016732e1c6a1b3ac78b080d91de11539156bfc457042313804f1de9d40",
-   "published": true
-  },
-  {
-   "id": "ex-rt-portfolio-construction",
-   "type": "richTextSection",
-   "hash": "1b7685779f36b49957f01fe19eb7e774c8a0bb454c2b0d89adc500c94c2d530e",
-   "published": true
-  },
-  {
-   "id": "ex-rt-process",
-   "type": "richTextSection",
-   "hash": "e63fa849a6663b0fbbc44247c13ab267e22e146b825429d11207b4baf53abc19",
-   "published": true
-  },
-  {
-   "id": "ex-rt-strategy",
-   "type": "richTextSection",
-   "hash": "7cbcc78ae8823043f3bf88ae96ab2fe9ff4e1960577023500912b683ac00a20c",
+   "hash": "d67afa92e10722b8a65e56a11d686ae29ae996a94d33910da784911e0e97d2d5",
    "published": true
   },
   {

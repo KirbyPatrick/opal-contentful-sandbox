@@ -89,3 +89,21 @@ Handy when you want to point the agent at a specific entry (for example `Update 
 | The sandbox is messy | `npm run reset`, review, then `npm run reset -- --confirm`. |
 
 Token rotation and the full tool reference are in [docs/opal-api.md](docs/opal-api.md).
+
+## The Example page (recreating a prospect's page for a demo)
+
+`/example` is a sandbox page that looks like a prospect's own page. Its copy lives in Contentful (the `example` brand, entry IDs `ex-...`, defined in `seed/brands/example.ts`) so Opal can read and edit it, and `src/app/example/page.tsx` plus the `.gs1-*` block in `src/app/globals.css` draw the layout. The page header, nav and footer are fixed labels in the layout, not content.
+
+It currently recreates a standards organization's "UPC, Barcodes & Prefixes" page (comparison table, overview, why, how-to photo cards, pricing table, help band). The copy is paraphrased and the footer says it is a demo mockup.
+
+To rebuild it for another prospect:
+
+1. Look at their page (read its text and styles in the browser, take a screenshot) and write the new layout in `src/app/example/page.tsx` and the CSS block (replace the `.gs1-*` rules; use a new prefix).
+2. Rewrite `seed/brands/example.ts` with the new copy. Use the standard content types (rich text, card grid, FAQ, offerings, CTAs). A sandbox brand may have exactly one page.
+3. Photos: search Pixabay, add the picks to `assets/manifest.json` with `"brand": "example"` (keys `example-01` and so on), then `npm run assets:upload`. For a new brand tag, `npm run tags:setup` first.
+4. `npm run seed -- --dry-run`, then `npm run seed`.
+5. Remove entries the new seed no longer uses: `npm run prune:example` (dry run), then `npm run prune:example -- --confirm`. Do this after deploying the new layout, so the live page never points at missing content.
+6. `npm run baseline:export`, run `npm run check`, commit, and deploy (`vercel deploy --prod`, or push if auto-deploys work).
+
+`npm run reset` restores the Example page to its seeded copy after a demo (it also deletes articles Opal created, so check `npm run baseline:check` first if you want to keep any).
+
