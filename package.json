@@ -30,7 +30,8 @@
     "opal:smoke": "tsx --env-file=.env scripts/opal-smoke.ts",
     "baseline:export": "tsx --env-file=.env scripts/baseline.ts export",
     "baseline:check": "tsx --env-file=.env scripts/baseline.ts check",
-    "reset": "tsx --env-file=.env scripts/reset.ts"
+    "reset": "tsx --env-file=.env scripts/reset.ts",
+    "prune:example": "tsx --env-file=.env scripts/prune-example.ts"
   },
   "dependencies": {
     "@contentful/rich-text-react-renderer": "16.2.2",

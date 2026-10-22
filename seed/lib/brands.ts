@@ -36,8 +36,8 @@ export const BRAND_KEYS: BrandKey[] = BRAND_INFO.map((brand) => brand.key);
 /** Every brand the seed writes: the six full brands, then the sandbox brands. */
 export const SEED_BRAND_KEYS: BrandKey[] = [...BRAND_KEYS, ...SANDBOX_BRAND_INFO.map((brand) => brand.key)];
 
-export function brandInfo(key: string): (typeof BRAND_INFO)[number] {
-  const found = BRAND_INFO.find((brand) => brand.key === key);
+export function brandInfo(key: string): (typeof BRAND_INFO)[number] | (typeof SANDBOX_BRAND_INFO)[number] {
+  const found = [...BRAND_INFO, ...SANDBOX_BRAND_INFO].find((brand) => brand.key === key);
   if (!found) throw new Error(`Unknown brand key "${key}".`);
   return found;
 }

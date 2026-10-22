@@ -1,6 +1,6 @@
 import {
   DM_Sans, DM_Serif_Display, IBM_Plex_Sans, Inter, Lato, Libre_Caslon_Text, Manrope,
-  Merriweather_Sans, Nunito_Sans, Playfair_Display, Source_Sans_3, Space_Grotesk,
+  Merriweather_Sans, Montserrat, Nunito_Sans, Playfair_Display, Source_Sans_3, Space_Grotesk,
 } from "next/font/google";
 
 /**
@@ -21,9 +21,10 @@ const nunitoSans = Nunito_Sans({ subsets: ["latin"], display: "swap", preload: f
 const manrope = Manrope({ subsets: ["latin"], display: "swap", preload: false, variable: "--font-manrope" });
 const ibmPlex = IBM_Plex_Sans({ subsets: ["latin"], display: "swap", preload: false, variable: "--font-ibm-plex-sans", weight: ["400", "500", "600"] });
 const playfair = Playfair_Display({ subsets: ["latin"], display: "swap", preload: false, variable: "--font-playfair", style: ["normal", "italic"] });
+const montserrat = Montserrat({ subsets: ["latin"], display: "swap", preload: false, variable: "--font-montserrat", weight: ["300", "400", "500", "600", "700", "800"] });
 const lato = Lato({ subsets: ["latin"], display: "swap", preload: false, variable: "--font-lato", weight: ["400", "700"] });
 
 export const fontVariables = [
   spaceGrotesk, inter, libreCaslon, sourceSans, dmSerif, dmSans,
-  merriweatherSans, nunitoSans, manrope, ibmPlex, playfair, lato,
+  merriweatherSans, nunitoSans, manrope, ibmPlex, playfair, lato, montserrat,
 ].map((font) => font.variable).join(" ");

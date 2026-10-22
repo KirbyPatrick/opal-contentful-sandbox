@@ -5,7 +5,8 @@
     "Download links from Pixabay expire after 24 hours, so this manifest stores each image page (sourcePage) and Pixabay ID. The upload script fetches a fresh download link (about 1280px wide) at upload time.",
     "On upload, altText becomes the asset title and the credit line (photographer, Pixabay, source page) becomes the asset description. Each asset is tagged seed and brand-<slug>.",
     "lumenwork-07 was replaced on upload day because the original image was removed from Pixabay.",
-    "ledgerwood-bank-01 was replaced on 2026-10-08 with a more professional desk photo at the reviewer request."
+    "ledgerwood-bank-01 was replaced on 2026-10-08 with a more professional desk photo at the reviewer request.",
+    "example-01 to example-04 were added on 2026-10-22 for the Example sandbox page."
   ],
   "counts": {
     "lumenwork": 11,
@@ -13,7 +14,8 @@
     "harborline-mutual": 15,
     "clearwater-health": 12,
     "ledgerwood-bank": 10,
-    "tidewater-journeys": 16
+    "tidewater-journeys": 16,
+    "example": 4
   },
   "images": [
     {
@@ -1087,7 +1089,7 @@
       "source": "Pixabay",
       "pixabayId": 9803687,
       "sourcePage": "https://pixabay.com/photos/norway-lofoten-reine-rorbuer-9803687/",
-      "photographer": "Paul_Reuß",
+      "photographer": "Paul_Reu\u00df",
       "photographerPage": "https://pixabay.com/users/Paul_Reu%C3%9F-41769005/",
       "license": "Pixabay Content License",
       "licenseUrl": "https://pixabay.com/service/license-summary/",
@@ -1227,6 +1229,66 @@
       "license": "Pixabay Content License",
       "licenseUrl": "https://pixabay.com/service/license-summary/",
       "originalWidth": 4736,
+      "originalHeight": 4000
+    },
+    {
+      "key": "example-01",
+      "brand": "example",
+      "intendedUse": "GTIN or GLN card",
+      "altText": "Close-up of a barcode label printed on a silver can",
+      "source": "Pixabay",
+      "pixabayId": 3616,
+      "sourcePage": "https://pixabay.com/photos/barcode-code-price-pay-encryption-3616/",
+      "photographer": "PDPhotos",
+      "photographerPage": "https://pixabay.com/users/PDPhotos-16/",
+      "license": "Pixabay Content License",
+      "licenseUrl": "https://pixabay.com/service/license-summary/",
+      "originalWidth": 2816,
+      "originalHeight": 2112
+    },
+    {
+      "key": "example-02",
+      "brand": "example",
+      "intendedUse": "Determine barcode type card",
+      "altText": "Paperwork with printed barcodes, a stapler, and two pens on a desk",
+      "source": "Pixabay",
+      "pixabayId": 1016310,
+      "sourcePage": "https://pixabay.com/photos/stapler-pen-paperwork-invoice-1016310/",
+      "photographer": "cloudhoreca",
+      "photographerPage": "https://pixabay.com/users/cloudhoreca-516676/",
+      "license": "Pixabay Content License",
+      "licenseUrl": "https://pixabay.com/service/license-summary/",
+      "originalWidth": 4905,
+      "originalHeight": 3261
+    },
+    {
+      "key": "example-03",
+      "brand": "example",
+      "intendedUse": "Place barcodes on products card",
+      "altText": "Two kraft product boxes stacked on a wooden shelf",
+      "source": "Pixabay",
+      "pixabayId": 3404606,
+      "sourcePage": "https://pixabay.com/photos/nest-cardboard-gift-box-3404606/",
+      "photographer": "Alexas_Fotos",
+      "photographerPage": "https://pixabay.com/users/Alexas_Fotos-686414/",
+      "license": "Pixabay Content License",
+      "licenseUrl": "https://pixabay.com/service/license-summary/",
+      "originalWidth": 5657,
+      "originalHeight": 3671
+    },
+    {
+      "key": "example-04",
+      "brand": "example",
+      "intendedUse": "Share information electronically card",
+      "altText": "A hand holding a barcode scanner in front of labeled warehouse shelves",
+      "source": "Pixabay",
+      "pixabayId": 4480804,
+      "sourcePage": "https://pixabay.com/photos/to-scan-warehouse-duration-work-4480804/",
+      "photographer": "D-Vu",
+      "photographerPage": "https://pixabay.com/users/D-Vu-8786624/",
+      "license": "Pixabay Content License",
+      "licenseUrl": "https://pixabay.com/service/license-summary/",
+      "originalWidth": 6000,
       "originalHeight": 4000
     }
   ]
