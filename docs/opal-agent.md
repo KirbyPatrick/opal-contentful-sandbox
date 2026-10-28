@@ -1,11 +1,11 @@
 # The Opal agent: `contentful`
 
-A specialized Opal agent that uses the ten tools from the Contentful Sandbox registry. Call it with `@contentful` in Opal chat.
+A specialized Opal agent that uses the thirteen tools from the Contentful Sandbox registry. Call it with `@contentful` in Opal chat.
 
-- **Definition:** [opal-agent.json](opal-agent.json) is the exact agent as created. It has the ten tools and nothing else (no web browsing, no email), so it can only reach the sandbox through the API.
-- **Behavior:** it names the brand, reads the brand voice with `get_content_rules` before writing, shows a preview link after every change, and publishes or unpublishes only after you clearly approve. It cannot delete anything or change slugs, brands, page types, prices, or links between pages.
+- **Definition:** [opal-agent.json](opal-agent.json) is the exact agent as created. It has the thirteen tools and nothing else (no web browsing, no email), so it can only reach the sandbox through the API.
+- **Behavior:** it names the brand, reads the brand voice with `get_content_rules` before writing, shows a preview link after every change, and publishes or unpublishes only after you clearly approve. It can undo changes and delete only content it created, always after you confirm. It cannot delete original content or change slugs, brands, page types, prices, or links between pages.
 - **Sharing:** only the owner can use it. The Opal default shares a new agent with the whole organization as "view", so remove that in the agent's **Share**, **Permissions** tab (General access: Only invited users) after creating it.
-- **Chat exposure of the tools:** the registry's **Enabled in Chat** is off, so the ten tools are only usable by agents that list them, such as this one.
+- **Chat exposure of the tools:** the registry's **Enabled in Chat** is off, so the thirteen tools are only usable by agents that list them, such as this one.
 
 ## Create it again
 

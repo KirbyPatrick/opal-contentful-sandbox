@@ -56,7 +56,7 @@ describe("createSandboxClientFrom", () => {
 });
 
 describe("createOpalClientFrom", () => {
-  it("runs the live master check, then returns a pinned client without delete or archive", async () => {
+  it("runs the live master check, then returns a pinned client that cannot archive or touch environments", async () => {
     const { raw, requests } = fakeRawClient({
       master: { sys: { id: "master" } },
       "opal-sandbox": { sys: { id: "opal-sandbox" } },
@@ -64,7 +64,8 @@ describe("createOpalClientFrom", () => {
     const client = await createOpalClientFrom(raw, target);
     assert.deepEqual(requests.sort(), ["environment.get master", "environment.get opal-sandbox"]);
     assert.throws(() => client.entry.get({ entryId: "x", environmentId: "master" }));
-    assert.throws(() => (client.entry as unknown as Record<string, unknown>).delete);
+    assert.throws(() => (client.entry as unknown as Record<string, unknown>).archive);
+    assert.throws(() => (client as unknown as Record<string, unknown>).environment);
   });
 
   it("refuses, and hands out no client, when master resolves to the sandbox", async () => {

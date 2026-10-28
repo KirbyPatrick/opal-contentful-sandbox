@@ -37,7 +37,7 @@ A demo sandbox that shows Optimizely Opal creating, updating, and publishing con
 
 - **Contentful:** an existing space on the Free plan. All work happens in the `opal-sandbox` environment. `master` is never touched.
 - **Front end:** Next.js (App Router, TypeScript) on Vercel, reading published content from Contentful. Phase 7.
-- **Opal API:** a custom tool registry served by the same Next.js app at `/api/opal`. Ten tools let Opal read content, create articles and FAQ sections, and update, publish, and unpublish content. No deletes. See [docs/opal-api.md](docs/opal-api.md). Phase 8.
+- **Opal API:** a custom tool registry served by the same Next.js app at `/api/opal`. Thirteen tools let Opal read content, create articles and FAQ sections, update, publish, and unpublish content, undo changes, and delete content it created. Original content can never be deleted. See [docs/opal-api.md](docs/opal-api.md). Phase 8.
 
 ## Safety model
 

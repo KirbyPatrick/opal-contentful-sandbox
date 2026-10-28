@@ -97,19 +97,20 @@ describe("policies against the real SDK", () => {
     restrictClient(sdk, { name: "opal-api", allow: OPAL_API_ALLOW, pin: pinned });
   });
 
-  it("the Opal API policy cannot delete, archive, or change anything but entries", () => {
-    // Entries: read, create, update, publish, unpublish. Assets: read only. Nothing else exists.
+  it("the Opal API policy can delete entries, but cannot archive or change anything but entries", () => {
+    // Entries: read (including the live version), create, update, publish, unpublish, delete. Assets: read only.
     assert.deepEqual(Object.keys(OPAL_API_ALLOW).sort(), ["asset", "entry"]);
-    assert.deepEqual([...OPAL_API_ALLOW.entry].sort(), ["create", "get", "getMany", "publish", "unpublish", "update"]);
+    assert.deepEqual([...OPAL_API_ALLOW.entry].sort(), ["create", "delete", "get", "getMany", "getPublished", "publish", "unpublish", "update"]);
     assert.deepEqual([...OPAL_API_ALLOW.asset].sort(), ["get", "getMany"]);
     for (const methods of Object.values(OPAL_API_ALLOW)) {
-      for (const method of methods) assert.doesNotMatch(method, /delete|archive/i, `${method} must not be allowed`);
+      for (const method of methods) assert.doesNotMatch(method, /archive/i, `${method} must not be allowed`);
     }
     const restricted = restrictClient(sdk, { name: "opal-api", allow: OPAL_API_ALLOW, pin: pinned });
-    assert.throws(() => (restricted.entry as unknown as Record<string, unknown>).delete, PolicyError);
     assert.throws(() => (restricted.entry as unknown as Record<string, unknown>).archive, PolicyError);
     assert.throws(() => (restricted as unknown as Record<string, unknown>).contentType, PolicyError);
+    assert.throws(() => (restricted as unknown as Record<string, unknown>).environment, PolicyError);
     assert.throws(() => (restricted.asset as unknown as Record<string, unknown>).publish, PolicyError);
+    assert.throws(() => (restricted.asset as unknown as Record<string, unknown>).delete, PolicyError);
   });
 
   it("the read-only policy contains only reads", () => {

@@ -9,7 +9,7 @@
  * - images are asset IDs from the brand's own image pool
  * - FAQs and their questions can only be changed if this API created them
  * - a page's sections only ever change by create_faq adding the FAQ it just made
- * - nothing here can delete or archive (the client policy has no such methods)
+ * - nothing here deletes or archives; delete_entry (tools-undo.ts) is the only delete, and nothing can archive
  */
 import { z } from "zod";
 import type { RichTextDocument } from "../richtext/markdown";
@@ -36,16 +36,16 @@ import { assetIdParam, boolParam, brandParam, entryIdParam, intParam } from "./p
 
 const OPAL_TAG = { sys: { type: "Link", linkType: "Tag", id: "opal" } } as const;
 const link = (linkType: "Entry" | "Asset", id: string) => ({ sys: { type: "Link", linkType, id } });
-const localized = (value: unknown) => ({ [LOCALE]: value });
-const version = intParam(1, 1_000_000);
+export const localized = (value: unknown) => ({ [LOCALE]: value });
+export const version = intParam(1, 1_000_000);
 
 const shortText = z.string().max(1_000);
 
-const isOpalCreated = (entry: Entry): boolean => entry.metadata?.tags.some((tag) => tag.sys.id === "opal") ?? false;
-const linkIds = (value: unknown): string[] => (Array.isArray(value) ? value.map(linkId).filter((id): id is string => Boolean(id)) : []);
+export const isOpalCreated = (entry: Entry): boolean => entry.metadata?.tags.some((tag) => tag.sys.id === "opal") ?? false;
+export const linkIds = (value: unknown): string[] => (Array.isArray(value) ? value.map(linkId).filter((id): id is string => Boolean(id)) : []);
 
 /** Never pass raw error text through: only a ToolError message is safe for the agent. */
-const safeMessage = (error: unknown, fallback: string): string => (error instanceof ToolError ? error.message : fallback);
+export const safeMessage = (error: unknown, fallback: string): string => (error instanceof ToolError ? error.message : fallback);
 
 // ---------- create_article ----------
 
@@ -210,7 +210,7 @@ function parseFields(input: string | Record<string, unknown>): Record<string, un
 }
 
 /** Common checks for every write to an existing entry. Returns the entry and its brand. */
-async function loadForWrite(ctx: ToolContext, brandInput: string, entryId: string, expectedVersion: number) {
+export async function loadForWrite(ctx: ToolContext, brandInput: string, entryId: string, expectedVersion: number) {
   const brand = await resolveBrand(ctx, brandInput);
   const entry = await loadEntry(ctx, entryId);
   const spec = specFor(entry);
@@ -297,7 +297,7 @@ export const publishEntrySchema = stateChangeSchema;
 export const unpublishEntrySchema = stateChangeSchema;
 
 /** Publishes an entry unless it is already live and unchanged. */
-async function publishIfNeeded(ctx: ToolContext, entry: Entry): Promise<Entry> {
+export async function publishIfNeeded(ctx: ToolContext, entry: Entry): Promise<Entry> {
   if (entryStatus(entry.sys) === "published") return entry;
   try {
     return await ctx.client.entry.publish({ entryId: entry.sys.id }, entry);
@@ -307,7 +307,7 @@ async function publishIfNeeded(ctx: ToolContext, entry: Entry): Promise<Entry> {
 }
 
 /** Loads entries by ID in one request, in the order given. Missing IDs are left out. */
-async function loadMany(ctx: ToolContext, ids: readonly string[]): Promise<Entry[]> {
+export async function loadMany(ctx: ToolContext, ids: readonly string[]): Promise<Entry[]> {
   if (ids.length === 0) return [];
   let found: Entry[];
   try {

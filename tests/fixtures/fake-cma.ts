@@ -133,6 +133,8 @@ export interface FakeCma {
   failNextPublish: { value: boolean; error?: Error };
   /** Runs inside update before the version check, to simulate another editor saving first. */
   hooks: { beforeUpdate?: (entryId: string) => void };
+  /** The live (published) fields per entry, as getPublished returns them. */
+  live: Map<string, FakeEntry>;
 }
 
 export function fakeCma(seed = seedData()): FakeCma {
@@ -142,6 +144,10 @@ export function fakeCma(seed = seedData()): FakeCma {
   const failNextPublish: FakeCma["failNextPublish"] = { value: false };
   const hooks: FakeCma["hooks"] = {};
   let counter = 0;
+  // Entries that start out published are live as they are now.
+  const live = new Map<string, FakeEntry>(
+    [...entries.values()].filter((e) => e.sys.publishedVersion !== undefined).map((e) => [e.sys.id, structuredClone(e)]),
+  );
 
   const collection = <T extends FakeEntry | FakeAsset>(items: Iterable<T>, query: Json = {}) => {
     const found = [...items].filter((item) => matches(item, query));
@@ -185,6 +191,7 @@ export function fakeCma(seed = seedData()): FakeCma {
         }
         stored.sys.publishedVersion = stored.sys.version;
         stored.sys.version += 1;
+        live.set(entryId, structuredClone(stored));
         return structuredClone(stored);
       },
       unpublish: async ({ entryId }: { entryId: string }) => {
@@ -192,7 +199,19 @@ export function fakeCma(seed = seedData()): FakeCma {
         const stored = need(entries, entryId);
         delete stored.sys.publishedVersion;
         stored.sys.version += 1;
+        live.delete(entryId);
         return structuredClone(stored);
+      },
+      getPublished: async ({ query }: { query?: Json }) => {
+        calls.push("entry.getPublished");
+        const { "sys.id": id, ...rest } = query ?? {};
+        return collection([...live.values()].filter((e) => id === undefined || e.sys.id === id), rest);
+      },
+      delete: async ({ entryId }: { entryId: string }) => {
+        calls.push("entry.delete");
+        const stored = need(entries, entryId);
+        if (stored.sys.publishedVersion !== undefined) throw new FakeSdkError(400, "Cannot delete published");
+        entries.delete(entryId);
       },
     },
     asset: {
@@ -209,5 +228,5 @@ export function fakeCma(seed = seedData()): FakeCma {
   };
 
   const client = restrictClient(raw, { name: "opal-api", allow: OPAL_API_ALLOW, pin: { spaceId: "space1", environmentId: "opal-sandbox" } }) as unknown as OpalClient;
-  return { client, entries, assets, calls, failNextPublish, hooks };
+  return { client, entries, assets, calls, failNextPublish, hooks, live };
 }

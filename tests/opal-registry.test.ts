@@ -50,8 +50,8 @@ describe("tool registry", () => {
     });
   }
 
-  it("marks exactly the four writing tools as writes", () => {
-    assert.deepEqual(TOOLS.filter((t) => t.write).map((t) => t.name), ["create_article", "create_faq", "update_entry", "publish_entry", "unpublish_entry"]);
+  it("marks exactly the writing tools as writes", () => {
+    assert.deepEqual(TOOLS.filter((t) => t.write).map((t) => t.name), ["create_article", "create_faq", "update_entry", "publish_entry", "unpublish_entry", "remove_faq", "revert_entry", "delete_entry"]);
   });
 
   it("builds a manifest in the shape Opal reads", () => {

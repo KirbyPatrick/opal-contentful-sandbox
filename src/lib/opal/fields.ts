@@ -5,9 +5,10 @@
  * (migrations/0001-content-model.ts); tests/opal-fields.test.ts fails if they drift.
  *
  * Never writable: brands, themes, slugs of existing entries, page types, funnel
- * links (nextStep and similar), content types, and anything that deletes. A page's
- * sections are never written here either; create_faq is the one tool that adds
- * a section, and it only ever appends the FAQ it just created.
+ * links (nextStep and similar), and content types. A page's sections are never
+ * written through update_entry: create_faq adds the FAQ it just created,
+ * remove_faq takes such an FAQ off again, and revert_entry can put sections back
+ * to the live or original version (tools-undo.ts).
  */
 import { markdownToRichText, richTextPlainText, type RichTextDocument } from "../richtext/markdown";
 import { ToolError } from "./errors";

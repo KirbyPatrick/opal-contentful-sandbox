@@ -66,9 +66,9 @@ describe("bearer token", () => {
     assert.equal(response.status, 401);
   });
 
-  it("answers 404 for an unknown tool once authenticated, and there is no delete tool", async () => {
+  it("answers 404 for an unknown tool once authenticated, and there is no archive or bulk tool", async () => {
     const { deps: d } = deps();
-    for (const name of ["delete-entry", "archive-entry", "delete-article", "unpublish-all"]) {
+    for (const name of ["archive-entry", "delete-article", "delete-all", "unpublish-all"]) {
       assert.equal((await handleToolRequest(call(name, {}), name, d)).status, 404);
     }
   });
@@ -239,7 +239,7 @@ describe("discovery", () => {
     const manifest = (await response.json()) as { functions: Array<{ name: string; endpoint: string; http_method: string; parameters: unknown[]; description: string }> };
     assert.deepEqual(
       manifest.functions.map((f) => f.name),
-      ["list_brands", "find_pages", "get_entry", "get_content_rules", "list_brand_images", "create_article", "create_faq", "update_entry", "publish_entry", "unpublish_entry"],
+      ["list_brands", "find_pages", "get_entry", "get_content_rules", "list_brand_images", "create_article", "create_faq", "update_entry", "publish_entry", "unpublish_entry", "remove_faq", "revert_entry", "delete_entry"],
     );
     for (const tool of manifest.functions) {
       assert.equal(tool.http_method, "POST");
@@ -248,6 +248,7 @@ describe("discovery", () => {
     }
     const text = JSON.stringify(manifest);
     assert.ok(!text.includes(TOKEN) && !text.includes(PREVIEW_SECRET));
-    assert.ok(!manifest.functions.some((f) => /delete|archive/i.test(f.name)));
+    assert.ok(!manifest.functions.some((f) => /archive/i.test(f.name)));
+    assert.deepEqual(manifest.functions.filter((f) => /delete/i.test(f.name)).map((f) => f.name), ["delete_entry"]);
   });
 });

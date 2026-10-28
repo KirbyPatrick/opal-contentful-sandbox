@@ -1,6 +1,6 @@
 # Opal API
 
-**Status: built in Phase 8.** Lets Optimizely Opal read, create, update, publish, and unpublish content in the `opal-sandbox` environment through ten tools. There is no delete tool and the code cannot delete.
+**Status: built in Phase 8.** Lets Optimizely Opal read, create, update, publish, unpublish, undo, and delete content in the `opal-sandbox` environment through thirteen tools. Delete is limited to content Opal created itself; the site's original content can never be deleted.
 
 ## How Opal connects
 
@@ -48,6 +48,9 @@ grep '^OPAL_API_TOKEN=' .env | cut -d= -f2- | tr -d '\n' | pbcopy
 | `update_entry` | Write | Changes allowlisted copy fields, saved as a draft change |
 | `publish_entry` | Write | Publishes the saved version, so the live site refreshes in about 3 seconds. Publishing a page also publishes the draft FAQs `create_faq` added to it |
 | `unpublish_entry` | Write | Takes an article off the live site (back to draft, never deleted) |
+| `remove_faq` | Write | Takes an FAQ that `create_faq` added back off its page (draft change unless `publish`). The FAQ entry is kept |
+| `revert_entry` | Write | Undo. `to: "live"` throws away unpublished changes (the live site does not change). `to: "original"` restores the site's original copy from the seed files, as a draft. Only copy fields (and a page's sections) are written. The sandbox keeps no version history (Contentful snapshots exist only in master), so these are the two versions available |
+| `delete_entry` | Write | Permanently deletes an article, FAQ, or FAQ question that Opal created (tagged `opal`, never `seed`) and that nothing links to, in a draft or on the live site. Deleting an FAQ also deletes its questions. Unpublishes first if live |
 
 Every response that describes an entry includes `entry_id`, `content_type`, `brand`, `brand_name`, `title`, `status` (`draft`, `published`, or `changed`), `version`, `preview_url`, and `live_url`.
 
@@ -71,7 +74,7 @@ Every response that describes an entry includes `entry_id`, `content_type`, `bra
 | collection | summary, description, eyebrow, image, seoTitle, seoDescription | No | Yes | No |
 | person | none (readable only) | No | No | No |
 
-**Never changeable:** brands, themes, slugs, page types, funnel links (`nextStep` and similar), prices, content types, references between entries (except the related page and author set once when an article is created, and the one section `create_faq` adds), the site's original FAQs and items (items are also navigation links), and anything that deletes. A brand entry cannot be read or changed through `get_entry` or `update_entry`.
+**Never changeable:** brands, themes, slugs, page types, funnel links (`nextStep` and similar), prices, content types, references between entries (except the related page and author set once when an article is created, and the one section `create_faq` adds), the site's original FAQs and items (items are also navigation links), and deleting anything Opal did not create. `revert_entry` only writes copy fields and a page's sections, and never writes back a link to a deleted entry. A brand entry cannot be read or changed through `get_entry` or `update_entry`.
 
 `tests/opal-fields.test.ts` compares every limit above with the content model in `migrations/0001-content-model.ts`, so the two cannot drift apart.
 
@@ -155,7 +158,7 @@ To stop all tool calls immediately without a deploy, switch the registry to inac
 | `src/app/api/opal/discovery/route.ts` | Public discovery document |
 | `src/app/api/opal/tools/[tool]/route.ts` | One route for every tool |
 | `src/lib/opal/http.ts` | Token check, size and rate limits, parsing, error mapping, logs |
-| `src/lib/opal/registry.ts` | The ten tools, their descriptions and schemas, and the manifest |
+| `src/lib/opal/registry.ts` | The thirteen tools, their descriptions and schemas, and the manifest |
 | `src/lib/opal/tools-read.ts`, `tools-write.ts` | Tool logic (no HTTP) |
 | `src/lib/opal/fields.ts` | The allowlist of editable fields and their validators |
 | `src/lib/opal/context.ts` | Brand lookup, status, URLs, the entry view |

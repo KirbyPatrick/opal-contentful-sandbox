@@ -86,12 +86,14 @@ export const READ_ONLY_ALLOW = {
 
 /**
  * The Opal API (src/app/api/opal). Entries can be read, created, updated,
- * published, and unpublished; assets are read only (agents pick existing
- * images by ID). No delete, archive, content type, tag, webhook, or
- * environment access. Deleting content stays a human decision.
+ * published, unpublished, and deleted; the published (live) version of an
+ * entry can be read, to undo changes; assets are read only (agents pick existing
+ * images by ID). No archive, content type, tag, webhook, or environment access.
+ * delete_entry (src/lib/opal/tools-undo.ts) only ever deletes entries the API
+ * created itself (tagged opal, never seed) that nothing links to.
  */
 export const OPAL_API_ALLOW = {
-  entry: ["get", "getMany", "create", "update", "publish", "unpublish"],
+  entry: ["get", "getMany", "getPublished", "create", "update", "publish", "unpublish", "delete"],
   asset: ["get", "getMany"],
 } as const satisfies MethodAllowlist;
 

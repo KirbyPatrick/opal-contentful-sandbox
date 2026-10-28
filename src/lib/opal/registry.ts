@@ -14,6 +14,7 @@ import {
   createArticle, createArticleSchema, createFaq, createFaqSchema, publishEntry, publishEntrySchema, unpublishEntry, unpublishEntrySchema,
   updateEntry, updateEntrySchema,
 } from "./tools-write";
+import { deleteEntry, deleteEntrySchema, removeFaq, removeFaqSchema, revertEntry, revertEntrySchema } from "./tools-undo";
 
 export interface ParameterDoc {
   name: string;
@@ -211,6 +212,56 @@ export const TOOLS: readonly ToolDefinition[] = [
     description:
       "Takes a published article off the live site. It returns to draft and nothing is deleted. Only articles can be unpublished. " +
       "Ask the user to confirm first. Pass the current version from get_entry.",
+  }),
+  defineTool({
+    name: "remove_faq",
+    write: true,
+    schema: removeFaqSchema,
+    run: removeFaq,
+    parameters: [
+      { name: "brand", type: "string", required: true, description: BRAND },
+      { name: "page_id", type: "string", required: true, description: "entry_id of the page the FAQ is on." },
+      { name: "page_version", type: "number", required: true, description: "The page's current version number, from get_entry." },
+      { name: "faq_entry_id", type: "string", required: true, description: "entry_id of the FAQ to take off the page (one of the page's sections, added with create_faq)." },
+      { name: "publish", type: "string", required: false, description: 'Send "true" only if the user asked to update the live page now. Default is a draft change.' },
+    ],
+    description:
+      "Takes an FAQ that create_faq added back off a page. Only FAQs made with create_faq can be removed; the page's other sections are untouched. " +
+      "The page change is a draft unless publish is true; with publish it goes live only if the page has no other unpublished changes. " +
+      "The FAQ entry itself is kept: to remove it for good, publish the page change first, then call delete_entry on the FAQ once the user agrees. " +
+      "If the FAQ was never published, revert_entry with to: live on the page undoes the addition just as well.",
+  }),
+  defineTool({
+    name: "revert_entry",
+    write: true,
+    schema: revertEntrySchema,
+    run: revertEntry,
+    parameters: [
+      { name: "brand", type: "string", required: true, description: BRAND },
+      { name: "entry_id", type: "string", required: true, description: "The entry to undo changes on, from find_pages or get_entry." },
+      { name: "version", type: "number", required: true, description: VERSION },
+      { name: "to", type: "string", required: true, description: 'Either "live" (throw away unpublished changes so the entry matches the live site) or "original" (restore the site\'s original copy, as a draft).' },
+    ],
+    description:
+      "Undoes changes to an entry's copy (the fields update_entry can change, plus a page's sections). " +
+      'to: "live" throws away unpublished changes, so the entry matches the live site again; the live site does not change. Use it to undo an update_entry or create_faq that was not published yet. ' +
+      'to: "original" restores the site\'s original copy as a draft: show the user preview_url, then publish_entry makes it live. Use it to undo a change that was already published. Only the site\'s original content has an original version. ' +
+      "Ask the user to confirm before reverting. Content this API created has no original version; delete_entry removes it.",
+  }),
+  defineTool({
+    name: "delete_entry",
+    write: true,
+    schema: deleteEntrySchema,
+    run: deleteEntry,
+    parameters: [
+      { name: "brand", type: "string", required: true, description: BRAND },
+      { name: "entry_id", type: "string", required: true, description: "The article, FAQ, or FAQ question to delete. Must have been created through this API." },
+      { name: "version", type: "number", required: true, description: VERSION },
+    ],
+    description:
+      "Permanently deletes an article, FAQ, or FAQ question that was created through this API (create_article or create_faq). It cannot be undone. " +
+      "The site's original content can never be deleted. An entry still used elsewhere, in a draft or on the live site, is refused: take an FAQ off its page with remove_faq and publish the page first. " +
+      "Deleting an FAQ also deletes its questions. If the entry is live it is unpublished first. Always ask the user to confirm, naming what will be deleted, before calling this.",
   }),
 ];
 
