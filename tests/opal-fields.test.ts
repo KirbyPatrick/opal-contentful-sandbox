@@ -68,8 +68,8 @@ describe("allowlist matches the content model", () => {
     }
   });
 
-  it("only articles can be created or unpublished", () => {
-    assert.deepEqual(Object.entries(TYPES).filter(([, s]) => s.canCreate).map(([n]) => n), ["article"]);
+  it("only articles and FAQs can be created, and only articles unpublished", () => {
+    assert.deepEqual(Object.entries(TYPES).filter(([, s]) => s.canCreate).map(([n]) => n), ["article", "faq"]);
     assert.deepEqual(Object.entries(TYPES).filter(([, s]) => s.canUnpublish).map(([n]) => n), ["article"]);
   });
 });

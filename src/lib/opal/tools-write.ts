@@ -1,5 +1,5 @@
 /**
- * Write tools: create_article, update_entry, publish_entry, unpublish_entry.
+ * Write tools: create_article, create_faq, update_entry, publish_entry, unpublish_entry.
  *
  * Rules every one of them follows:
  * - the agent names the brand, and the entry must belong to it
@@ -7,6 +7,8 @@
  * - updates, publishes, and unpublishes carry the version the agent last read;
  *   a stale version is refused (and Contentful enforces it again)
  * - images are asset IDs from the brand's own image pool
+ * - FAQs and their questions can only be changed if this API created them
+ * - a page's sections only ever change by create_faq adding the FAQ it just made
  * - nothing here can delete or archive (the client policy has no such methods)
  */
 import { z } from "zod";
@@ -19,6 +21,7 @@ import {
   contentTypeOf,
   entryStatus,
   fieldValue,
+  linkId,
   loadEntry,
   resolveBrand,
   specFor,
@@ -37,6 +40,12 @@ const localized = (value: unknown) => ({ [LOCALE]: value });
 const version = intParam(1, 1_000_000);
 
 const shortText = z.string().max(1_000);
+
+const isOpalCreated = (entry: Entry): boolean => entry.metadata?.tags.some((tag) => tag.sys.id === "opal") ?? false;
+const linkIds = (value: unknown): string[] => (Array.isArray(value) ? value.map(linkId).filter((id): id is string => Boolean(id)) : []);
+
+/** Never pass raw error text through: only a ToolError message is safe for the agent. */
+const safeMessage = (error: unknown, fallback: string): string => (error instanceof ToolError ? error.message : fallback);
 
 // ---------- create_article ----------
 
@@ -160,9 +169,7 @@ export async function createArticle(ctx: ToolContext, input: z.infer<typeof crea
     try {
       created = await ctx.client.entry.publish({ entryId: created.sys.id }, created);
     } catch (error) {
-      const mapped = upstreamToToolError(error, "The article");
-      // Never pass raw error text through: only a ToolError message is safe for the agent.
-      publishError = mapped instanceof ToolError ? mapped.message : "Publishing failed unexpectedly. Try publish_entry again.";
+      publishError = safeMessage(upstreamToToolError(error, "The article"), "Publishing failed unexpectedly. Try publish_entry again.");
     }
   }
 
@@ -211,6 +218,12 @@ async function loadForWrite(ctx: ToolContext, brandInput: string, entryId: strin
     throw new ToolError("not_allowed", `${contentTypeOf(entry)} entries cannot be changed through this API. Editable types: ${Object.keys(TYPES).filter((t) => Object.keys(TYPES[t]?.editable ?? {}).length > 0).join(", ")}.`);
   }
   await assertEntryInBrand(ctx, entry, brand);
+  if (spec.opalOnly && !isOpalCreated(entry)) {
+    throw new ToolError(
+      "not_allowed",
+      `Entry "${entryId}" is a ${spec.label} from the site's original content, which cannot be changed through this API. Only ${spec.label} entries made with create_faq can be edited.`,
+    );
+  }
   if (entryStatus(entry.sys) === "archived") {
     throw new ToolError("not_allowed", `Entry "${entryId}" is archived and cannot be changed through this API.`);
   }
@@ -247,7 +260,7 @@ export async function updateEntry(ctx: ToolContext, input: z.infer<typeof update
     const rule = spec.editable[name] as FieldSpec;
     const raw = requested[name];
     if (raw === null) {
-      if ("required" in rule && rule.required) throw new ToolError("invalid_input", `${name}: is required and cannot be cleared.`);
+      if (("required" in rule && rule.required) || spec.keep?.includes(name)) throw new ToolError("invalid_input", `${name}: is required and cannot be cleared.`);
       delete (next.fields as Record<string, unknown>)[name];
       continue;
     }
@@ -283,22 +296,69 @@ const stateChangeSchema = z.strictObject({ brand: brandParam, entry_id: entryIdP
 export const publishEntrySchema = stateChangeSchema;
 export const unpublishEntrySchema = stateChangeSchema;
 
-export async function publishEntry(ctx: ToolContext, input: z.infer<typeof publishEntrySchema>) {
-  const { brand, entry, spec } = await loadForWrite(ctx, input.brand, input.entry_id, input.version);
-  if (!spec.canPublish) throw new ToolError("not_allowed", `${spec.label} entries cannot be published through this API.`);
-  if (entryStatus(entry.sys) === "published") {
-    return { ...(await viewEntry(ctx, entry, brand)), changed: false, note: "Already published with no newer changes. Nothing to do." };
-  }
-  let published: Entry;
+/** Publishes an entry unless it is already live and unchanged. */
+async function publishIfNeeded(ctx: ToolContext, entry: Entry): Promise<Entry> {
+  if (entryStatus(entry.sys) === "published") return entry;
   try {
-    published = await ctx.client.entry.publish({ entryId: entry.sys.id }, entry);
+    return await ctx.client.entry.publish({ entryId: entry.sys.id }, entry);
   } catch (error) {
     throw upstreamToToolError(error, `Entry "${entry.sys.id}"`);
   }
+}
+
+/** Loads entries by ID in one request, in the order given. Missing IDs are left out. */
+async function loadMany(ctx: ToolContext, ids: readonly string[]): Promise<Entry[]> {
+  if (ids.length === 0) return [];
+  let found: Entry[];
+  try {
+    found = (await ctx.client.entry.getMany({ query: { "sys.id[in]": ids.join(","), limit: ids.length } })).items;
+  } catch (error) {
+    throw upstreamToToolError(error, "The linked entries");
+  }
+  const byId = new Map(found.map((entry) => [entry.sys.id, entry]));
+  return ids.map((id) => byId.get(id)).filter((entry): entry is Entry => Boolean(entry));
+}
+
+/**
+ * Publishing a page or an FAQ first publishes the never-published FAQs and questions this API created
+ * for it in the same brand, so a live page never links to a draft. Original site content, and later
+ * edits to an already live FAQ, are never published as a side effect.
+ */
+async function publishOpalFaqsIn(ctx: ToolContext, entry: Entry, brandId: string): Promise<string[]> {
+  const type = contentTypeOf(entry);
+  const ours = (candidate: Entry) =>
+    isOpalCreated(candidate) && linkId(fieldValue(candidate, "brand")) === brandId && entryStatus(candidate.sys) === "draft";
+  const faqs = type === "page"
+    ? (await loadMany(ctx, linkIds(fieldValue(entry, "sections")))).filter((section) => contentTypeOf(section) === "faq" && ours(section))
+    : [];
+  const published: string[] = [];
+  for (const faq of type === "faq" ? [entry] : faqs) {
+    const items = (await loadMany(ctx, linkIds(fieldValue(faq, "items")))).filter((item) => contentTypeOf(item) === "item" && ours(item));
+    for (const item of items) {
+      await publishIfNeeded(ctx, item);
+      published.push(item.sys.id);
+    }
+    if (faq !== entry) {
+      await publishIfNeeded(ctx, faq);
+      published.push(faq.sys.id);
+    }
+  }
+  return published;
+}
+
+export async function publishEntry(ctx: ToolContext, input: z.infer<typeof publishEntrySchema>) {
+  const { brand, entry, spec } = await loadForWrite(ctx, input.brand, input.entry_id, input.version);
+  if (!spec.canPublish) throw new ToolError("not_allowed", `${spec.label} entries cannot be published through this API.`);
+  const alsoPublished = await publishOpalFaqsIn(ctx, entry, brand.id);
+  if (entryStatus(entry.sys) === "published" && alsoPublished.length === 0) {
+    return { ...(await viewEntry(ctx, entry, brand)), changed: false, note: "Already published with no newer changes. Nothing to do." };
+  }
+  const published = await publishIfNeeded(ctx, entry);
   return {
     ...(await viewEntry(ctx, published, brand)),
     changed: true,
-    note: "Published. The live site refreshes automatically within a few seconds.",
+    also_published: alsoPublished.length > 0 ? alsoPublished : undefined,
+    note: `Published${alsoPublished.length > 0 ? `, together with ${alsoPublished.length} FAQ ${alsoPublished.length === 1 ? "entry" : "entries"} it links to` : ""}. The live site refreshes automatically within a few seconds.`,
   };
 }
 
@@ -320,5 +380,161 @@ export async function unpublishEntry(ctx: ToolContext, input: z.infer<typeof unp
     ...(await viewEntry(ctx, unpublished, brand)),
     changed: true,
     note: "Unpublished. The page leaves the live site within a few seconds, so its live URL will now show not found.",
+  };
+}
+
+// ---------- create_faq ----------
+
+const MAX_SECTIONS = 12;
+const MAX_QUESTIONS = 10;
+
+export const createFaqSchema = z.strictObject({
+  brand: brandParam,
+  page_id: entryIdParam,
+  page_version: version,
+  questions: z.union([z.string().max(20_000), z.array(z.unknown()).max(50)]),
+  heading: shortText.optional(),
+  after_entry_id: entryIdParam.optional(),
+  publish: boolParam.optional(),
+});
+
+function rule(type: "faq" | "item", name: string): FieldSpec {
+  const spec = TYPES[type]?.editable[name];
+  if (!spec) throw new Error(`The ${type} content type has no ${name} rule.`);
+  return spec;
+}
+
+const QUESTIONS_FORMAT = 'questions: must be a JSON array such as [{"question": "How long does it take?", "answer": "Most orders ship in two days."}].';
+
+function parseQuestions(input: string | unknown[]): Array<{ question: string; answer: string }> {
+  let value: unknown = input;
+  if (typeof input === "string") {
+    try {
+      value = JSON.parse(input);
+    } catch {
+      throw new ToolError("invalid_input", QUESTIONS_FORMAT);
+    }
+  }
+  if (!Array.isArray(value) || value.length === 0) throw new ToolError("invalid_input", QUESTIONS_FORMAT);
+  if (value.length > MAX_QUESTIONS) throw new ToolError("invalid_input", `questions: has ${value.length} questions; the limit is ${MAX_QUESTIONS}.`);
+  const seen = new Set<string>();
+  return value.map((raw, index) => {
+    const pair = raw as { question?: unknown; answer?: unknown } | null;
+    if (typeof pair !== "object" || pair === null) throw new ToolError("invalid_input", QUESTIONS_FORMAT);
+    const where = `questions[${index}]`;
+    if (pair.answer === undefined || pair.answer === null || pair.answer === "") {
+      throw new ToolError("invalid_input", `${where}.answer: is required. Every question needs an answer.`);
+    }
+    const question = validateField(`${where}.question`, rule("item", "title"), pair.question) as string;
+    const answer = validateField(`${where}.answer`, rule("item", "text"), pair.answer) as string;
+    const key = question.toLowerCase();
+    if (seen.has(key)) throw new ToolError("invalid_input", `${where}.question: "${question}" is asked twice.`);
+    seen.add(key);
+    return { question, answer };
+  });
+}
+
+/**
+ * Creates an FAQ (questions shown as an accordion) and adds it to a page as a new section: after
+ * after_entry_id, or at the end. Existing sections are never removed or reordered. The questions,
+ * the FAQ, and the page change are drafts until the page is published.
+ */
+export async function createFaq(ctx: ToolContext, input: z.infer<typeof createFaqSchema>) {
+  // Validate everything that needs no network first, so a bad request costs nothing.
+  const questions = parseQuestions(input.questions);
+  const heading = input.heading ? (validateField("heading", rule("faq", "heading"), input.heading) as string) : undefined;
+
+  const { brand, entry: page } = await loadForWrite(ctx, input.brand, input.page_id, input.page_version);
+  if (contentTypeOf(page) !== "page") {
+    throw new ToolError("invalid_input", `page_id: entry "${input.page_id}" is a ${contentTypeOf(page)}, not a page. Use find_pages with type page.`);
+  }
+  const current = Array.isArray(fieldValue(page, "sections")) ? (fieldValue(page, "sections") as unknown[]) : [];
+  if (current.length >= MAX_SECTIONS) {
+    throw new ToolError("not_allowed", `This page already has ${current.length} sections, the most a page can hold. Ask the user which page to use instead.`);
+  }
+  let at = current.length;
+  if (input.after_entry_id) {
+    const index = current.findIndex((value) => linkId(value) === input.after_entry_id);
+    if (index < 0) {
+      throw new ToolError(
+        "invalid_input",
+        `after_entry_id: "${input.after_entry_id}" is not one of this page's sections. Its sections, in order: ${linkIds(current).join(", ") || "none"}. Leave after_entry_id out to add the FAQ at the end.`,
+      );
+    }
+    at = index + 1;
+  }
+  // Only publish in this call if that publishes nothing but the new FAQ: a page with other unpublished
+  // changes waits for the user to see them in the preview.
+  const pageHadPendingChanges = entryStatus(page.sys) !== "published";
+
+  const brandLink = localized(link("Entry", brand.id));
+  const pageTitle = String(fieldValue(page, "title") ?? "Page");
+  const created: Entry[] = [];
+  const leftover = () => (created.length > 0 ? ` These drafts were created but are not on any page: ${created.map((e) => e.sys.id).join(", ")}.` : "");
+  const fail = (error: unknown, subject: string): never => {
+    const mapped = upstreamToToolError(error, subject);
+    // Unexpected errors keep their details for the server log; the agent only ever sees a ToolError message.
+    if (!(mapped instanceof ToolError)) throw mapped;
+    throw new ToolError(mapped.code, `${mapped.message}${leftover()}`);
+  };
+
+  try {
+    for (const { question, answer } of questions) {
+      created.push(await ctx.client.entry.create(
+        { contentTypeId: "item" },
+        { fields: { title: localized(question), text: localized(answer), brand: brandLink }, metadata: { tags: [OPAL_TAG] } },
+      ));
+    }
+    const faqFields: Record<string, unknown> = {
+      internalName: localized(`${brand.name} - ${pageTitle} - FAQ`.slice(0, 80)),
+      brand: brandLink,
+      items: localized(created.map((item) => link("Entry", item.sys.id))),
+    };
+    if (heading) faqFields.heading = localized(heading);
+    created.push(await ctx.client.entry.create({ contentTypeId: "faq" }, { fields: faqFields, metadata: { tags: [OPAL_TAG] } }));
+  } catch (error) {
+    fail(error, "The FAQ");
+  }
+  const faq = created[created.length - 1] as Entry;
+  const items = created.slice(0, -1);
+
+  let saved: Entry;
+  try {
+    const sections = [...current];
+    sections.splice(at, 0, link("Entry", faq.sys.id));
+    const next = structuredClone(page);
+    (next.fields as Record<string, unknown>).sections = localized(sections);
+    saved = await ctx.client.entry.update({ entryId: page.sys.id }, next);
+  } catch (error) {
+    return fail(error, `Page "${page.sys.id}"`);
+  }
+
+  let publishError: string | undefined;
+  if (input.publish === true) {
+    if (pageHadPendingChanges) {
+      publishError = `Not published: the page already had unpublished changes, and publishing it would publish those too. Show the user preview_url, then call publish_entry on the page with version ${saved.sys.version}.`;
+    } else {
+      try {
+        for (const entry of [...items, faq]) await publishIfNeeded(ctx, entry);
+        saved = await publishIfNeeded(ctx, saved);
+      } catch (error) {
+        publishError = safeMessage(error, "Publishing failed unexpectedly. Try publish_entry on the page again.");
+      }
+    }
+  }
+
+  const view = await viewEntry(ctx, saved, brand);
+  return {
+    ...view,
+    faq_entry_id: faq.sys.id,
+    question_entry_ids: items.map((item) => item.sys.id),
+    section_position: at + 1,
+    publish_error: publishError,
+    note:
+      view.status === "published"
+        ? `FAQ added as section ${at + 1} and published with its ${questions.length} questions. The live site refreshes within a few seconds.`
+        : `FAQ added as section ${at + 1} of ${current.length + 1}, as a draft tagged "opal". The live page does not change yet. Show the user preview_url and ask before publishing. ` +
+          `To publish, call publish_entry on the page (${page.sys.id}) with version ${view.version}; that also publishes the FAQ and its questions.` +
+          (publishError ? " Publishing was attempted and failed; see publish_error." : ""),
   };
 }

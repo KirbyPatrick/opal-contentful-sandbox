@@ -11,7 +11,7 @@ import {
   listBrandImages, listBrandImagesSchema, listBrands, listBrandsSchema,
 } from "./tools-read";
 import {
-  createArticle, createArticleSchema, publishEntry, publishEntrySchema, unpublishEntry, unpublishEntrySchema,
+  createArticle, createArticleSchema, createFaq, createFaqSchema, publishEntry, publishEntrySchema, unpublishEntry, unpublishEntrySchema,
   updateEntry, updateEntrySchema,
 } from "./tools-write";
 
@@ -95,7 +95,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     run: getContentRules,
     parameters: [
       { name: "brand", type: "string", required: true, description: BRAND },
-      { name: "content_type", type: "string", required: false, description: "Optional: article, page, hero, cta, richTextSection, offering, collection, or person. Default is all." },
+      { name: "content_type", type: "string", required: false, description: "Optional: article, page, hero, cta, richTextSection, faq, item, offering, collection, or person. Default is all." },
     ],
     description:
       "Returns the rules for writing and editing a brand's content: its voice (description, do and don't lists, photo direction), the global content rules, " +
@@ -145,6 +145,27 @@ export const TOOLS: readonly ToolDefinition[] = [
       "The article's live_url appears once it is published. An unknown brand returns an error: ask the user which brand they mean.",
   }),
   defineTool({
+    name: "create_faq",
+    write: true,
+    schema: createFaqSchema,
+    run: createFaq,
+    parameters: [
+      { name: "brand", type: "string", required: true, description: BRAND },
+      { name: "page_id", type: "string", required: true, description: "entry_id of the page to add the FAQ to, from find_pages with type page." },
+      { name: "page_version", type: "number", required: true, description: "The page's current version number, from get_entry or find_pages." },
+      { name: "questions", type: "string", required: true, description: 'JSON array of 1 to 10 questions with answers, for example [{"question": "How long does shipping take?", "answer": "Most orders arrive in three to five business days."}]. Each question at most 90 characters, each answer one paragraph of at most 600 characters, plain text, no em dashes.' },
+      { name: "heading", type: "string", required: false, description: "Heading shown above the questions, at most 70 characters, for example Frequently asked questions." },
+      { name: "after_entry_id", type: "string", required: false, description: "entry_id of one of the page's current sections (see get_entry links.sections); the FAQ goes right after it. Default is the end of the page." },
+      { name: "publish", type: "string", required: false, description: 'Send "true" only if the user asked to publish immediately. Default is a draft.' },
+    ],
+    description:
+      "Adds a new FAQ section, shown as an accordion of questions and answers, to an existing page. " +
+      "Call get_entry on the page first for its version and sections, and get_content_rules to write in the brand's voice; base the answers on what the page and brand actually say and do not invent prices, guarantees, or legal claims. " +
+      "The FAQ is added after after_entry_id or at the end; existing sections are never removed or reordered, and a page holds at most 12 sections. " +
+      "Everything is saved as a draft tagged opal: show the user the returned preview_url, and only after they agree call publish_entry on the page, which also publishes the FAQ and its questions. " +
+      "To change the FAQ later, use update_entry on faq_entry_id (heading) or on a question_entry_id (title is the question, text is the answer).",
+  }),
+  defineTool({
     name: "update_entry",
     write: true,
     schema: updateEntrySchema,
@@ -156,7 +177,7 @@ export const TOOLS: readonly ToolDefinition[] = [
       { name: "fields", type: "string", required: true, description: 'JSON object of field names to new values, for example {"headline": "Faster approvals", "subheadline": null}. Rich text values are Markdown, image fields take an asset_id, null clears an optional field. Only fields listed by get_content_rules are accepted.' },
     ],
     description:
-      "Changes copy fields on an existing entry: articles, pages (title and SEO), heroes, CTAs, offerings, and collections. " +
+      "Changes copy fields on an existing entry: articles, pages (title and SEO), heroes, CTAs, rich text sections, offerings, collections, and FAQs and questions made with create_faq. " +
       "Slugs, page types, funnel links, brands, themes, and prices cannot be changed. Call get_entry first for the current content and version, " +
       "and get_content_rules for the allowed fields and the brand voice. A stale version returns a version_conflict error: re-read and retry. " +
       "The change is saved as a draft: a live page does not change until publish_entry is called. Show the user the preview_url before publishing.",
@@ -174,7 +195,8 @@ export const TOOLS: readonly ToolDefinition[] = [
     description:
       "Publishes the saved version of an entry so it goes live; the site refreshes within a few seconds. " +
       "Only call this after the user has seen the preview and agreed. Pass the current version from get_entry or the last write. " +
-      "Returns the live_url. Pages, heroes, CTAs, articles, offerings, and collections can be published.",
+      "Returns the live_url. Pages, heroes, CTAs, rich text sections, articles, offerings, collections, and FAQs made with create_faq can be published. " +
+      "Publishing a page also publishes any draft FAQ that create_faq added to it.",
   }),
   defineTool({
     name: "unpublish_entry",

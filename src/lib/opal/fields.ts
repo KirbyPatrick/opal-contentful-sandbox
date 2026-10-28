@@ -5,7 +5,9 @@
  * (migrations/0001-content-model.ts); tests/opal-fields.test.ts fails if they drift.
  *
  * Never writable: brands, themes, slugs of existing entries, page types, funnel
- * links (nextStep and similar), content types, and anything that deletes.
+ * links (nextStep and similar), content types, and anything that deletes. A page's
+ * sections are never written here either; create_faq is the one tool that adds
+ * a section, and it only ever appends the FAQ it just created.
  */
 import { markdownToRichText, richTextPlainText, type RichTextDocument } from "../richtext/markdown";
 import { ToolError } from "./errors";
@@ -35,6 +37,10 @@ export interface TypeSpec {
   canCreate: boolean;
   canPublish: boolean;
   canUnpublish: boolean;
+  /** Only entries created through this API (tagged opal) may be changed; seed entries of this type stay read only. */
+  opalOnly?: boolean;
+  /** Fields that are optional in the content model but may not be cleared through this API. */
+  keep?: readonly string[];
 }
 
 const seo = {
@@ -112,6 +118,35 @@ export const TYPES: Readonly<Record<string, TypeSpec>> = {
     canCreate: false,
     canPublish: true,
     canUnpublish: false,
+  },
+  // FAQs are created with create_faq. Only FAQs made that way can be edited, so seed FAQs and the
+  // items used as navigation links elsewhere stay read only.
+  faq: {
+    label: "FAQ",
+    titleField: "internalName",
+    editable: { heading: { kind: "text", max: 70 } },
+    readOnly: ["internalName"],
+    links: ["items"],
+    canCreate: true,
+    canPublish: true,
+    canUnpublish: false,
+    opalOnly: true,
+  },
+  item: {
+    label: "FAQ question",
+    titleField: "title",
+    editable: {
+      title: { kind: "text", max: 90, required: true },
+      // Optional in the content model; create_faq requires an answer for every question.
+      text: { kind: "text", max: 600 },
+    },
+    readOnly: [],
+    links: [],
+    canCreate: false,
+    canPublish: true,
+    canUnpublish: false,
+    opalOnly: true,
+    keep: ["text"],
   },
   offering: {
     label: "Offering",

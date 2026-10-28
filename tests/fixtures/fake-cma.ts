@@ -95,6 +95,8 @@ function linkedIds(value: unknown): string[] {
 function matches(item: FakeEntry | FakeAsset, query: Json): boolean {
   const typeOf = (item as FakeEntry).sys.contentType?.sys.id;
   if (query.content_type && typeOf !== query.content_type) return false;
+  const ids = query["sys.id[in]"];
+  if (typeof ids === "string" && !ids.split(",").includes(item.sys.id)) return false;
   const types = query["sys.contentType.sys.id[in]"];
   if (typeof types === "string" && !types.split(",").includes(typeOf ?? "")) return false;
   if (typeof query.links_to_entry === "string") {

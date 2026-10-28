@@ -29,7 +29,7 @@ Each one below was run through Opal against the live site. In chat, type them as
 
 Talking points:
 
-- The agent can only do what the nine tools allow. It cannot delete, and it cannot change slugs, brands, page types, prices, or links between pages.
+- The agent can only do what the ten tools allow. It cannot delete, and it cannot change slugs, brands, page types, prices, or links between pages.
 - Every change is a draft with a preview link first. Publishing is a separate step that needs a version number, so two people cannot overwrite each other by accident.
 - **Timing:** after a publish, the live site usually updates in 3 to 5 seconds, but measured times went up to 34 seconds. Tell the audience "up to about 35 seconds" or have another tab open.
 

@@ -38,6 +38,20 @@ export default async function ExamplePage() {
   const howTo = section("ex-cg-how-to");
   const pricing = section("ex-rt-pricing");
   const help = section("ex-ct-help");
+  // FAQs Opal adds with create_faq are new sections, so they are found by type, not by ID, and drawn right
+  // after the section they follow. One that follows a section this layout does not draw goes before the help band.
+  const drawn = ["ex-rt-get-barcodes", "ex-cm-compare", "ex-ct-estimator", "ex-rt-overview", "ex-cg-why", "ex-cg-how-to", "ex-rt-pricing", "ex-ct-help"];
+  const faqsByPrevious = new Map<string, SiteEntry[]>();
+  let previous = "start";
+  for (const entry of g.entries(page.fields.sections)) {
+    if (entry.type !== "faq") {
+      previous = drawn.includes(entry.id) ? entry.id : "before-help";
+      continue;
+    }
+    faqsByPrevious.set(previous, [...(faqsByPrevious.get(previous) ?? []), entry]);
+  }
+  const faqsAfter = (...ids: string[]) =>
+    ids.flatMap((id) => faqsByPrevious.get(id) ?? []).map((faq) => <Faq key={faq.id} g={g} entry={faq} />);
 
   return (
     <div className="gs1">
@@ -59,11 +73,15 @@ export default async function ExamplePage() {
           <div className="gs1-wrap"><h1>{ones(headline)}</h1></div>
         </section>
 
+        {faqsAfter("start")}
+
         <section className="gs1-wrap gs1-intro">
           {intro && <h2 className="gs1-h2">{ones(text(intro, "heading"))}</h2>}
           <RichText document={intro?.fields.body} className="gs1-lead" renderText={ones} />
           <Compare g={g} entry={compare} />
         </section>
+
+        {faqsAfter("ex-rt-get-barcodes", "ex-cm-compare")}
 
         {estimator && (
           <section className="gs1-band" aria-label={text(estimator, "heading")}>
@@ -73,6 +91,8 @@ export default async function ExamplePage() {
             </div>
           </section>
         )}
+
+        {faqsAfter("ex-ct-estimator")}
 
         {overview && (
           <section className="gs1-overview">
@@ -88,6 +108,8 @@ export default async function ExamplePage() {
             </div>
           </section>
         )}
+
+        {faqsAfter("ex-rt-overview")}
 
         {why && (
           <section className="gs1-wrap gs1-why">
@@ -106,6 +128,8 @@ export default async function ExamplePage() {
             </ul>
           </section>
         )}
+
+        {faqsAfter("ex-cg-why")}
 
         <hr className="gs1-rule" />
 
@@ -128,6 +152,8 @@ export default async function ExamplePage() {
           </section>
         )}
 
+        {faqsAfter("ex-cg-how-to")}
+
         {pricing && (
           <section className="gs1-wrap gs1-pricing" aria-labelledby="gs1-pricing-title">
             <div className="gs1-pricing-card">
@@ -138,6 +164,8 @@ export default async function ExamplePage() {
             </div>
           </section>
         )}
+
+        {faqsAfter("ex-rt-pricing", "before-help")}
 
         {help && (
           <section className="gs1-help">
@@ -151,9 +179,29 @@ export default async function ExamplePage() {
             </div>
           </section>
         )}
+        {faqsAfter("ex-ct-help")}
       </main>
       <Footer />
     </div>
+  );
+}
+
+function Faq({ g, entry }: { g: BrandGraph; entry: SiteEntry }) {
+  const items = g.entries(entry.fields.items);
+  if (items.length === 0) return null;
+  const heading = text(entry, "heading");
+  return (
+    <section className="gs1-wrap gs1-faq" aria-label={heading ?? "Frequently asked questions"}>
+      {heading && <h2 className="gs1-h2">{ones(heading)}</h2>}
+      <div className="gs1-faq-list">
+        {items.map((item) => (
+          <details key={item.id}>
+            <summary>{ones(text(item, "title"))}</summary>
+            <p>{ones(text(item, "text"))}</p>
+          </details>
+        ))}
+      </div>
+    </section>
   );
 }
 

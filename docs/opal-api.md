@@ -1,6 +1,6 @@
 # Opal API
 
-**Status: built in Phase 8.** Lets Optimizely Opal read, create, update, publish, and unpublish content in the `opal-sandbox` environment through nine tools. There is no delete tool and the code cannot delete.
+**Status: built in Phase 8.** Lets Optimizely Opal read, create, update, publish, and unpublish content in the `opal-sandbox` environment through ten tools. There is no delete tool and the code cannot delete.
 
 ## How Opal connects
 
@@ -44,8 +44,9 @@ grep '^OPAL_API_TOKEN=' .env | cut -d= -f2- | tr -d '\n' | pbcopy
 | `get_content_rules` | Read | Brand voice, global rules, and per content type which fields are editable with limits |
 | `list_brand_images` | Read | Images in a brand's pool (`brand-<slug>` tag): asset ID, alt text, credit, thumbnail |
 | `create_article` | Write | New article as a draft tagged `opal` (published only if `publish` is `"true"`) |
+| `create_faq` | Write | New FAQ (1 to 10 questions with answers) added to a page as a new section, after a named section or at the end. The questions, the FAQ, and the page change are drafts tagged `opal` |
 | `update_entry` | Write | Changes allowlisted copy fields, saved as a draft change |
-| `publish_entry` | Write | Publishes the saved version, so the live site refreshes in about 3 seconds |
+| `publish_entry` | Write | Publishes the saved version, so the live site refreshes in about 3 seconds. Publishing a page also publishes the draft FAQs `create_faq` added to it |
 | `unpublish_entry` | Write | Takes an article off the live site (back to draft, never deleted) |
 
 Every response that describes an entry includes `entry_id`, `content_type`, `brand`, `brand_name`, `title`, `status` (`draft`, `published`, or `changed`), `version`, `preview_url`, and `live_url`.
@@ -63,11 +64,14 @@ Every response that describes an entry includes `entry_id`, `content_type`, `bra
 | page | title, seoTitle, seoDescription | No | Yes | No |
 | hero | eyebrow, headline, subheadline, image | No | Yes | No |
 | cta | label, heading, body | No | Yes | No |
+| richTextSection | heading, body | No | Yes | No |
+| faq | heading (only FAQs made with `create_faq`) | With `create_faq` | Yes | No |
+| item | title (the question) and text (the answer), only questions made with `create_faq` | With `create_faq` | Yes | No |
 | offering | summary, description, features, badge, seoTitle, seoDescription | No | Yes | No |
 | collection | summary, description, eyebrow, image, seoTitle, seoDescription | No | Yes | No |
 | person | none (readable only) | No | No | No |
 
-**Never changeable:** brands, themes, slugs, page types, funnel links (`nextStep` and similar), prices, content types, references between entries (except the related page and author set once when an article is created), and anything that deletes. A brand entry cannot be read or changed through `get_entry` or `update_entry`.
+**Never changeable:** brands, themes, slugs, page types, funnel links (`nextStep` and similar), prices, content types, references between entries (except the related page and author set once when an article is created, and the one section `create_faq` adds), the site's original FAQs and items (items are also navigation links), and anything that deletes. A brand entry cannot be read or changed through `get_entry` or `update_entry`.
 
 `tests/opal-fields.test.ts` compares every limit above with the content model in `migrations/0001-content-model.ts`, so the two cannot drift apart.
 
@@ -151,7 +155,7 @@ To stop all tool calls immediately without a deploy, switch the registry to inac
 | `src/app/api/opal/discovery/route.ts` | Public discovery document |
 | `src/app/api/opal/tools/[tool]/route.ts` | One route for every tool |
 | `src/lib/opal/http.ts` | Token check, size and rate limits, parsing, error mapping, logs |
-| `src/lib/opal/registry.ts` | The nine tools, their descriptions and schemas, and the manifest |
+| `src/lib/opal/registry.ts` | The ten tools, their descriptions and schemas, and the manifest |
 | `src/lib/opal/tools-read.ts`, `tools-write.ts` | Tool logic (no HTTP) |
 | `src/lib/opal/fields.ts` | The allowlist of editable fields and their validators |
 | `src/lib/opal/context.ts` | Brand lookup, status, URLs, the entry view |

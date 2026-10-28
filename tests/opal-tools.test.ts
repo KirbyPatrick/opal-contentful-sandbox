@@ -3,8 +3,8 @@ import { describe, it } from "node:test";
 import type { ToolContext } from "../src/lib/opal/context";
 import { ToolError } from "../src/lib/opal/errors";
 import { findPages, getContentRules, getEntry, listBrandImages, listBrands } from "../src/lib/opal/tools-read";
-import { createArticle, publishEntry, unpublishEntry, updateEntry } from "../src/lib/opal/tools-write";
-import { fakeCma, type FakeCma } from "./fixtures/fake-cma";
+import { createArticle, createFaq, publishEntry, unpublishEntry, updateEntry } from "../src/lib/opal/tools-write";
+import { entry, fakeCma, type FakeCma } from "./fixtures/fake-cma";
 
 const SITE = "https://site.test";
 const PREVIEW_SECRET = "preview-secret-value-that-must-never-leak-0123456789";
@@ -430,5 +430,186 @@ describe("what the tools can reach", () => {
     const allowed = new Set(["entry.get", "entry.getMany", "entry.create", "entry.update", "entry.publish", "entry.unpublish", "asset.get", "asset.getMany"]);
     assert.ok(cma.calls.every((call) => allowed.has(call)));
     assert.ok(!cma.calls.some((call) => /delete|archive/.test(call)));
+  });
+});
+
+describe("create_faq", () => {
+  const L = "en-US";
+  const ref = (id: string) => ({ sys: { type: "Link", linkType: "Entry", id } });
+  const questions = [
+    { question: "How long does a claim take?", answer: "Most claims are settled within ten business days." },
+    { question: "Can I change my deductible?", answer: "Yes, at renewal or by calling us at any time." },
+  ];
+
+  /** The DeFeo home page with two existing sections, at version 4 (published). */
+  function withSections(count = 2) {
+    const { cma, ctx } = setup();
+    const ids = Array.from({ length: count }, (_, i) => `rt-hl-${i + 1}`);
+    for (const id of ids) {
+      cma.entries.set(id, entry(id, "richTextSection", { internalName: `DeFeo - Home - ${id}`, brand: ref("brand-harborline"), body: { nodeType: "document", content: [] } }, { version: 2, publishedVersion: 1 }));
+    }
+    const page = cma.entries.get("page-hl-home")!;
+    page.fields.sections = { [L]: ids.map(ref) };
+    return { cma, ctx, ids };
+  }
+  const sectionIds = (cma: FakeCma) => ((cma.entries.get("page-hl-home")!.fields.sections as Record<string, Array<{ sys: { id: string } }>>)[L] ?? []).map((l) => l.sys.id);
+  const base = { brand: "defeo-mutual", page_id: "page-hl-home", page_version: 4 };
+
+  it("creates tagged draft questions and an FAQ, and appends it to the page as a draft change", async () => {
+    const { cma, ctx, ids } = withSections();
+    const result = await createFaq(ctx, { ...base, heading: "Common questions", questions: JSON.stringify(questions) });
+    assert.equal(result.status, "changed");
+    assert.equal(result.section_position, 3);
+    assert.deepEqual(sectionIds(cma), [...ids, result.faq_entry_id]);
+    assert.match(result.preview_url ?? "", /^https:\/\/site\.test\/api\/draft\?entry=page-hl-home&/);
+    const faq = cma.entries.get(result.faq_entry_id)!;
+    assert.equal(faq.sys.contentType.sys.id, "faq");
+    assert.equal((faq.fields.heading as Record<string, string>)[L], "Common questions");
+    assert.deepEqual(((faq.fields.items as Record<string, Array<{ sys: { id: string } }>>)[L] ?? []).map((l) => l.sys.id), result.question_entry_ids);
+    for (const id of [result.faq_entry_id, ...result.question_entry_ids]) {
+      const created = cma.entries.get(id)!;
+      assert.deepEqual(created.metadata?.tags.map((t) => t.sys.id), ["opal"]);
+      assert.equal(created.sys.publishedVersion, undefined, "nothing is published yet");
+      assert.equal((created.fields.brand as Record<string, { sys: { id: string } }>)[L]?.sys.id, "brand-harborline");
+    }
+    const first = cma.entries.get(result.question_entry_ids[0]!)!;
+    assert.equal((first.fields.title as Record<string, string>)[L], questions[0]!.question);
+    assert.equal((first.fields.text as Record<string, string>)[L], questions[0]!.answer);
+  });
+
+  it("inserts after a named section, and refuses one that is not on the page", async () => {
+    const { cma, ctx, ids } = withSections();
+    const result = await createFaq(ctx, { ...base, questions, after_entry_id: ids[0] });
+    assert.deepEqual(sectionIds(cma), [ids[0], result.faq_entry_id, ids[1]]);
+    const again = withSections();
+    const error = await toolError(createFaq(again.ctx, { ...base, questions, after_entry_id: "hero-hl-home" }));
+    assert.equal(error.code, "invalid_input");
+    assert.match(error.message, /rt-hl-1, rt-hl-2/);
+    assert.ok(!again.cma.calls.includes("entry.create"));
+  });
+
+  it("validates the questions before writing anything", async () => {
+    const cases: Array<[unknown, RegExp]> = [
+      ["not json", /JSON array/],
+      ["[]", /JSON array/],
+      [Array.from({ length: 11 }, (_, i) => ({ question: `Question ${i}?`, answer: "An answer." })), /limit is 10/],
+      [[{ question: "Is it safe?" }], /answer: is required/],
+      [[{ question: "x".repeat(91), answer: "An answer." }], /question: is 91 characters/],
+      [[{ question: "Is it safe?", answer: `Yes${String.fromCharCode(0x2014)}always.` }], /em dash/],
+      [[{ question: "Is it safe?", answer: "Yes." }, { question: "is it safe?", answer: "Still yes." }], /asked twice/],
+    ];
+    for (const [value, pattern] of cases) {
+      const { cma, ctx } = withSections();
+      const error = await toolError(createFaq(ctx, { ...base, questions: value as string }));
+      assert.equal(error.code, "invalid_input");
+      assert.match(error.message, pattern);
+      assert.ok(!cma.calls.includes("entry.create"), `no write for ${pattern}`);
+    }
+  });
+
+  it("refuses a stale page version, another brand's page, entries that are not pages, and a full page", async () => {
+    const stale = withSections();
+    assert.equal((await toolError(createFaq(stale.ctx, { ...base, page_version: 3, questions }))).code, "version_conflict");
+    const otherBrand = withSections();
+    assert.equal((await toolError(createFaq(otherBrand.ctx, { ...base, page_id: "page-lw-home", questions }))).code, "not_allowed");
+    const notPage = withSections();
+    const heroError = await toolError(createFaq(notPage.ctx, { ...base, page_id: "hero-hl-home", page_version: 3, questions }));
+    assert.equal(heroError.code, "invalid_input");
+    const full = withSections(12);
+    assert.equal((await toolError(createFaq(full.ctx, { ...base, questions }))).code, "not_allowed");
+    for (const { cma } of [stale, otherBrand, notPage, full]) assert.ok(!cma.calls.includes("entry.create"));
+  });
+
+  it("publishing the page also publishes the FAQ and its questions, questions first", async () => {
+    const { cma, ctx } = withSections();
+    const draft = await createFaq(ctx, { ...base, questions });
+    const published = await publishEntry(next(cma), { brand: "defeo-mutual", entry_id: "page-hl-home", version: draft.version });
+    assert.equal(published.status, "published");
+    assert.ok("also_published" in published);
+    assert.deepEqual(published.also_published, [...draft.question_entry_ids, draft.faq_entry_id]);
+    for (const id of [draft.faq_entry_id, ...draft.question_entry_ids, "page-hl-home"]) assert.ok(cma.entries.get(id)!.sys.publishedVersion);
+    assert.equal(cma.entries.get("rt-hl-1")!.sys.publishedVersion, 1, "original sections are not republished");
+  });
+
+  it("can publish in the same call when asked", async () => {
+    const { cma, ctx } = withSections();
+    const result = await createFaq(ctx, { ...base, questions, publish: true });
+    assert.equal(result.status, "published");
+    assert.equal(result.publish_error, undefined);
+    assert.ok(cma.entries.get(result.faq_entry_id)!.sys.publishedVersion);
+  });
+
+  it("lets Opal edit the FAQ it made, but never the site's original FAQs or items", async () => {
+    const { cma, ctx } = withSections();
+    const draft = await createFaq(ctx, { ...base, questions });
+    const questionId = draft.question_entry_ids[0]!;
+    const edited = await updateEntry(next(cma), { brand: "defeo-mutual", entry_id: questionId, version: 1, fields: { text: "Most claims are settled within a week." } });
+    assert.deepEqual(edited.changed_fields, ["text"]);
+    cma.entries.set("faq-hl-seed", entry("faq-hl-seed", "faq", { internalName: "DeFeo - Home - FAQ", brand: ref("brand-harborline"), heading: "Questions", items: [ref("item-hl-seed")] }, { version: 2, publishedVersion: 1 }));
+    cma.entries.set("item-hl-seed", entry("item-hl-seed", "item", { title: "Home", brand: ref("brand-harborline"), link: ref("page-hl-home") }, { version: 2, publishedVersion: 1 }));
+    for (const id of ["faq-hl-seed", "item-hl-seed"]) {
+      const error = await toolError(updateEntry(next(cma), { brand: "defeo-mutual", entry_id: id, version: 2, fields: id.startsWith("faq") ? { heading: "Changed" } : { title: "Changed" } }));
+      assert.equal(error.code, "not_allowed");
+      assert.match(error.message, /original content/);
+    }
+  });
+
+  it("refuses to publish the site's original FAQs and items, and never clears an answer", async () => {
+    const { cma, ctx } = withSections();
+    cma.entries.set("faq-hl-seed", entry("faq-hl-seed", "faq", { internalName: "DeFeo - Home - FAQ", brand: ref("brand-harborline"), items: [ref("item-hl-seed")] }, { version: 3, publishedVersion: 1 }));
+    cma.entries.set("item-hl-seed", entry("item-hl-seed", "item", { title: "Home", brand: ref("brand-harborline") }, { version: 3, publishedVersion: 1 }));
+    for (const id of ["faq-hl-seed", "item-hl-seed"]) {
+      assert.equal((await toolError(publishEntry(next(cma), { brand: "defeo-mutual", entry_id: id, version: 3 }))).code, "not_allowed");
+    }
+    const draft = await createFaq(ctx, { ...base, questions });
+    const cleared = await toolError(updateEntry(next(cma), { brand: "defeo-mutual", entry_id: draft.question_entry_ids[0]!, version: 1, fields: { text: null } }));
+    assert.match(cleared.message, /cannot be cleared/);
+  });
+
+  it("publishing a page never publishes original FAQs, untagged questions, or edits to a live FAQ", async () => {
+    const { cma, ctx, ids } = withSections();
+    // An original FAQ on the page with unpublished changes, and an Opal FAQ that also links an original question.
+    cma.entries.set("faq-hl-seed", entry("faq-hl-seed", "faq", { internalName: "DeFeo - Home - FAQ", brand: ref("brand-harborline"), items: [ref("item-hl-seed")] }, { version: 3, publishedVersion: 1 }));
+    cma.entries.set("item-hl-seed", entry("item-hl-seed", "item", { title: "Original", brand: ref("brand-harborline") }));
+    const draft = await createFaq(ctx, { ...base, questions });
+    const faq = cma.entries.get(draft.faq_entry_id)!;
+    (faq.fields.items as Record<string, unknown[]>)[L]!.push(ref("item-hl-seed"));
+    const page = cma.entries.get("page-hl-home")!;
+    (page.fields.sections as Record<string, unknown[]>)[L]!.push(ref("faq-hl-seed"));
+    const published = await publishEntry(next(cma), { brand: "defeo-mutual", entry_id: "page-hl-home", version: page.sys.version });
+    assert.ok("also_published" in published);
+    assert.deepEqual(published.also_published, [...draft.question_entry_ids, draft.faq_entry_id]);
+    assert.equal(cma.entries.get("faq-hl-seed")!.sys.publishedVersion, 1);
+    assert.equal(cma.entries.get("item-hl-seed")!.sys.publishedVersion, undefined);
+    assert.equal(cma.entries.get(ids[0]!)!.sys.publishedVersion, 1);
+  });
+
+  it("does not publish in the same call when the page already had unpublished changes", async () => {
+    const { cma, ctx } = withSections();
+    const page = cma.entries.get("page-hl-home")!;
+    page.sys.version = 6; // published at 3, edited since
+    const result = await createFaq(ctx, { ...base, page_version: 6, questions, publish: true });
+    assert.equal(result.status, "changed");
+    assert.match(result.publish_error ?? "", /already had unpublished changes/);
+    assert.ok(!cma.calls.includes("entry.publish"));
+  });
+
+  it("reports the drafts it left behind when the page changed underneath it, without raw error text", async () => {
+    const { cma, ctx } = withSections();
+    cma.hooks.beforeUpdate = (id) => {
+      if (id === "page-hl-home") cma.entries.get(id)!.sys.version += 1;
+    };
+    const error = await toolError(createFaq(ctx, { ...base, questions }));
+    assert.equal(error.code, "version_conflict");
+    assert.match(error.message, /Page "page-hl-home"/);
+    assert.match(error.message, /not on any page: new-1, new-2, new-3/);
+    assert.doesNotMatch(error.message, /Version mismatch/);
+  });
+
+  it("only calls methods the Opal policy allows", async () => {
+    const { cma, ctx } = withSections();
+    await createFaq(ctx, { ...base, questions, publish: true });
+    const allowed = new Set(["entry.get", "entry.getMany", "entry.create", "entry.update", "entry.publish"]);
+    assert.ok(cma.calls.every((call) => allowed.has(call)), cma.calls.join(", "));
   });
 });

@@ -239,7 +239,7 @@ describe("discovery", () => {
     const manifest = (await response.json()) as { functions: Array<{ name: string; endpoint: string; http_method: string; parameters: unknown[]; description: string }> };
     assert.deepEqual(
       manifest.functions.map((f) => f.name),
-      ["list_brands", "find_pages", "get_entry", "get_content_rules", "list_brand_images", "create_article", "update_entry", "publish_entry", "unpublish_entry"],
+      ["list_brands", "find_pages", "get_entry", "get_content_rules", "list_brand_images", "create_article", "create_faq", "update_entry", "publish_entry", "unpublish_entry"],
     );
     for (const tool of manifest.functions) {
       assert.equal(tool.http_method, "POST");

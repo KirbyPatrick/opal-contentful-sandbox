@@ -957,6 +957,16 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
 
 /* Pricing */
 .gs1-pricing { padding-top: 49px; }
+/* FAQ sections Opal adds with create_faq. */
+.gs1-faq { padding-top: 50px; }
+.gs1-faq-list { margin-top: 24px; border-top: 1px solid var(--gs1-line); }
+.gs1-faq details { border-bottom: 1px solid var(--gs1-line); }
+.gs1-faq summary { list-style: none; cursor: pointer; position: relative; padding: 20px 48px 20px 0; color: var(--gs1-navy); font-size: 18px; font-weight: 600; line-height: 1.4; }
+.gs1-faq summary::-webkit-details-marker { display: none; }
+.gs1-faq summary::after { content: "+"; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); color: var(--gs1-orange); font-size: 28px; font-weight: 400; }
+.gs1-faq details[open] summary::after { content: "\2212"; }
+.gs1-faq summary:focus-visible { outline: 2px solid var(--gs1-link); outline-offset: 2px; }
+.gs1-faq details p { margin: 0; padding: 0 48px 22px 0; font-size: 16px; line-height: 1.6; }
 .gs1-pricing-card { overflow: hidden; background: #fff; border: 1px solid #e5f0fc; border-radius: 4px; box-shadow: 0 2px 3px rgba(0, 44, 108, 0.2); }
 .gs1-pricing-title { padding: 24px 24px 25px; color: var(--gs1-navy); font-size: 16px; line-height: 19.2px; }
 .gs1-pricing .rich-text { max-width: none; margin: 0; }
