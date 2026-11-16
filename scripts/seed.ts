@@ -4,6 +4,7 @@
  *   npm run seed -- --dry-run                    Validate everything offline. No network.
  *   npm run seed -- --dry-run --brand lumenwork  Validate one brand offline (by brand key, see seed/lib/brands.ts).
  *   npm run seed                                 Validate, then create or update entries and publish them.
+ *   npm run seed -- --brand example              Same for one sandbox brand only, leaving the six brands untouched.
  *
  * Idempotent: entry IDs are deterministic, unchanged entries are skipped, and
  * changed ones are updated in place. Everything is tagged seed.
@@ -11,7 +12,7 @@
 import { describeError } from "../src/lib/contentful/errors";
 import { getSandboxClient } from "../src/lib/contentful/management";
 import { readSandboxTarget } from "../src/lib/contentful/config";
-import type { BrandKey } from "../seed/lib/brands";
+import { SANDBOX_BRAND_INFO, type BrandKey } from "../seed/lib/brands";
 import { BRANDS, knownAssetIds, loadSeedEntries, stable, toContentfulFields } from "../seed/lib/sync";
 import { validateGraph } from "../seed/lib/validate";
 
@@ -48,7 +49,10 @@ async function main(): Promise<void> {
     console.log("Dry run only. Nothing was written.");
     return;
   }
-  if (only) throw new Error("Seeding a single brand is not supported; validate with --brand, then seed everything.");
+  // A sandbox brand is one self-contained page, so it can be seeded alone (for example after rebuilding /example).
+  if (only && !SANDBOX_BRAND_INFO.some((brand) => brand.key === only)) {
+    throw new Error("Seeding a single brand is only supported for sandbox brands; validate with --brand, then seed everything.");
+  }
 
   const client = await getSandboxClient();
   const { spaceId, environmentId } = readSandboxTarget();
@@ -116,7 +120,8 @@ async function main(): Promise<void> {
   }
 
   const stale = [...existing.keys()].filter((id) => !ids.includes(id) && existing.get(id)?.metadata?.tags.some((tag) => tag.sys.id === "seed"));
-  if (stale.length) console.log(`Note: ${stale.length} seed-tagged entries are no longer in seed/ (left in place): ${stale.slice(0, 10).join(", ")}`);
+  // With --brand, other brands are out of scope, so the stale note would list all of them.
+  if (stale.length && !only) console.log(`Note: ${stale.length} seed-tagged entries are no longer in seed/ (left in place): ${stale.slice(0, 10).join(", ")}`);
   console.log("Seed complete.");
 }
 
