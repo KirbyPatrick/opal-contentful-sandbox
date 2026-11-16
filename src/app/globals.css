@@ -825,9 +825,8 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
 .mcl-header { background: #fff; border-bottom: 1px solid var(--mcl-rule); position: relative; z-index: 5; }
 .mcl-header-row { display: flex; align-items: center; gap: 28px; max-width: 1600px; margin: 0 auto; padding: 12px var(--mcl-gutter); min-height: 64px; }
 .mcl-logo { color: var(--mcl-text) !important; text-decoration: none; margin-right: auto; }
-.mcl-wordmark { display: inline-flex; flex-direction: column; text-transform: uppercase; line-height: 1; letter-spacing: 0.01em; }
-.mcl-wordmark-top { font-weight: 700; font-size: 17px; }
-.mcl-wordmark-bottom { font-weight: 300; font-size: 17px; margin-top: 2px; letter-spacing: 0.035em; }
+.mcl-logo-img { display: block; width: 176px; height: auto; }
+.mcl-footer .mcl-logo-img { width: 220px; }
 .mcl-utility { display: flex; gap: 36px; font-size: 15px; }
 .mcl-utility a, .mcl-mainnav a, .mcl-menu-panel a { color: var(--mcl-text); text-decoration: none; }
 .mcl-utility a:hover, .mcl-mainnav a:hover, .mcl-menu-panel a:hover { color: var(--mcl-royal); text-decoration: underline; text-underline-offset: 4px; }

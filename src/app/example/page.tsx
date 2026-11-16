@@ -314,20 +314,16 @@ const MAIN_NAV = [
   { label: "About us", href: HOME },
 ];
 
+/** The prospect's logo, cropped from a screenshot (public/example/mcl-logo.png, 414 by 87, transparent). */
 function Wordmark() {
-  return (
-    <span className="mcl-wordmark">
-      <span className="mcl-wordmark-top">Mayo Clinic</span>
-      <span className="mcl-wordmark-bottom">Laboratories</span>
-    </span>
-  );
+  return <img className="mcl-logo-img" src="/example/mcl-logo.png" alt="Mayo Clinic Laboratories" width={414} height={87} />;
 }
 
 function Header() {
   return (
     <header className="mcl-header">
       <div className="mcl-header-row">
-        <a className="mcl-logo" href={HOME} aria-label="Mayo Clinic Laboratories home"><Wordmark /></a>
+        <a className="mcl-logo" href={HOME}><Wordmark /></a>
         <nav className="mcl-utility" aria-label="Account">
           {UTILITY.map((link) => <a key={link.label} href={link.href}>{link.label}</a>)}
         </nav>
@@ -364,7 +360,7 @@ function Footer() {
   return (
     <footer className="mcl-footer">
       <div className="mcl-wrap mcl-footer-main">
-        <a className="mcl-logo" href={HOME} aria-label="Mayo Clinic Laboratories home"><Wordmark /></a>
+        <a className="mcl-logo" href={HOME}><Wordmark /></a>
         <div className="mcl-footer-cols">
           {FOOTER.map((col) => (
             <div key={col.heading}>
