@@ -15,13 +15,19 @@ export function proxy(request: NextRequest) {
   // framing cannot depend on it. The site has no logins or sensitive actions, so allowing these
   // two apps to frame it is low risk.
   const frameAncestors = "'self' https://app.contentful.com https://app.optimizely.com";
+  // /example carries the Optimizely Web Experimentation snippet, which applies variations with inline
+  // styles and runs experiment code with eval, and the visual editor loads its own scripts, styles and
+  // images from optimizely.com. That page alone gets those allowances; every other page stays strict.
+  const optimizelyWeb = /^\/example\/?$/.test(request.nextUrl.pathname);
+  const OPTLY = "https://*.optimizely.com https://cdn.optimizely.com";
   const csp = [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""}`,
-    `style-src 'self' 'nonce-${nonce}'`,
-    "img-src 'self' data: https://images.ctfassets.net https://app-epsakirbyas29ma1p001.cms.optimizely.com",
-    "font-src 'self'",
-    "connect-src 'self'",
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev || optimizelyWeb ? " 'unsafe-eval'" : ""}${optimizelyWeb ? ` ${OPTLY}` : ""}`,
+    // A nonce in style-src would disable 'unsafe-inline', so the Optimizely page leaves it out.
+    optimizelyWeb ? `style-src 'self' 'unsafe-inline' ${OPTLY}` : `style-src 'self' 'nonce-${nonce}'`,
+    `img-src 'self' data: https://images.ctfassets.net https://app-epsakirbyas29ma1p001.cms.optimizely.com${optimizelyWeb ? ` ${OPTLY}` : ""}`,
+    `font-src 'self'${optimizelyWeb ? ` data: ${OPTLY}` : ""}`,
+    `connect-src 'self'${optimizelyWeb ? ` ${OPTLY}` : ""}`,
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",

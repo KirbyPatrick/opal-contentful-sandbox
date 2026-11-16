@@ -5,7 +5,7 @@ import { DraftBanner } from "@/components/site/chrome";
 import { Img, RichText } from "@/components/site/primitives";
 import { EXAMPLE_BRAND_SLUG } from "@/lib/site/contentful";
 import { text, type BrandGraph } from "@/lib/site/graph";
-import { isPreview, loadBrand } from "@/lib/site/load";
+import { isPreview, loadBrand, nonce } from "@/lib/site/load";
 import type { SiteEntry } from "@/lib/site/types";
 
 export const metadata: Metadata = {
@@ -18,6 +18,8 @@ const CATALOG = "https://www.mayocliniclabs.com/test-catalog";
 const INSIGHTS = "https://news.mayocliniclabs.com/";
 /** The C2N PrecivityAD2 listing (Mayo ID AD2). Its link gets a stable ID for experiments. */
 const C2N_TEST_PATH = "/test-catalog/overview/624462";
+/** Optimizely Web Experimentation snippet for the demo project. src/proxy.ts allows it on /example only. */
+const OPTIMIZELY_SNIPPET = "https://cdn.optimizely.com/js/6231585842790400.js";
 
 /**
  * The Example page: a sandbox for recreating a prospect's page during a demo. Its copy lives in the
@@ -30,7 +32,7 @@ const C2N_TEST_PATH = "/test-catalog/overview/624462";
  * #c2n-webinar-card and #primary-cta.
  */
 export default async function ExamplePage() {
-  const [g, preview] = await Promise.all([loadBrand(EXAMPLE_BRAND_SLUG), isPreview()]);
+  const [g, preview, scriptNonce] = await Promise.all([loadBrand(EXAMPLE_BRAND_SLUG), isPreview(), nonce()]);
   const page = g?.homePage;
   if (!g || !page) {
     return (
@@ -74,6 +76,8 @@ export default async function ExamplePage() {
 
   return (
     <div className="mcl">
+      {/* Loaded synchronously and first, as Optimizely recommends, so variations apply before the page paints. */}
+      <script src={OPTIMIZELY_SNIPPET} nonce={scriptNonce} />
       {preview && <DraftBanner />}
       <Header />
       <main id="main">

@@ -96,7 +96,7 @@ Token rotation and the full tool reference are in [docs/opal-api.md](docs/opal-a
 
 It currently recreates a clinical laboratory's dementia testing campaign page (banner, intro card with stat tiles, expertise and quote, test category accordions, test menu table, highlights cards, closing call to action, resources and references). It is the control for a landing page test, so it deliberately buries the featured blood test in the first collapsed accordion. The copy is original and the footer says it is a demo mockup.
 
-Stable IDs for building tests in Optimizely's visual editor: `#hero-banner`, `#hero-headline`, `#hero-subhead`, `#hero-cta-slot` (empty space under the subhead), `#test-blood-biomarkers` (first accordion), `#c2n-test-link`, `#c2n-webinar-card` and `#primary-cta`. The site allows `https://app.optimizely.com` to embed it (see `src/proxy.ts`).
+Stable IDs for building tests in Optimizely's visual editor: `#hero-banner`, `#hero-headline`, `#hero-subhead`, `#hero-cta-slot` (empty space under the subhead), `#test-blood-biomarkers` (first accordion), `#c2n-test-link`, `#c2n-webinar-card` and `#primary-cta`. The page loads the Optimizely Web Experimentation snippet for project 6231585842790400 (`OPTIMIZELY_SNIPPET` in `src/app/example/page.tsx`), and the site allows `https://app.optimizely.com` to embed it, so the visual editor works without a browser extension (see `src/proxy.ts`).
 
 To rebuild it for another prospect:
 
