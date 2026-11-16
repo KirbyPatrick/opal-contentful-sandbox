@@ -2,6 +2,7 @@ import type { Block, Document, Inline, Text } from "@contentful/rich-text-types"
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { DraftBanner } from "@/components/site/chrome";
+import { Carousel } from "./carousel";
 import { Img, RichText } from "@/components/site/primitives";
 import { EXAMPLE_BRAND_SLUG } from "@/lib/site/contentful";
 import { text, type BrandGraph } from "@/lib/site/graph";
@@ -78,7 +79,7 @@ function Hero({ g, hero, second }: { g: BrandGraph; hero?: SiteEntry; second?: S
           <div className="rmt-collage-photo rmt-collage-photo-b"><Img asset={second} sizes="(min-width: 900px) 260px, 45vw" priority decorative /></div>
           <div className="rmt-chip rmt-chip-request">
             <span className="rmt-chip-icon"><BankIcon /></span>
-            <span><strong>Mobile wallet</strong><small>Mobile money</small><em>Money requested</em></span>
+            <span><strong>Gcash</strong><small>Mobile Money</small><em>Money requested</em></span>
           </div>
           <div className="rmt-phone-card">
             <div className="rmt-phone">
@@ -90,7 +91,7 @@ function Hero({ g, hero, second }: { g: BrandGraph; hero?: SiteEntry; second?: S
           </div>
           <div className="rmt-chip rmt-chip-sent">
             <span className="rmt-chip-mark"><ShieldMark /></span>
-            <span><strong>Transfer</strong><em>Money sent</em></span>
+            <span><strong className="rmt-chip-brand">REMITLY</strong><em>Money sent</em></span>
             <span className="rmt-check" />
           </div>
         </div>
@@ -160,7 +161,7 @@ function Calculator({ entry, cta }: { entry: SiteEntry; cta?: SiteEntry }) {
           )}
         </div>
       </div>
-      <p className="rmt-wrap rmt-fineprint">Illustrative rates and fees for this demo page. New customers only, one offer per customer, for a limited time. Rates change often. The promotional rate applies to the first 1,000.00 USD sent.</p>
+      <p className="rmt-wrap rmt-fineprint rmt-center">New customers only. One per customer. Limited-time offer. Rates shown may change. The promotional rate applies to the first 1,000.00 USD sent. See <a href={HOME}>Terms and Conditions</a> for details. Rates on this demo page are illustrative.</p>
     </section>
   );
 }
@@ -172,18 +173,18 @@ function Ways({ entry, photos }: { entry: SiteEntry; photos: (SiteAsset | undefi
       <div className="rmt-wrap">
         <h2 id="ways-heading" className="rmt-h2 rmt-center">{text(entry, "heading")}</h2>
         {lead.length > 0 && <RichText document={asDocument(lead)} className="rmt-lead rmt-center" />}
-        <ul className="rmt-ways">
+        <Carousel label="Ways to move money" count={cards.length} className="rmt-ways">
           {cards.map((card, i) => (
             <li key={card.title} className="rmt-way">
-              <div className={`rmt-way-media${i === 1 ? " rmt-way-media-dark" : ""}`}>
-                <Img asset={photos[i]} sizes="(min-width: 900px) 33vw, 100vw" />
+              <div className={`rmt-way-media${i === 1 ? " rmt-way-media-panel" : ""}`}>
+                {i !== 1 && <Img asset={photos[i === 0 ? 0 : 2]} sizes="(min-width: 900px) 500px, 85vw" />}
                 <WayChip index={i} />
               </div>
               <h3 className="rmt-h3">{card.title}</h3>
               <RichText document={asDocument(card.nodes)} className="rmt-way-body" linkAttributes={() => ({ className: "rmt-btn rmt-btn-dark" })} />
             </li>
           ))}
-        </ul>
+        </Carousel>
       </div>
     </section>
   );
@@ -211,14 +212,19 @@ function Trust({ g, entry }: { g: BrandGraph; entry: SiteEntry }) {
 }
 
 function MoneyMap({ g, entry }: { g: BrandGraph; entry: SiteEntry }) {
+  const [body, note] = (text(entry, "body") ?? "").split(/\n{2,}/);
   return (
     <section id="money-map" className="rmt-section rmt-cream" aria-labelledby="map-heading">
       <div className="rmt-wrap">
         <h2 id="map-heading" className="rmt-h2 rmt-center">{text(entry, "heading")}</h2>
         <div className="rmt-map">
-          <div className="rmt-map-media"><Img asset={g.asset(entry.fields.image)} sizes="(min-width: 900px) 50vw, 100vw" /></div>
-          <p className="rmt-map-text">{text(entry, "body")}</p>
+          <div className="rmt-map-media">
+            <Img asset={g.asset(entry.fields.image)} sizes="(min-width: 900px) 560px, 100vw" />
+            <MapRoutes />
+          </div>
+          <p className="rmt-map-text">{body}</p>
         </div>
+        {note && <p className="rmt-fineprint rmt-center">{note}</p>}
       </div>
     </section>
   );
@@ -247,12 +253,17 @@ function Safety({ g, entry }: { g: BrandGraph; entry: SiteEntry }) {
 }
 
 function App({ entry }: { entry: SiteEntry }) {
+  const { ratings, note } = appParts(entry.fields.body);
   return (
-    <section id="app-download" className="rmt-section" aria-labelledby="app-heading">
+    <section id="app-download" className="rmt-section rmt-app-section" aria-labelledby="app-heading">
       <div className="rmt-wrap rmt-app">
         <div className="rmt-app-copy">
           <h2 id="app-heading" className="rmt-h2">{text(entry, "heading")}</h2>
-          <RichText document={entry.fields.body} className="rmt-app-body" />
+          <ul className="rmt-app-ratings">
+            {ratings.map((line, i) => (
+              <li key={line.label}>{i === 0 ? <PhoneIcon /> : <PlayIcon />}<b>{line.label}</b> {line.rest}</li>
+            ))}
+          </ul>
           <div className="rmt-badges"><StoreBadge kind="google" /><StoreBadge kind="apple" /></div>
           <QrCode />
         </div>
@@ -260,6 +271,7 @@ function App({ entry }: { entry: SiteEntry }) {
           <div className="rmt-device"><span className="rmt-device-notch" /><span className="rmt-device-time">9:41</span><span className="rmt-device-mark"><ShieldMark /></span></div>
         </div>
       </div>
+      {note && <p className="rmt-wrap rmt-fineprint rmt-center rmt-app-note">{note}</p>}
     </section>
   );
 }
@@ -292,27 +304,34 @@ function Blog({ entry, photos }: { entry: SiteEntry; photos: (SiteAsset | undefi
       <div className="rmt-wrap">
         <h2 id="blog-heading" className="rmt-h2 rmt-center">{text(entry, "heading")}</h2>
         {lead.length > 0 && <RichText document={asDocument(lead)} className="rmt-lead rmt-center" />}
-        <ul className="rmt-posts">
+        <Carousel label="Blog posts" count={cards.length} className="rmt-posts">
           {cards.map((card, i) => (
             <li key={card.title} className="rmt-post">
-              <div className="rmt-post-media"><Img asset={photos[i]} sizes="(min-width: 1100px) 25vw, (min-width: 700px) 50vw, 100vw" /></div>
+              <div className="rmt-post-media"><Img asset={photos[i]} sizes="(min-width: 900px) 500px, 85vw" /></div>
               <h3 className="rmt-h3">{card.title}</h3>
               <RichText document={asDocument(card.nodes)} className="rmt-post-body" linkAttributes={() => ({ className: "rmt-btn rmt-btn-dark" })} />
             </li>
           ))}
-        </ul>
-        <p className="rmt-center"><a className="rmt-text-link" href={BLOG}>Explore the blog</a></p>
+        </Carousel>
+        <p className="rmt-center rmt-blog-more"><a className="rmt-text-link" href={BLOG}>Explore the blog</a></p>
       </div>
     </section>
   );
 }
 
 function Countries({ entry }: { entry: SiteEntry }) {
+  const { lead, countries, more } = countryParts(entry.fields.body);
   return (
     <section id="countries" className="rmt-section" aria-labelledby="countries-heading">
       <div className="rmt-wrap">
         <h2 id="countries-heading" className="rmt-h2 rmt-center">{text(entry, "heading")}</h2>
-        <RichText document={entry.fields.body} className="rmt-countries" linkAttributes={() => ({ className: "rmt-country-link" })} />
+        {lead && <p className="rmt-lead rmt-center">{lead}</p>}
+        <ul className="rmt-country-grid">
+          {countries.map((c) => (
+            <li key={c.name}><a className="rmt-country-link" href={c.href}><CountryFlag name={c.name} />{c.name}</a></li>
+          ))}
+        </ul>
+        {more && <p className="rmt-center"><a className="rmt-btn rmt-btn-dark" href={more.href}>{more.name}</a></p>}
       </div>
     </section>
   );
@@ -325,6 +344,7 @@ function Faq({ g, entry }: { g: BrandGraph; entry: SiteEntry }) {
     <section id={entry.id === "ex-fq-help" ? "faq" : undefined} className="rmt-section rmt-cream" aria-labelledby={`${entry.id}-heading`}>
       <div className="rmt-wrap rmt-narrow">
         <h2 id={`${entry.id}-heading`} className="rmt-h2 rmt-center">{text(entry, "heading") ?? "Frequently asked questions"}</h2>
+        <p className="rmt-faq-kicker">Remitly FAQ</p>
         <div className="rmt-faq">
           {items.map((item) => (
             <details key={item.id}>
@@ -377,23 +397,34 @@ function Header() {
   );
 }
 
-const FOOTER: { heading: string; links: string[] }[] = [
-  { heading: "Company", links: ["About", "Blog", "Newsroom", "Press", "Careers", "Investors", "Reviews"] },
-  { heading: "Products", links: ["Send money", "Global card", "Business", "Large transfers", "Log in", "Sign up"] },
-  { heading: "Resources", links: ["Rates and fees", "SWIFT codes", "Fraud and scam help", "Partners", "Routing numbers", "IBAN numbers", "Currency converter", "Refer friends"] },
-  { heading: "Support", links: ["Help", "File a complaint"] },
+const FOOTER: { heading: string; links: string[] }[][] = [
+  [{ heading: "Company", links: ["About", "Blog", "Newsroom", "Press", "Careers", "Investors", "Reviews"] }],
+  [{ heading: "Products", links: ["Send Money", "Remitly Global Card", "Remitly Business", "Large Money Transfer", "Log in", "Sign up"] }],
+  [{ heading: "Resources", links: ["Rates and Fees", "Swift codes", "Fraud and Scam Resources", "Partners", "Routing numbers", "IBAN numbers", "Currency Converter", "Refer friends", "Ambassador Program", "Seafarers", "Insights"] }],
+  [{ heading: "Communities", links: ["Find Communities"] }, { heading: "Support", links: ["Help", "File a complaint"] }],
 ];
-const LEGAL = ["User agreement", "Business user agreement", "Privacy notice", "Your privacy choices", "Security", "Licenses", "Accessibility", "Cookies"];
+const LEGAL = ["User Agreement", "Business User Agreement", "Privacy Notice", "Your Privacy Choices", "Privacy Help Center", "Security", "Licenses", "Accessibility", "Cookies"];
+const SOCIAL = ["Facebook", "X", "Instagram", "LinkedIn", "YouTube", "TikTok"] as const;
 
 function Footer() {
   return (
     <footer className="rmt-footer">
       <div className="rmt-wrap">
         <div className="rmt-footer-cols">
-          {FOOTER.map((col) => (
-            <div key={col.heading}>
-              <h2>{col.heading}</h2>
-              <ul>{col.links.map((label) => <li key={label}><a href={label === "Blog" ? BLOG : label === "Help" ? HELP : HOME}>{label}</a></li>)}</ul>
+          {FOOTER.map((col, ci) => (
+            <div key={ci}>
+              {col.map((group) => (
+                <div key={group.heading} className="rmt-footer-group">
+                  <h2>{group.heading}</h2>
+                  <ul>{group.links.map((label) => <li key={label}><a href={label === "Blog" ? BLOG : label === "Help" ? HELP : HOME}>{label}</a></li>)}</ul>
+                </div>
+              ))}
+              {ci === FOOTER.length - 1 && (
+                <div className="rmt-footer-group">
+                  <h2>Connect</h2>
+                  <ul className="rmt-social">{SOCIAL.map((name) => <li key={name}><a href={HOME} aria-label={name}><SocialIcon name={name} /></a></li>)}</ul>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -426,18 +457,25 @@ function StoreBadge({ kind }: { kind: "apple" | "google" }) {
 }
 
 function WayChip({ index }: { index: number }) {
-  if (index === 0) return <span className="rmt-way-chip" aria-hidden="true"><span><b>500.00</b><small>You send</small></span><span className="rmt-ccy">GBP</span><span><b>65,005.00</b><small>They receive</small></span><span className="rmt-ccy">INR</span></span>;
-  if (index === 1) return <span className="rmt-way-chip rmt-way-chip-paid" aria-hidden="true"><em>Delivered</em><b>Supplier payment</b><small>59,200.00 PHP</small></span>;
+  if (index === 0) return <span className="rmt-way-chip" aria-hidden="true"><span><b>500.00</b><small>You send</small></span><span className="rmt-ccy">GBP</span><span><b>65,005.00</b><small>They receive</small></span><span className="rmt-ccy">IND</span></span>;
+  if (index === 1) {
+    return (
+      <span className="rmt-way-panel" aria-hidden="true">
+        <span className="rmt-way-delivered"><em>Delivered</em><span><b>Maria Santos</b><b>59,200.00 PHP</b></span><small>GCash Wallet</small><small>January 3, 2026</small></span>
+        <span className="rmt-way-assistant"><span className="rmt-way-avatar" />Virtual Assistant</span>
+      </span>
+    );
+  }
   return <span className="rmt-way-chip rmt-way-chip-request" aria-hidden="true"><b>Request money</b><small>Delivered</small></span>;
 }
 
 function TrustIcon({ index }: { index: number }) {
-  const paths = [
-    <g key="t"><circle cx="40" cy="40" r="38" fill="#fbe3c4" /><path d="M40 18c-8 0-14 6-14 14 0 11 14 28 14 28s14-17 14-28c0-8-6-14-14-14z" fill="#e8613a" /><circle cx="40" cy="32" r="5" fill="#fff" /></g>,
-    <g key="v"><circle cx="40" cy="40" r="38" fill="#fde9b8" /><circle cx="40" cy="38" r="17" fill="#f6a623" /><circle cx="40" cy="38" r="11" fill="none" stroke="#fff" strokeWidth="3" /><path d="M26 64h28" stroke="#2c415a" strokeWidth="4" strokeLinecap="round" /></g>,
-    <g key="d"><circle cx="40" cy="40" r="38" fill="#2c415a" /><path d="M18 42l42-18-14 38-8-14z" fill="#b2c8e9" /><path d="M38 48l8-10" stroke="#2c415a" strokeWidth="2" /></g>,
+  const art = [
+    <g key="t"><rect x="54" y="24" width="40" height="30" rx="3" fill="#f6b26b" /><path d="M54 26l20 15 20-15" fill="none" stroke="#e8613a" strokeWidth="2.5" /><path d="M20 82c0-12 10-20 24-20h22l10-12h12l-6 14 10 18H20z" fill="#e8613a" /><path d="M76 50l8 28" stroke="#2c415a" strokeWidth="4" strokeLinecap="round" /><circle cx="34" cy="90" r="11" fill="#2c415a" /><circle cx="34" cy="90" r="4" fill="#fff" /><circle cx="90" cy="90" r="11" fill="#2c415a" /><circle cx="90" cy="90" r="4" fill="#fff" /><path d="M14 104h92" stroke="#d9d4cc" strokeWidth="3" strokeLinecap="round" /></g>,
+    <g key="v"><circle cx="60" cy="38" r="26" fill="#f6a623" /><circle cx="60" cy="38" r="17" fill="none" stroke="#fde9b8" strokeWidth="4" /><path d="M36 60c-6 10-10 22-10 50h68c0-28-4-40-10-50" fill="#e8613a" /><circle cx="60" cy="78" r="10" fill="#2c415a" /><path d="M44 110c0-14 7-22 16-22s16 8 16 22z" fill="#2c415a" /><path d="M96 12l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#f6a623" /></g>,
+    <g key="d"><circle cx="60" cy="60" r="48" fill="#3e5a78" /><path d="M24 64l76-34-26 66-14-24z" fill="#cfe3f3" /><path d="M60 72l14-26" stroke="#3e5a78" strokeWidth="3" /><path d="M14 84l20-10M18 96l22-12M30 104l18-10" stroke="#fff" strokeWidth="4" strokeLinecap="round" /></g>,
   ];
-  return <svg className="rmt-trust-icon" viewBox="0 0 80 80" width="96" height="96" aria-hidden="true">{paths[index % 3]}</svg>;
+  return <svg className="rmt-trust-icon" viewBox="0 0 120 120" width="130" height="130" aria-hidden="true">{art[index % 3]}</svg>;
 }
 
 function SafetyArt({ index }: { index: number }) {
@@ -470,7 +508,7 @@ function QrCode() {
   return (
     <figure className="rmt-qr">
       <svg viewBox="0 0 21 21" width="88" height="88" aria-hidden="true" shapeRendering="crispEdges">{cells}</svg>
-      <figcaption>Scan with your phone camera</figcaption>
+      <figcaption>Scan the code with your phone to get the app</figcaption>
     </figure>
   );
 }
@@ -532,3 +570,99 @@ function splitCards(document: unknown): { lead: Block[]; cards: { title: string;
 }
 
 const asDocument = (nodes: Block[]): Document => ({ nodeType: "document", data: {}, content: nodes } as unknown as Document);
+
+/** Splits the app section's rich text into the two rating lines (bold label, then the rest) and the note. */
+function appParts(document: unknown): { ratings: { label: string; rest: string }[]; note?: string } {
+  const out: { ratings: { label: string; rest: string }[]; note?: string } = { ratings: [] };
+  if (!document || typeof document !== "object" || (document as Document).nodeType !== "document") return out;
+  for (const node of (document as Document).content as Block[]) {
+    if (node.nodeType !== "paragraph") continue;
+    const runs = node.content as Text[];
+    const bold = runs.find((r) => r.nodeType === "text" && r.marks?.some((m) => m.type === "bold"));
+    if (bold && out.ratings.length < 2) out.ratings.push({ label: bold.value.trim(), rest: plainText(node).replace(bold.value, "").trim() });
+    else out.note = plainText(node).trim();
+  }
+  return out;
+}
+
+/** Reads the countries section: lead paragraph, the linked list items, and the closing "View more" link. */
+function countryParts(document: unknown): { lead?: string; countries: { name: string; href: string }[]; more?: { name: string; href: string } } {
+  const out: { lead?: string; countries: { name: string; href: string }[]; more?: { name: string; href: string } } = { countries: [] };
+  if (!document || typeof document !== "object" || (document as Document).nodeType !== "document") return out;
+  const firstLink = (node: RichNode): { name: string; href: string } | undefined => {
+    if (node.nodeType === "hyperlink") return { name: plainText(node).trim(), href: safeUrl((node as Inline).data.uri as string) };
+    for (const child of ((node as Block).content ?? []) as RichNode[]) { const found = firstLink(child); if (found) return found; }
+    return undefined;
+  };
+  for (const node of (document as Document).content as Block[]) {
+    if (node.nodeType === "unordered-list") {
+      for (const item of node.content as Block[]) { const link = firstLink(item); if (link) out.countries.push(link); }
+    } else if (node.nodeType === "paragraph") {
+      const link = firstLink(node);
+      if (link && out.countries.length) out.more = link;
+      else if (!out.lead) out.lead = plainText(node).trim();
+    }
+  }
+  return out;
+}
+
+/** Simplified round flags for the countries in the list (horizontal or vertical bands, plus a detail). */
+const FLAGS: Record<string, { dir: "h" | "v"; bands: string[]; extra?: ReactNode }> = {
+  Albania: { dir: "h", bands: ["#e41e20"], extra: <path d="M7 6l3 3 3-3v5l-3 4-3-4z" fill="#000" /> },
+  Algeria: { dir: "v", bands: ["#006233", "#fff"], extra: <circle cx="10" cy="10" r="3.2" fill="none" stroke="#d21034" strokeWidth="1.6" /> },
+  Andorra: { dir: "v", bands: ["#10069f", "#fedf00", "#d50032"] },
+  Angola: { dir: "h", bands: ["#cc092f", "#000"], extra: <circle cx="10" cy="10" r="2.6" fill="none" stroke="#ffcb00" strokeWidth="1.2" /> },
+  Anguilla: { dir: "h", bands: ["#00247d"], extra: <circle cx="13" cy="10" r="3" fill="#fff" /> },
+  "Antigua and Barbuda": { dir: "h", bands: ["#000", "#0072c6", "#fff"], extra: <path d="M0 0l10 20L20 0v20H0z" fill="#ce1126" /> },
+  Argentina: { dir: "h", bands: ["#74acdf", "#fff", "#74acdf"], extra: <circle cx="10" cy="10" r="1.8" fill="#f6b40e" /> },
+  Armenia: { dir: "h", bands: ["#d90012", "#0033a0", "#f2a800"] },
+  Australia: { dir: "h", bands: ["#012169"], extra: <><circle cx="14" cy="6" r="1.2" fill="#fff" /><circle cx="15" cy="13" r="1.2" fill="#fff" /><circle cx="6" cy="14" r="1.6" fill="#fff" /></> },
+  Austria: { dir: "h", bands: ["#c8102e", "#fff", "#c8102e"] },
+  Azerbaijan: { dir: "h", bands: ["#0092bc", "#e4002b", "#00af66"] },
+  Bahamas: { dir: "h", bands: ["#00abc9", "#fae042", "#00abc9"], extra: <path d="M0 0l9 10-9 10z" fill="#000" /> },
+};
+
+function CountryFlag({ name }: { name: string }) {
+  const flag = FLAGS[name] ?? { dir: "h" as const, bands: ["#b2c8e9", "#2c415a"] };
+  const n = flag.bands.length;
+  const id = `rmt-cf-${name.toLowerCase().replace(/[^a-z]+/g, "-")}`;
+  return (
+    <svg className="rmt-flag rmt-country-flag" viewBox="0 0 20 20" width="24" height="24" aria-hidden="true">
+      <clipPath id={id}><circle cx="10" cy="10" r="10" /></clipPath>
+      <g clipPath={`url(#${id})`}>
+        {flag.bands.map((color, i) => flag.dir === "h"
+          ? <rect key={i} x="0" y={(20 / n) * i} width="20" height={20 / n + 0.2} fill={color} />
+          : <rect key={i} x={(20 / n) * i} y="0" width={20 / n + 0.2} height="20" fill={color} />)}
+        {flag.extra}
+      </g>
+      <circle cx="10" cy="10" r="9.5" fill="none" stroke="rgb(0 0 0 / 0.12)" />
+    </svg>
+  );
+}
+
+/** Transfer routes drawn over the map image, from the United States to popular destinations. */
+function MapRoutes() {
+  const from: [number, number] = [205, 175];
+  const to: [number, number][] = [[240, 270], [270, 300], [330, 390], [640, 330], [890, 290], [1065, 300], [700, 160], [760, 140]];
+  return (
+    <svg className="rmt-map-routes" viewBox="0 0 1280 655" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      {to.map(([x, y], i) => {
+        const cx = (from[0] + x) / 2; const cy = Math.min(from[1], y) - 60 - i * 6;
+        return <path key={i} d={`M${from[0]} ${from[1]} Q${cx} ${cy} ${x} ${y}`} fill="none" stroke="#2c415a" strokeOpacity="0.55" strokeWidth="2" />;
+      })}
+      {[from, ...to].map(([x, y], i) => <circle key={`d${i}`} cx={x} cy={y} r={i === 0 ? 7 : 5} fill="#2c415a" />)}
+    </svg>
+  );
+}
+
+function SocialIcon({ name }: { name: (typeof SOCIAL)[number] }) {
+  const paths: Record<(typeof SOCIAL)[number], ReactNode> = {
+    Facebook: <><circle cx="12" cy="12" r="11" fill="currentColor" /><path d="M13.4 20v-6.4h2.2l.3-2.6h-2.5V9.4c0-.8.2-1.3 1.3-1.3H16V5.8c-.2 0-1.1-.1-2-.1-2 0-3.3 1.2-3.3 3.4V11H8.4v2.6h2.3V20z" fill="#16273c" /></>,
+    X: <path d="M3 3h5l4.3 6L17.5 3H20l-6.5 7.6L21 21h-5l-4.7-6.4L5.8 21H3.3l6.9-8z" fill="currentColor" />,
+    Instagram: <><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" strokeWidth="2" /><circle cx="12" cy="12" r="4.3" fill="none" stroke="currentColor" strokeWidth="2" /><circle cx="17.4" cy="6.6" r="1.3" fill="currentColor" /></>,
+    LinkedIn: <><rect x="2" y="2" width="20" height="20" rx="3" fill="currentColor" /><path d="M7 10v7M7 7v.1M11 17v-7M11 13c0-2 1-3 2.5-3S16 11 16 13v4" stroke="#16273c" strokeWidth="2" strokeLinecap="round" fill="none" /></>,
+    YouTube: <><rect x="1.5" y="5" width="21" height="14" rx="4" fill="currentColor" /><path d="M10 9v6l5-3z" fill="#16273c" /></>,
+    TikTok: <path d="M14 3h3c.2 2 1.6 3.4 3.5 3.6v3c-1.3 0-2.5-.4-3.5-1v6.4A5 5 0 1 1 12 10v3a2 2 0 1 0 2 2z" fill="currentColor" />,
+  };
+  return <svg viewBox="0 0 24 24" width="36" height="36" aria-hidden="true">{paths[name]}</svg>;
+}

@@ -1369,17 +1369,17 @@
     {
       "key": "example-10",
       "brand": "example",
-      "intendedUse": "Map section",
-      "altText": "Satellite view of the world at night with city lights",
+      "intendedUse": "Map section (recolored silhouette)",
+      "altText": "Illustrated world map in light teal",
       "source": "Pixabay",
-      "pixabayId": 140304,
-      "sourcePage": "https://pixabay.com/photos/world-map-satellite-image-140304/",
-      "photographer": "Pixabay contributor",
-      "photographerPage": "https://pixabay.com/photos/world-map-satellite-image-140304/",
+      "pixabayId": 146505,
+      "sourcePage": "https://pixabay.com/vectors/world-map-earth-global-continents-146505/",
+      "photographer": "OpenClipart-Vectors",
+      "photographerPage": "https://pixabay.com/users/openclipart-vectors-30363/",
       "license": "Pixabay Content License",
       "licenseUrl": "https://pixabay.com/service/license-summary/",
       "originalWidth": 1280,
-      "originalHeight": 640
+      "originalHeight": 655
     }
   ]
 }

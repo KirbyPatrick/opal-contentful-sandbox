@@ -29,79 +29,79 @@ const createAccount = s.cta("create-account", {
 });
 
 const calculator = s.richText("calculator", {
-  internalName: "Example - Home - Rate calculator", heading: "Fast transfers to almost anywhere",
-  body: md(`Strong everyday rates, low fees and no surprise charges.
+  internalName: "Example - Home - Rate calculator", heading: "Send money fast worldwide",
+  body: md(`Great everyday rates, low fees, and no hidden fees ever.
 
-Available in more than 175 countries and over 100 currencies.`),
+Serving over 175 countries and more than 100 currencies worldwide.`),
 });
 
 // ---------- Ways to move money ----------
 const ways = s.richText("ways", {
-  internalName: "Example - Home - Ways to move money", heading: "Move money on your terms",
-  body: md(`Easy ways to send, manage and receive money
+  internalName: "Example - Home - Ways to move money", heading: "Move money your way",
+  body: md(`Simple ways to send, manage and receive money
 
-### Send money to people you love
+### I want to send money
 
-Support family and friends at home, or put money toward your own plans.
+Send money to support the people you love, and to invest in your future.
 
 [Start sending](${HOME})
 
-### Pay your team or suppliers
+### I want to pay my team or vendors
 
-Straightforward business payments around the world. Pay partners, suppliers and contractors directly.
+Simple business payments worldwide. Pay partners, vendors and contractors directly.
 
 [Send business payments](${BUSINESS})
 
-### Get paid from abroad
+### I want to receive money
 
-Receive quick, secure transfers to a bank account or mobile wallet, or collect cash. Available in 130+ countries.
+Get fast, secure transfers straight to your bank account or mobile wallet, or pick up cash. Available in 130+ countries.
 
 [Request money](${HOME})`),
 });
 
 // ---------- Trust ----------
 const trust = s.cardGrid("trust", {
-  internalName: "Example - Home - Trust", heading: "Trusted by millions around the world",
-  intro: "*If a transfer arrives late, we refund the applicable transfer fee.",
+  internalName: "Example - Home - Trust", heading: "Trusted by millions of people worldwide",
+  intro: "*Transfers arrive on time, or we refund the applicable transfer fee.",
   source: "manual", layout: "icons", columns: 3,
   items: [
-    s.item("trust-track", { title: "Follow every transfer", text: "See where your money is at each step, from the moment you send it." }),
-    s.item("trust-value", { title: "Strong rates, real value", text: "Competitive exchange rates and low fees, with nothing hidden." }),
-    s.item("trust-delivery", { title: "Delivery times you can count on", text: "Your money arrives when we say it will, or we refund your fees*." }),
+    s.item("trust-track", { title: "Track your money transfers", text: "Know where your money is, every step of the way." }),
+    s.item("trust-value", { title: "Great rates and value", text: "Competitive exchange rates, low fees and no hidden fees." }),
+    s.item("trust-delivery", { title: "Guaranteed delivery times", text: "Your transfer arrives on time, or we refund your fees*." }),
   ],
 });
 
 // ---------- Map ----------
 const map = s.mediaText("map", {
-  internalName: "Example - Home - Money in motion", heading: "Every transfer keeps life moving",
-  body: "Each day, people support the ones they love by sending money across more than 175 countries in over 100 currencies.",
+  internalName: "Example - Home - Money in motion", heading: "Life grows as money flows",
+  body: "Every day, people keep life moving by sending money to their loved ones around the world, across 175+ countries in over 100 currencies.\n\nMap activity is illustrative only and does not show real transactions or volumes.",
   image: assetLink("img-example-10"), imagePosition: "left",
 });
 
 // ---------- Safety ----------
 const safety = s.cardGrid("safety", {
-  internalName: "Example - Home - Safety", heading: "Send money abroad with confidence",
+  internalName: "Example - Home - Safety", heading: "Send money abroad safely",
   source: "manual", layout: "cards", columns: 2,
   items: [
-    s.item("safety-regulated", { title: "Built for safety everywhere", text: "We follow the rules in every country where we operate, so your money is protected online." }),
-    s.item("safety-data", { title: "Your data stays protected", text: "Your personal details stay private and secure, every time you use us." }),
-    s.item("safety-support", { title: "Help in 18 languages", text: "Day or night, our team is ready to help with your international transfers." }),
+    s.item("safety-regulated", { title: "Safe to use worldwide", text: "We meet regulations everywhere we operate to keep you safe online." }),
+    s.item("safety-data", { title: "Secure data protection", text: "Your personal details and data stay private, so you stay protected online." }),
+    s.item("safety-support", { title: "Support in 18 languages", text: "Whatever the time of day, we are here to help with your money transfers abroad." }),
   ],
 });
 
 // ---------- App ----------
 const app = s.richText("app", {
-  internalName: "Example - Home - App", heading: "Manage every transfer from our app",
+  internalName: "Example - Home - App", heading: "Make global money moves with our app",
   body: md(`**App Store 4.9 stars** 4.5M+ ratings
 
 **Google Play 4.8 stars** 1.4M+ ratings
 
-Scan the code with your phone to download the app.`),
+App ratings are based on all countries and regions (App Store) and recent ratings across all countries (Google Play), and may vary by location and device.`),
 });
 
 // ---------- Reviews ----------
 const reviews = s.richText("reviews", {
-  internalName: "Example - Home - Reviews", heading: "What our customers say",
+  internalName: "Example - Home - Reviews", heading: "See what our customers are saying",
   body: md(`Sample reviews written for this demo page. Individual experiences vary, including by destination.
 
 ### Quick and easy every month
@@ -126,73 +126,65 @@ I had a question about a first transfer and the support team sorted it out in my
 // ---------- Blog ----------
 const blog = s.richText("blog", {
   internalName: "Example - Home - Blog", heading: "Beyond Borders",
-  body: md(`Guides and stories from our blog
+  body: md(`The official Remitly blog
 
-### The 2026 US remittance tax: what we know so far
-
-What the new federal rules mean for people sending money abroad, and how they apply to your transfers.
+### The 2026 U.S. Federal Remittance Tax Guide: What We Know So Far, and Why There's No Tax on Remitly Transfers
 
 [Read more](${BLOG})
 
-### How to update the address on your green card
-
-The steps, forms and timing to keep your records current after a move.
+### How Do I Change the Address for My Green Card?
 
 [Read more](${BLOG})
 
-### Dual citizenship explained
-
-What it means to hold two nationalities and how the process works.
+### What Is Dual Citizenship, and How Does It Work?
 
 [Read more](${BLOG})
 
-### Sending money for Lunar New Year
-
-Tips for getting gifts to family on time for the celebrations.
+### How to Send Money for Lunar New Year 2026
 
 [Read more](${BLOG})`),
 });
 
 // ---------- Countries ----------
 const countries = s.richText("countries", {
-  internalName: "Example - Home - Countries", heading: "Where you can send money",
-  body: md(`Choose a country to start an international transfer.
+  internalName: "Example - Home - Countries", heading: "Where can you send money with Remitly?",
+  body: md(`Select a country to get started with international money transfers.
 
-- [Mexico](${HOME})
-- [India](${HOME})
-- [Philippines](${HOME})
-- [Colombia](${HOME})
-- [Guatemala](${HOME})
-- [Dominican Republic](${HOME})
-- [El Salvador](${HOME})
-- [Honduras](${HOME})
-- [Vietnam](${HOME})
-- [Nigeria](${HOME})
-- [Pakistan](${HOME})
-- [Brazil](${HOME})
+- [Albania](${HOME})
+- [Algeria](${HOME})
+- [Andorra](${HOME})
+- [Angola](${HOME})
+- [Anguilla](${HOME})
+- [Antigua and Barbuda](${HOME})
+- [Argentina](${HOME})
+- [Armenia](${HOME})
+- [Australia](${HOME})
+- [Austria](${HOME})
+- [Azerbaijan](${HOME})
+- [Bahamas](${HOME})
 
-[View all countries](${HOME})`),
+[View more](${HOME})`),
 });
 
 // ---------- FAQ ----------
 const faq = s.faq("help", {
-  internalName: "Example - Home - FAQ", heading: "Answers to common questions",
+  internalName: "Example - Home - FAQ", heading: "Get help with questions about using Remitly in the United States",
   items: [
-    s.item("faq-what", { title: "What is this service and does it work in the United States?", text: "We are an online money transfer service. You can send money from the United States to more than 175 countries using our website or app." }),
-    s.item("faq-where", { title: "Where can I send money from?", text: "You can send from the United States and many other countries. Choose your country at the top of the page to see the options available to you." }),
-    s.item("faq-safe", { title: "Is it safe and trustworthy?", text: "Yes. We are licensed and regulated where we operate, we encrypt your data, and our teams monitor transfers to help prevent fraud." }),
-    s.item("faq-bank", { title: "Is it safe to link my bank account?", text: "Bank connections use secure, encrypted links, and we never share your bank login details." }),
-    s.item("faq-signup", { title: "How do I sign up?", text: "Create an account with your email address, verify your identity, then add a payment method and your recipient's details." }),
-    s.item("faq-business", { title: "Can I use it for business payments?", text: "Yes. Our business account lets you pay suppliers, contractors and partners around the world." }),
-    s.item("faq-large", { title: "Can I send large amounts?", text: "Yes. Sending limits depend on your destination and verification level, and you can request higher limits in your account." }),
+    s.item("faq-what", { title: "What is Remitly and does it work in the United States?", text: "Remitly is an online money transfer service. You can use our website or app to send money from the United States to more than 175 countries." }),
+    s.item("faq-where", { title: "Where can I send money from with Remitly?", text: "You can send from the United States and many other countries. Pick your country at the top of the page to see what is available to you." }),
+    s.item("faq-safe", { title: "Is Remitly safe and trustworthy?", text: "Yes. We are licensed and regulated where we operate, we encrypt your data, and our teams monitor transfers to help prevent fraud." }),
+    s.item("faq-bank", { title: "Is it safe to link your bank account to Remitly?", text: "Bank connections use secure, encrypted links, and we never share your bank login details." }),
+    s.item("faq-signup", { title: "How do I sign up for Remitly in the United States?", text: "Create an account with your email address, verify your identity, then add a payment method and your recipient's details." }),
+    s.item("faq-business", { title: "Can I use Remitly for business payments?", text: "Yes. A business account lets you pay suppliers, contractors and partners around the world." }),
+    s.item("faq-large", { title: "Can I send large amounts of money with Remitly?", text: "Yes. Limits depend on your destination and verification level, and you can ask for higher limits in your account." }),
   ],
 });
 
 // ---------- Page and brand ----------
 const hero = s.hero("home", {
   internalName: "Example - Home - Hero", eyebrow: "Personal",
-  headline: "Send money home. Keep life moving.",
-  subheadline: "Send and receive money and pay for things around the world. Fast, simple, secure and good value. Ready when you are.",
+  headline: "Send money. Make progress.",
+  subheadline: "Send and receive money, and make payments worldwide. Reliably fast, easy, safe and affordable. Let's get moving.",
   image: assetLink("img-example-01"), layout: "split", cta: sendCta,
 });
 
@@ -200,7 +192,7 @@ const home = s.page("home", {
   title: "Send money online", slug: "home", pageType: "home", funnelStep: 0, hero, primaryCta: createAccount,
   sections: [calculator, ways, trust, map, safety, app, reviews, blog, countries, faq],
   seoTitle: "Send money online",
-  seoDescription: "Send money to more than 175 countries with strong rates, low fees and delivery times you can count on.",
+  seoDescription: "Send money to more than 175 countries with great rates, low fees and guaranteed delivery times.",
 });
 
 s.brand({
