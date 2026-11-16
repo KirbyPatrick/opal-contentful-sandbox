@@ -57,7 +57,7 @@ The site checks the secret in constant time, enables draft mode with a cookie, a
   - scripts and styles need the per-request nonce, with no `unsafe-inline`
   - images only from this site and `images.ctfassets.net`
   - `frame-ancestors` limited to this site, Contentful's Live preview pane and Optimizely's visual editor
-  - `/example` only: loads the Optimizely Web Experimentation snippet, so its policy also allows `*.optimizely.com` scripts, styles, images, fonts and connections, inline styles and `unsafe-eval` (Optimizely applies variations with inline styles and runs experiment code with eval)
+  - `/example` only: loads the Optimizely Web Experimentation snippet, so its policy also allows `*.optimizely.com` scripts, styles, images, fonts, frames and connections, inline styles and `unsafe-eval` (Optimizely applies variations with inline styles and runs experiment code with eval)
 - HSTS, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `X-Frame-Options`, and `X-Robots-Tag: noindex` on every page.
 - The pages only use the Delivery and Preview tokens. Since Phase 8 the Contentful management token is also set in Vercel (Production only, as a Secret), because the Opal API under `/api/opal` writes content with it. Only `src/lib/contentful/management.ts` reads it, the front end never imports it, and it never reaches the browser or a response. Rotate it like the other secrets (see below).
 - Brand theme values are validated again before they are written into the page (hex colors, known fonts, fixed radii only).

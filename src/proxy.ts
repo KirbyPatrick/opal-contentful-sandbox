@@ -28,6 +28,8 @@ export function proxy(request: NextRequest) {
     `img-src 'self' data: https://images.ctfassets.net https://app-epsakirbyas29ma1p001.cms.optimizely.com${optimizelyWeb ? ` ${OPTLY}` : ""}`,
     `font-src 'self'${optimizelyWeb ? ` data: ${OPTLY}` : ""}`,
     `connect-src 'self'${optimizelyWeb ? ` ${OPTLY}` : ""}`,
+    // The snippet frames a helper page on a<account>.cdn.optimizely.com for visitor tracking.
+    ...(optimizelyWeb ? [`frame-src 'self' ${OPTLY}`] : []),
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",
