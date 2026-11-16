@@ -15,8 +15,7 @@ const s = defineBrand("example", "ex");
  */
 
 const CATALOG = "https://www.mayocliniclabs.com/test-catalog";
-const C2AD2 = "https://www.mayocliniclabs.com/test-catalog/overview/621652";
-const C2AD2_APOE = "https://www.mayocliniclabs.com/test-catalog/overview/621654";
+const PRECIVITY_AD2 = "https://www.mayocliniclabs.com/test-catalog/overview/624462/precivityad2-plasma";
 const INSIGHTS = "https://news.mayocliniclabs.com/";
 const HOME = "https://www.mayocliniclabs.com/";
 
@@ -60,8 +59,9 @@ const categories = s.richText("test-categories", {
 
 Plasma testing can support the evaluation of adults with mild cognitive impairment or dementia when interpreted alongside a clinical assessment.
 
-- **PrecivityAD2, Plasma** (Mayo ID: C2AD2). Measures the amyloid beta 42/40 ratio and percent p-tau217 and reports an Amyloid Probability Score 2. Offered in collaboration with C2N Diagnostics. [View test details](${C2AD2})
-- **PrecivityAD2 with reflex to apolipoprotein E, Plasma**. Adds apolipoprotein E genotyping when the PrecivityAD2 result is positive. [View test details](${C2AD2_APOE})
+- **PrecivityAD2, Plasma** (Mayo ID: AD2). Measures the amyloid beta 42/40 ratio and percent p-tau217 and reports an Amyloid Probability Score 2. Offered in collaboration with C2N Diagnostics. [View test details](${PRECIVITY_AD2})
+
+[Browse all plasma dementia tests](${CATALOG})
 
 ### Alzheimer's disease cerebrospinal fluid (CSF) testing
 

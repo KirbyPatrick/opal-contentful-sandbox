@@ -16,8 +16,8 @@ export const metadata: Metadata = {
 const HOME = "https://www.mayocliniclabs.com/";
 const CATALOG = "https://www.mayocliniclabs.com/test-catalog";
 const INSIGHTS = "https://news.mayocliniclabs.com/";
-/** The C2N PrecivityAD2 listing (Mayo ID C2AD2). Its link gets a stable ID for experiments. */
-const C2N_TEST_PATH = "/test-catalog/overview/621652";
+/** The C2N PrecivityAD2 listing (Mayo ID AD2). Its link gets a stable ID for experiments. */
+const C2N_TEST_PATH = "/test-catalog/overview/624462";
 
 /**
  * The Example page: a sandbox for recreating a prospect's page during a demo. Its copy lives in the

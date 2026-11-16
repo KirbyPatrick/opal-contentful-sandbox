@@ -1,7 +1,7 @@
 {
  "version": 1,
  "environmentId": "opal-sandbox",
- "exportedAt": "2026-11-16T17:39:11.128Z",
+ "exportedAt": "2026-11-16T17:42:46.484Z",
  "entries": [
   {
    "id": "brand-clearwater-health",
@@ -666,7 +666,7 @@
   {
    "id": "ex-rt-test-categories",
    "type": "richTextSection",
-   "hash": "011dabb7a567147fc65e6203929b9cca836fb72d1386cded64b5f767c21055bd",
+   "hash": "ae063bc87ccdd6cc9cf6fda1890912996d5c91f94eb6d04ad7ed8c2d2674909b",
    "published": true
   },
   {

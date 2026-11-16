@@ -908,7 +908,7 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
 .mcl-scroll-hint { display: none; margin: 8px 0 0; font-size: 13px; color: var(--mcl-muted); }
 .mcl-table-scroll:focus-visible { outline: 2px solid var(--mcl-royal); }
 .mcl-testmenu > p { max-width: 900px; color: #333; font-size: 1rem; }
-.mcl .mcl-testmenu table { display: table; border: 0; border-radius: 0; border-collapse: collapse; margin: 18px 0 0; min-width: 760px; font-size: 0.92rem; }
+.mcl .mcl-testmenu table { display: table; border: 0; border-radius: 0; border-collapse: collapse; margin: 18px 0 0; min-width: 640px; font-size: 0.92rem; }
 .mcl .mcl-testmenu th, .mcl .mcl-testmenu td { border: 1px solid var(--mcl-rule); padding: 12px 10px; text-align: center; vertical-align: top; width: 16.66%; }
 .mcl .mcl-testmenu th { background: #fff; color: var(--mcl-royal); font-weight: 600; border-top-color: var(--mcl-royal); border-top-width: 2px; }
 .mcl .mcl-testmenu tr:last-child td { border-bottom: 1px solid var(--mcl-rule); }
