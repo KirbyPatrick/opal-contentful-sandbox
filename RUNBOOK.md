@@ -94,9 +94,9 @@ Token rotation and the full tool reference are in [docs/opal-api.md](docs/opal-a
 
 `/example` is a sandbox page that looks like a prospect's own page. Its copy lives in Contentful (the `example` brand, entry IDs `ex-...`, defined in `seed/brands/example.ts`) so Opal can read and edit it, and `src/app/example/page.tsx` plus the `.gs1-*` block in `src/app/globals.css` draw the layout. The page header, nav and footer are fixed labels in the layout, not content.
 
-It currently recreates a clinical laboratory's dementia testing campaign page (banner, intro card with stat tiles, expertise and quote, test category accordions, test menu table, highlights cards, closing call to action, resources and references). It is the control for a landing page test, so it deliberately buries the featured blood test in the first collapsed accordion. The copy is original and the footer says it is a demo mockup.
+It currently recreates a money transfer company's US home page (hero with a photo collage, rate calculator, ways to move money, trust features, money map, safety rows, app download, reviews, blog cards, country list and FAQ). The copy is original and the footer says it is a demo mockup.
 
-Stable IDs for building tests in Optimizely's visual editor: `#hero-banner`, `#hero-headline`, `#hero-subhead`, `#hero-cta-slot` (empty space under the subhead), `#test-blood-biomarkers` (first accordion), `#c2n-test-link`, `#c2n-webinar-card` and `#primary-cta`. The page loads the Optimizely Web Experimentation snippet for project 6231585842790400 (`OPTIMIZELY_SNIPPET` in `src/app/example/page.tsx`), and the site allows `https://app.optimizely.com` to embed it, so the visual editor works without a browser extension (see `src/proxy.ts`).
+Stable IDs for building tests in Optimizely's visual editor: `#hero-banner`, `#hero-headline`, `#hero-subhead`, `#hero-cta`, `#rate-calculator`, `#calculator-cta`, `#signup-cta`, `#ways-to-send`, `#trust-features`, `#money-map`, `#safety`, `#app-download`, `#reviews`, `#blog`, `#countries` and `#faq`. The page loads the Optimizely Web Experimentation snippet for project 6231585842790400 (`OPTIMIZELY_SNIPPET` in `src/app/example/page.tsx`), and the site allows `https://app.optimizely.com` to embed it, so the visual editor works without a browser extension (see `src/proxy.ts`).
 
 To rebuild it for another prospect:
 
