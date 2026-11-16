@@ -4,178 +4,258 @@ const s = defineBrand("example", "ex");
 
 /**
  * Example: a sandbox brand with one page, rendered at /example by src/app/example.
- * It currently recreates a standards organization's "UPC, Barcodes & Prefixes" page for a demo. The layout
- * lives in src/app/example; the copy below lives in Contentful so Opal can edit it, and npm run reset puts it
- * back after a demo. The copy is written for this sandbox, and the mockup is not an official page.
+ * It currently recreates a clinical laboratory's dementia testing campaign page (the control for a landing page
+ * test in a demo). The layout lives in src/app/example; the copy below lives in Contentful so Opal can edit it,
+ * and npm run reset puts it back after a demo. The copy is written for this sandbox and the page is a mockup.
+ *
+ * Conventions the layout reads:
+ * - **bold** in the hero headline, hero subheadline and section headings marks the heavier phrase.
+ * - In the test categories and highlights sections, each level 3 heading starts a new accordion or card.
+ * - Stats render as the three tiles under the intro.
  */
 
-const ESTIMATOR_URL = "https://www.gs1us.org/upcs-barcodes-prefixes";
+const CATALOG = "https://www.mayocliniclabs.com/test-catalog";
+const C2AD2 = "https://www.mayocliniclabs.com/test-catalog/overview/621652";
+const C2AD2_APOE = "https://www.mayocliniclabs.com/test-catalog/overview/621654";
+const INSIGHTS = "https://news.mayocliniclabs.com/";
+const HOME = "https://www.mayocliniclabs.com/";
 
-// ---------- Get barcodes: intro and the three products ----------
-const intro = s.richText("get-barcodes", {
-  internalName: "Example - Home - Get barcodes", heading: "Get Barcodes",
-  body: md("Barcodes from GS1 US give your products and locations an authentic and unique identity in the supply chain and in e-commerce."),
+// ---------- Intro and figures ----------
+const intro = s.richText("intro", {
+  internalName: "Example - Home - Intro", heading: "**Focused dementia testing** for a complex diagnostic journey",
+  body: md(`As research continues to confirm the value of fluid biomarkers in detecting the brain changes linked to Alzheimer's disease and related dementias, the number of blood and cerebrospinal fluid tests available to clinicians has grown quickly. Choosing the right test for risk assessment, diagnosis or prognosis is harder when symptoms overlap.
+
+We help reduce that uncertainty with a full portfolio of fluid biomarker, genetic and antibody testing for Alzheimer's disease and related dementias. Our assays are developed and reviewed by laboratory and clinical specialists with decades of experience in dementia care, so you have dependable answers at each point in your patient's evaluation.`),
 });
 
-const prefix = s.offering("company-prefix", {
-  name: "Get Several UPC Barcodes", slug: "company-prefix", offeringType: "saas_plan",
-  summary: "A GS1 Company Prefix lets you create many barcodes yourself as your product line grows.",
-  priceLabel: "Starting at $250",
-  features: ["Get a GS1 Company Prefix"],
-  specs: [
-    "Supports growing product lines: Yes",
-    "Uniquely identifies locations (GLN): Yes",
-    "Uniquely identifies products: Yes",
-    "Supports mixed cases and pallets: Yes",
-    "Supports coupon creation: Yes",
-    "Identifies pharmaceutical products: Yes",
-  ],
-  finePrint: "*Annual renewal fee",
-});
-
-const single = s.offering("single-gtin", {
-  name: "Get a Single UPC Barcode", slug: "single-gtin", offeringType: "saas_plan",
-  summary: "One GS1 US GTIN for a single product.",
-  priceLabel: "$30 Each",
-  features: ["Get a GS1 US GTIN"],
-  specs: [
-    "Supports growing product lines: No",
-    "Uniquely identifies locations (GLN): No",
-    "Uniquely identifies products: Yes",
-    "Supports mixed cases and pallets: No",
-    "Supports coupon creation: No",
-    "Identifies pharmaceutical products: No",
-  ],
-});
-
-const gln = s.offering("gln", {
-  name: "Global Location Number (GLN)", slug: "gln", offeringType: "saas_plan",
-  summary: "A GLN identifies a physical or legal location, such as a warehouse or store.",
-  priceLabel: "$30 Each",
-  features: ["Get a GLN"],
-  specs: [
-    "Supports growing product lines: No",
-    "Uniquely identifies locations (GLN): Yes",
-    "Uniquely identifies products: No",
-    "Supports mixed cases and pallets: No",
-    "Supports coupon creation: No",
-    "Identifies pharmaceutical products: No",
-  ],
-});
-
-const compare = s.comparisonTable("compare", {
-  internalName: "Example - Home - Barcode options", heading: "Compare barcode options",
-  offerings: [prefix, single, gln],
-  rows: [
-    "Supports growing product lines",
-    "Uniquely identifies locations (GLN)",
-    "Uniquely identifies products",
-    "Supports mixed cases and pallets",
-    "Supports coupon creation",
-    "Identifies pharmaceutical products",
-  ],
-});
-
-const estimator = s.cta("estimator", {
-  internalName: "Example - Home - Estimator", heading: "Not sure how many barcodes you need?",
-  label: "Go to Barcode Estimator", goalType: "link", destinationUrl: ESTIMATOR_URL, style: "primary",
-});
-
-// ---------- Overview ----------
-const overview = s.richText("overview", {
-  internalName: "Example - Home - Overview", heading: "Overview",
-  body: md(`Getting a barcode is easy! Checkout takes three simple steps.
-
-1. Choose a GS1 US GTIN, a Global Location Number, or a GS1 Company Prefix and add it to your cart.
-2. Enter your contact information.
-3. Pay for your order online. Within minutes you will receive a welcome email from GS1 US with all of the important information you need to get started, including access to myGS1 US, your online member center.`),
-});
-
-// ---------- Why ----------
-const why = s.cardGrid("why", {
-  internalName: "Example - Home - Why choose us", heading: "Why GS1 US?",
-  intro: "GS1 US is a not-for-profit information standards organization, and GS1 Standards are the most widely used supply chain standards in the world. If you have a question, Customer Support is ready to help.",
-  source: "manual", layout: "icons", columns: 4,
+const figures = s.stats("figures", {
+  internalName: "Example - Home - Figures",
   items: [
-    s.item("why-accepted", { title: "Accepted by every retailer & supplier" }),
-    s.item("why-marketplaces", { title: "Sell your products worldwide on any Marketplace" }),
-    s.item("why-support", { title: "Get free live support" }),
-    s.item("why-datahub", { title: "Instantly create and print your barcodes with our Data Hub tool" }),
-    s.item("why-unique", { title: "Globally unique codes to improve your supply chain efficiency & visibility" }),
+    s.item("stat-primary-care", { value: "61%", title: "of Alzheimer's disease cases correctly identified in primary care with standard assessment" }),
+    s.item("stat-biomarker", { value: ">90%", title: "diagnostic accuracy when a validated fluid biomarker test is added" }),
+    s.item("stat-prevalence", { value: "1 in 9", title: "adults age 65 and older in the United States live with Alzheimer's dementia" }),
   ],
+  footnote: "Illustrative figures summarized from the published references listed at the end of this page.",
 });
 
-// ---------- How to use ----------
-const howTo = s.cardGrid("how-to", {
-  internalName: "Example - Home - How to use barcodes", heading: "How to Use Your GS1 Barcodes",
-  source: "manual", layout: "cards", columns: 4,
-  items: [
-    s.item("how-gtin-or-gln", { title: "GTIN or GLN?", text: "Find out what to do once you have your GS1 Company Prefix.", image: assetLink("img-example-01") }),
-    s.item("how-barcode-type", { title: "Determine Barcode Type", text: "Check which type of barcode your retailers need from you.", image: assetLink("img-example-02") }),
-    s.item("how-place", { title: "Place Barcodes on Products", text: "Create the barcode image and print it correctly on your items.", image: assetLink("img-example-03") }),
-    s.item("how-share", { title: "Share Information Electronically", text: "Share your product and location information with all of your trading partners.", image: assetLink("img-example-04") }),
-  ],
+// ---------- Expertise ----------
+const expertise = s.richText("expertise", {
+  internalName: "Example - Home - Expertise", heading: "From specimen to interpretation: expertise you can trust",
+  body: md(`Objective biomarker results help confirm what is driving cognitive decline, so patients can move to appropriate care sooner. With our collaborators, we offer a broad menu of blood and cerebrospinal fluid testing for Alzheimer's disease, Alzheimer's disease with mixed pathology, dementia with Lewy bodies, autoimmune dementia, rapidly progressive dementia including Creutzfeldt-Jakob disease, and hereditary dementias.
+
+Our integration with Mayo Clinic practice keeps test development focused on results that change patient management, and our specialists are available to discuss test selection and interpretation.`),
 });
 
-// ---------- Pricing ----------
-const pricing = s.richText("pricing", {
-  internalName: "Example - Home - Pricing", heading: "GS1 Company Prefix Pricing",
-  body: md(`| Number of items needing a barcode/GTIN | Initial fee | Annual renewal fee |
-| --- | --- | --- |
-| 1 GS1 US GTIN | $30 | $0 |
-| 10 | $250 | $50 |
-| 100 | $750 | $150 |
-| 1,000 | $2,500 | $500 |
-| 10,000 | $6,500 | $1,300 |
-| 100,000 | $10,500 | $2,100 |
-| GS1 Company Prefix including U.S. FDA NDC Labeler Code | $2,100 | $2,100 |`),
+const quote = s.richText("expertise-quote", {
+  internalName: "Example - Home - Expert quote",
+  body: md(`> Biomarker testing is becoming a routine part of the cognitive evaluation. The aim is not more testing, but the right test at the right point in the workup, with an interpretation the ordering clinician can act on.
+
+**A Mayo Clinic Laboratories neurology expert**`),
 });
 
-// ---------- Help ----------
-const help = s.cta("help", {
-  internalName: "Example - Home - Need a hand", heading: "Need a hand?",
-  body: "If you need help getting started, or support with any part of your GS1 US membership, please get in touch.",
-  label: "Get in Touch", goalType: "link", destinationUrl: ESTIMATOR_URL, style: "primary",
+// ---------- Test categories (accordions) ----------
+const categories = s.richText("test-categories", {
+  internalName: "Example - Home - Test categories",
+  body: md(`### Alzheimer's disease blood testing
+
+Plasma testing can support the evaluation of adults with mild cognitive impairment or dementia when interpreted alongside a clinical assessment.
+
+- **PrecivityAD2, Plasma** (Mayo ID: C2AD2). Measures the amyloid beta 42/40 ratio and percent p-tau217 and reports an Amyloid Probability Score 2. Offered in collaboration with C2N Diagnostics. [View test details](${C2AD2})
+- **PrecivityAD2 with reflex to apolipoprotein E, Plasma**. Adds apolipoprotein E genotyping when the PrecivityAD2 result is positive. [View test details](${C2AD2_APOE})
+
+### Alzheimer's disease cerebrospinal fluid (CSF) testing
+
+Cerebrospinal fluid amyloid and tau measures remain an established option when a lumbar puncture is part of the workup or when blood results need confirmation.
+
+[Browse CSF tests in our catalog](${CATALOG})
+
+### Mixed pathology and dementia with Lewy bodies testing
+
+Seed amplification testing for alpha-synuclein helps identify Lewy body pathology, which often occurs alongside Alzheimer's disease.
+
+[Browse synucleinopathy tests](${CATALOG})
+
+### Autoimmune dementia testing
+
+Antibody evaluations in serum and spinal fluid help identify autoimmune causes of cognitive decline that may respond to treatment.
+
+[Browse autoimmune neurology tests](${CATALOG})
+
+### Hereditary Alzheimer's disease and dementia testing
+
+Genetic panels and apolipoprotein E genotyping support the evaluation of early-onset and familial presentations.
+
+[Browse genetic dementia tests](${CATALOG})
+
+### Rapidly progressive dementia testing
+
+Real-time quaking-induced conversion and related spinal fluid testing help distinguish prion disease from other causes of rapid decline.
+
+[Browse rapidly progressive dementia tests](${CATALOG})
+
+### Glial fibrillary acidic protein testing
+
+Glial fibrillary acidic protein is a marker of astrocyte activation that can add context to amyloid and tau findings.
+
+[Browse GFAP testing](${CATALOG})
+
+### Neurofilament light chain testing
+
+Neurofilament light chain reflects neuroaxonal injury across a range of neurodegenerative conditions.
+
+[Browse neurofilament light chain testing](${CATALOG})`),
+});
+
+// ---------- Test menu ----------
+const menu = s.richText("test-menu", {
+  internalName: "Example - Home - Test menu", heading: "One-stop laboratory solution",
+  body: md(`When blood-based testing does not give a definitive answer, our full dementia test menu covers the next steps.
+
+| Alzheimer's disease | Prion disease | Autoimmune dementia | Genetic testing | Nonspecific | Synucleinopathies |
+| --- | --- | --- | --- | --- | --- |
+| Plasma biomarker testing | Rapidly progressive dementia evaluation | Autoimmune and paraneoplastic antibody testing | Apolipoprotein E genotyping | Neurofilament light chain | Spinal fluid alpha-synuclein seed amplification |
+| Cerebrospinal fluid biomarker testing | Creutzfeldt-Jakob disease testing | | NOTCH3 full-gene analysis | Glial fibrillary acidic protein | |
+| | | | Inherited frontotemporal dementia and ALS panel | | |
+| | | | Early-onset familial testing | | |`),
+});
+
+// ---------- Highlights (cards) ----------
+const highlights = s.richText("highlights", {
+  internalName: "Example - Home - Highlights", heading: "Highlights",
+  body: md(`### Blood-based biomarkers for Alzheimer's disease: an introduction
+
+A short presentation on how plasma biomarkers fit into the evaluation of cognitive impairment.
+
+[Learn more](${INSIGHTS})
+
+### Join our webinar with C2N Diagnostics on blood biomarker testing for Alzheimer's disease
+
+Our laboratory specialists and C2N Diagnostics discuss ordering, specimen handling and how to read an Amyloid Probability Score.
+
+[Register](${INSIGHTS})
+
+### A practical approach to testing in mild cognitive impairment
+
+How to sequence testing in the cognitive neurology clinic, from first visit to specialist referral.
+
+[Learn more](${INSIGHTS})
+
+### Advancing precision diagnostics for neurodegenerative disorders
+
+Seed amplification testing brings new accuracy to the diagnosis of Parkinson's disease and dementia with Lewy bodies.
+
+[Learn more](${INSIGHTS})
+
+### Understanding cerebrospinal fluid biomarkers
+
+What amyloid and tau measures in spinal fluid add to the diagnosis of Alzheimer's disease.
+
+[Learn more](${INSIGHTS})
+
+### Podcast: what new diagnostics mean for neurodegenerative disease
+
+Laboratory leaders discuss how new assays are changing the diagnostic pathway.
+
+[Listen now](${INSIGHTS})
+
+### Neurodegenerative diseases: diagnostic advancements
+
+A continuing education course on assessment and testing options for patients with neurodegenerative disease.
+
+[Learn more](${INSIGHTS})
+
+### Distinguishing prion disease in rapidly progressive dementia
+
+How spinal fluid testing separates prion disease from other causes of rapid cognitive decline.
+
+[Learn more](${INSIGHTS})
+
+### Building a diagnostic ecosystem for timely Alzheimer's testing
+
+How a connected test menu helps physicians order the right test the first time.
+
+[Learn more](${INSIGHTS})
+
+### Podcast: expanding access to Alzheimer's testing
+
+Our specialists discuss plasma testing and what it means for patients far from a memory clinic.
+
+[Listen now](${INSIGHTS})
+
+### Specimen collection for plasma biomarker testing
+
+Collection, processing and frozen shipping requirements that protect plasma biomarker results.
+
+[Learn more](${INSIGHTS})
+
+### Interpreting results across the dementia test menu
+
+A reference for reading amyloid, tau and neurodegeneration markers together.
+
+[Learn more](${INSIGHTS})`),
+});
+
+// ---------- Closing call to action ----------
+const appointment = s.cta("appointment", {
+  internalName: "Example - Home - Schedule an appointment", heading: "Let us help you dial in **your patient's diagnosis**",
+  body: "Take the next step toward accurate, clinically relevant plasma and cerebrospinal fluid biomarker results. Schedule an appointment with a member of our team.",
+  label: "Schedule an appointment", goalType: "link", destinationUrl: HOME, style: "primary",
+});
+
+// ---------- Resources and references ----------
+const resources = s.richText("resources", {
+  internalName: "Example - Home - Resources", heading: "Resources",
+  body: md(`- **Download** [Dementia fluid biomarker testing guide](${INSIGHTS})
+- **View** [Dementia test menu](${CATALOG})
+- **Download** [Neurology test request form](${HOME})`),
+});
+
+const references = s.richText("references", {
+  internalName: "Example - Home - References", heading: "References",
+  body: md(`1. Alzheimer's Association. 2024 Alzheimer's disease facts and figures. *Alzheimers Dement*. 2024;20(5):3708-3821.
+2. Palmqvist S, Tideman P, Mattsson-Carlgren N, et al. Blood biomarkers to detect Alzheimer disease in primary and secondary care. *JAMA*. 2024;332(15):1245-1257.`),
 });
 
 // ---------- Page and brand ----------
 const hero = s.hero("home", {
-  internalName: "Example - Home - Hero", eyebrow: "Get a Barcode",
-  headline: "UPC, Barcodes & Prefixes", layout: "text_only",
+  internalName: "Example - Home - Hero", eyebrow: "Neurology",
+  headline: "One trusted laboratory for **the full dementia workup**",
+  subheadline: "A complete dementia test menu for each stage of evaluation, backed by laboratory specialists who help you interpret every result.",
+  image: assetLink("img-example-01"), layout: "full_bleed",
 });
 
 const home = s.page("home", {
-  title: "UPC, Barcodes & Prefixes", slug: "home", pageType: "home", funnelStep: 0, hero,
-  sections: [intro, compare, estimator, overview, why, howTo, pricing, help],
-  seoTitle: "UPC, Barcodes & Prefixes",
-  seoDescription: "Get UPC barcodes, a GS1 Company Prefix, or a Global Location Number, and learn how to use them with your products.",
+  title: "Dementia testing", slug: "home", pageType: "home", funnelStep: 0, hero,
+  sections: [intro, figures, expertise, quote, categories, menu, highlights, appointment, resources, references],
+  seoTitle: "Dementia testing",
+  seoDescription: "Fluid biomarker, genetic and antibody testing for Alzheimer's disease and related dementias, with specialist support for test selection and interpretation.",
 });
 
 s.brand({
   name: "Example",
   slug: "example",
-  vertical: "b2b_saas",
-  shortDescription: "Sandbox page for recreating a prospect's web page in a demo. Currently a standards organization's UPC, barcodes and prefixes page.",
+  vertical: "healthcare",
+  shortDescription: "Sandbox page for recreating a prospect's web page in a demo. Currently a clinical laboratory's dementia testing campaign page.",
   // A logo is required, but the Example page draws its own header, so it borrows an existing one.
   logo: assetLink("logo-ledgerwood-bank"),
-  colorBrand: "#002C6C", colorButton: "#CD3C0D", colorButtonText: "#FFFFFF", colorAccent: "#CD3C0D",
-  colorBackground: "#FFFFFF", colorSurface: "#C4D7ED", colorText: "#262626", colorMuted: "#5C6670",
-  fontHeading: "Manrope", fontBody: "Manrope", buttonRadius: 0, buttonTextCase: "normal",
-  voiceDescription: "Clear, friendly, and practical. Speaks to small business owners and brand managers who need barcodes, explaining each option and step in plain language without jargon.",
+  colorBrand: "#1F5BC0", colorButton: "#1F5BC0", colorButtonText: "#FFFFFF", colorAccent: "#0E8A9C",
+  colorBackground: "#FFFFFF", colorSurface: "#F2F4F7", colorText: "#111111", colorMuted: "#4D4D4D",
+  fontHeading: "Inter", fontBody: "Inter", buttonRadius: 4, buttonTextCase: "normal",
+  voiceDescription: "Measured, clinical and evidence based. Speaks to neurologists, primary care physicians and laboratory directors in the first person plural, explaining what each test adds to a dementia evaluation without hype.",
   voiceDos: [
-    "Lead with what the reader can do next",
-    "Explain each barcode option in plain terms",
-    "Keep sentences short and direct",
-    "Use exact fees and counts from the pricing table",
+    "Write in the first person plural (we, our)",
+    "Name tests precisely, with the Mayo ID where one exists",
+    "Support claims with published references",
+    "Use sentence case",
   ],
   voiceDonts: [
-    "No hype or exclamation marks beyond the single reassuring one in the overview",
-    "No unexplained acronyms; spell out GTIN and GLN on first use",
+    "No hype or exclamation marks",
+    "No promises about outcomes for individual patients",
     "No em dashes",
   ],
-  address: "75 Placeholder Way, Floor 12\nBoston, MA 02110",
-  phone: "(617) 555-0142",
-  legalDisclaimer: "Fictional company. Sample content for illustration only. This sandbox page recreates a prospect's web page for a product demo.",
+  address: "200 Placeholder Avenue SW\nRochester, MN 55905",
+  phone: "(507) 555-0142",
+  legalDisclaimer: "Fictional company. Sample content for illustration only. This sandbox page recreates a prospect's campaign page for a product demo.",
   homePage: home,
 });
 

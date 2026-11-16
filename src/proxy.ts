@@ -10,10 +10,11 @@ import { NextResponse, type NextRequest } from "next/server";
 export function proxy(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const isDev = process.env.NODE_ENV === "development";
-  // Contentful's Live preview pane may embed the site; no other site can. The browser may not
-  // send the draft cookie inside the frame, so framing cannot depend on it. The site has no
-  // logins or sensitive actions, so allowing Contentful's app to frame it is low risk.
-  const frameAncestors = "'self' https://app.contentful.com";
+  // Contentful's Live preview pane and Optimizely Web Experimentation's visual editor may embed
+  // the site; no other site can. The browser may not send the draft cookie inside the frame, so
+  // framing cannot depend on it. The site has no logins or sensitive actions, so allowing these
+  // two apps to frame it is low risk.
+  const frameAncestors = "'self' https://app.contentful.com https://app.optimizely.com";
   const csp = [
     "default-src 'self'",
     `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""}`,

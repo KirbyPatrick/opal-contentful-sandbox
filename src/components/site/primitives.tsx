@@ -81,13 +81,29 @@ const richTextOptions: Options = {
   },
 };
 
-export function RichText({ document, className, renderText }: {
+export function RichText({ document, className, renderText, linkAttributes }: {
   document: unknown; className?: string;
   /** Optional renderer for each run of text, for page-specific typography. */
   renderText?: (text: string) => ReactNode;
+  /** Optional id and class for each hyperlink, for page-specific styling and stable experiment hooks. */
+  linkAttributes?: (uri: string) => { id?: string; className?: string };
 }) {
   if (!document || typeof document !== "object" || (document as Document).nodeType !== "document") return null;
-  const options = renderText ? { ...richTextOptions, renderText } : richTextOptions;
+  let options: Options = renderText ? { ...richTextOptions, renderText } : richTextOptions;
+  if (linkAttributes) {
+    options = {
+      ...options,
+      renderNode: {
+        ...options.renderNode,
+        [INLINES.HYPERLINK]: (node, children) => {
+          const uri = (node.data as { uri?: unknown }).uri;
+          if (!isSafeUrl(uri)) return <>{children}</>;
+          const { id, className: linkClass } = linkAttributes(uri as string);
+          return <a id={id} className={linkClass} href={uri as string} rel="noopener noreferrer" target="_blank">{children}</a>;
+        },
+      },
+    };
+  }
   return <div className={`rich-text ${className ?? ""}`}>{documentToReactComponents(document as Document, options)}</div>;
 }
 

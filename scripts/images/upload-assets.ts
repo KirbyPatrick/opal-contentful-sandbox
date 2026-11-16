@@ -3,6 +3,7 @@
  *
  *   npm run assets:upload
  *   npm run assets:upload -- --replace ledgerwood-bank-01   Swap one photo's file and text in place (same asset ID).
+ *   npm run assets:upload -- --replace-file example-01      Same, from a downloaded JPEG at assets/photos/<key>.jpg (no Pixabay key needed).
  *
  * - Photos come from assets/manifest.json. A fresh Pixabay download link is
  *   fetched for each (links expire after 24 hours), and Contentful pulls the
@@ -140,11 +141,49 @@ async function replaceLogos(client: SandboxClient): Promise<void> {
   }
 }
 
+/**
+ * Swaps one photo's file and text in place from a local JPEG at assets/photos/<key>.jpg (same asset ID).
+ * For photos already downloaded from Pixabay, so no API key is needed. The asset is created if missing.
+ */
+async function replaceFromFile(client: SandboxClient, image: z.infer<typeof Manifest>["images"][number]): Promise<void> {
+  const assetId = `img-${image.key}`;
+  const file = readFileSync(join("assets", "photos", `${image.key}.jpg`));
+  if (file[0] !== 0xff || file[1] !== 0xd8) throw new Error(`assets/photos/${image.key}.jpg is not a JPEG.`);
+  const upload = await client.upload.create({}, { file: file.buffer.slice(file.byteOffset, file.byteOffset + file.byteLength) as ArrayBuffer });
+  const fields = {
+    title: { [LOCALE]: image.altText },
+    description: { [LOCALE]: `Photo by ${image.photographer} on Pixabay (${image.sourcePage}). Pixabay Content License.` },
+    file: {
+      [LOCALE]: {
+        contentType: "image/jpeg",
+        fileName: `${image.key}.jpg`,
+        uploadFrom: { sys: { type: "Link" as const, linkType: "Upload" as const, id: upload.sys.id } },
+      },
+    },
+  };
+  const existing = await existingAssetIds(client);
+  if (existing.has(assetId)) {
+    const current = await client.asset.get({ assetId });
+    await client.asset.update({ assetId }, { ...current, fields });
+  } else {
+    await client.asset.createWithId({ assetId }, { fields, metadata: tags(image.brand) });
+  }
+  await processAndPublish(client, assetId);
+  console.log(`replaced  ${assetId} from assets/photos/${image.key}.jpg`);
+}
+
 async function main(): Promise<void> {
+  const manifest = Manifest.parse(JSON.parse(readFileSync(join("assets", "manifest.json"), "utf8")));
+  const fileIndex = process.argv.indexOf("--replace-file");
+  if (fileIndex >= 0) {
+    const key = process.argv[fileIndex + 1];
+    const image = manifest.images.find((i) => i.key === key);
+    if (!image) throw new Error(`No manifest image with key ${key ?? "(missing)"}.`);
+    return replaceFromFile(await getSandboxClient(), image);
+  }
+
   const pixabayKey = process.env.PIXABAY_API_KEY;
   if (!pixabayKey || !/^\d+-[0-9a-f]{20,}$/.test(pixabayKey)) throw new Error("PIXABAY_API_KEY is missing or invalid. See .env.example.");
-
-  const manifest = Manifest.parse(JSON.parse(readFileSync(join("assets", "manifest.json"), "utf8")));
   const client = await getSandboxClient();
   if (process.argv.includes("--retag")) return retagAssets(client);
   if (process.argv.includes("--replace-logos")) return replaceLogos(client);

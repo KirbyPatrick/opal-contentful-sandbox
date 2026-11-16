@@ -32,7 +32,7 @@ Next.js 16 (App Router, TypeScript) on Vercel, reading published content from th
 
 ## Draft preview and Live preview
 
-Every page may be embedded by `https://app.contentful.com` (Contentful's Live preview pane) and by no other site (`frame-ancestors 'self' https://app.contentful.com`). The draft cookie is also set as a partitioned cookie (CHIPS), so drafts show inside the Live preview frame even when the browser blocks ordinary third-party cookies. Use Chrome or Edge; Safari does not support this.
+Every page may be embedded by `https://app.contentful.com` (Contentful's Live preview pane) and `https://app.optimizely.com` (Optimizely Web Experimentation's visual editor, used to build tests on `/example`), and by no other site (`frame-ancestors 'self' https://app.contentful.com https://app.optimizely.com`). The draft cookie is also set as a partitioned cookie (CHIPS), so drafts show inside the Live preview frame even when the browser blocks ordinary third-party cookies. Use Chrome or Edge; Safari does not support this.
 
 Draft preview reads the Preview API, is never cached (`Cache-Control: no-store`), and shows a yellow banner with an exit button.
 
@@ -56,7 +56,7 @@ The site checks the secret in constant time, enables draft mode with a cookie, a
 - **Content Security Policy** set in `src/proxy.ts`:
   - scripts and styles need the per-request nonce, with no `unsafe-inline`
   - images only from this site and `images.ctfassets.net`
-  - `frame-ancestors 'none'`
+  - `frame-ancestors` limited to this site, Contentful's Live preview pane and Optimizely's visual editor
 - HSTS, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `X-Frame-Options`, and `X-Robots-Tag: noindex` on every page.
 - The pages only use the Delivery and Preview tokens. Since Phase 8 the Contentful management token is also set in Vercel (Production only, as a Secret), because the Opal API under `/api/opal` writes content with it. Only `src/lib/contentful/management.ts` reads it, the front end never imports it, and it never reaches the browser or a response. Rotate it like the other secrets (see below).
 - Brand theme values are validated again before they are written into the page (hex colors, known fonts, fixed radii only).
