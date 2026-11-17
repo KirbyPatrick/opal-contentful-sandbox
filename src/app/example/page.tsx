@@ -75,18 +75,31 @@ function Hero({ g, hero, second }: { g: BrandGraph; hero?: SiteEntry; second?: S
           {cta && <a id="hero-cta" className="rmt-btn rmt-btn-light" href={href}>{text(cta, "label") ?? "Send money"}</a>}
         </div>
         <div className="rmt-collage" aria-hidden="true">
-          <div className="rmt-collage-photo rmt-collage-photo-a"><Img asset={g.asset(hero?.fields.image)} sizes="(min-width: 900px) 220px, 40vw" priority decorative /></div>
-          <div className="rmt-collage-photo rmt-collage-photo-b"><Img asset={second} sizes="(min-width: 900px) 260px, 45vw" priority decorative /></div>
+          <div className="rmt-collage-photo rmt-collage-photo-a"><Img asset={g.asset(hero?.fields.image)} sizes="(min-width: 1280px) 180px, (min-width: 768px) 150px, 34vw" priority decorative /></div>
+          <div className="rmt-collage-photo rmt-collage-photo-b"><Img asset={second} sizes="(min-width: 1280px) 240px, (min-width: 768px) 200px, 45vw" priority decorative /></div>
           <div className="rmt-chip rmt-chip-request">
-            <span className="rmt-chip-icon"><BankIcon /></span>
-            <span><strong>Gcash</strong><small>Mobile Money</small><em>Money requested</em></span>
+            <div className="rmt-chip-head">
+              <span className="rmt-chip-icon"><BankIcon /></span>
+              <span><strong>Gcash</strong><small>Mobile Money</small></span>
+            </div>
+            <em>Money requested</em>
           </div>
           <div className="rmt-phone-card">
             <div className="rmt-phone">
-              <div className="rmt-phone-row"><span><b>300.00</b><small>You send</small></span><span className="rmt-ccy">GBP</span></div>
-              <div className="rmt-phone-row"><span><b>25,200.00</b><small>They receive</small></span><span className="rmt-ccy">PHP</span></div>
-              <span className="rmt-phone-rate">1 GBP = 84.00 PHP</span>
-              <span className="rmt-phone-btn">Continue</span>
+              <div className="rmt-phone-status"><span>12:30</span><span className="rmt-phone-island" /><StatusIcons /></div>
+              <div className="rmt-phone-top"><ShieldMark light={false} /><span className="rmt-phone-x" /></div>
+              <div className="rmt-phone-progress"><span /></div>
+              <span className="rmt-phone-rate">1 GBP = <u>84.00 PHP</u></span>
+              <span className="rmt-phone-promo"><span>&#10022; Promo exchange rate applied</span><span className="rmt-phone-info">i</span></span>
+              <div className="rmt-phone-sheet">
+                <div className="rmt-phone-fee"><span>Fastest delivery available:<b><svg viewBox="0 0 8 12" aria-hidden="true"><path d="M5 0 0 7h3l-1 5 6-8H5z" fill="currentColor" /></svg>Instant</b></span><span>Flat fee:<b className="rmt-phone-teal">0.00 GBP</b></span></div>
+                <span className="rmt-phone-btn">Continue</span>
+                <span className="rmt-phone-sim">Simulated experience</span>
+              </div>
+            </div>
+            <div className="rmt-phone-amounts">
+              <div className="rmt-phone-row"><span><b>300.00</b><small>You send</small></span><span className="rmt-ccy"><Flag kind="gb" />GBP</span></div>
+              <div className="rmt-phone-row"><span><b>25,200.00</b><small>They receive</small></span><span className="rmt-ccy rmt-ccy-pick"><Flag kind="ph" />PHP<Chevron /></span></div>
             </div>
           </div>
           <div className="rmt-chip rmt-chip-sent">
@@ -518,7 +531,13 @@ function ShieldMark({ light = true }: { light?: boolean }) {
   return <img className="rmt-mark" src={light ? "/example/remitly-mark-white.svg" : "/example/remitly-mark.svg"} alt="" width={32} height={32} />;
 }
 
-function Flag({ kind }: { kind: "us" | "mx" }) {
+function Flag({ kind }: { kind: "us" | "mx" | "gb" | "ph" }) {
+  if (kind === "gb") return (
+    <svg className="rmt-flag" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><clipPath id="rmt-flag-gb"><circle cx="10" cy="10" r="10" /></clipPath><g clipPath="url(#rmt-flag-gb)"><rect width="20" height="20" fill="#012169" /><path d="M0 0l20 20M20 0L0 20" stroke="#fff" strokeWidth="4" /><path d="M0 0l20 20M20 0L0 20" stroke="#c8102e" strokeWidth="1.5" /><path d="M10 0v20M0 10h20" stroke="#fff" strokeWidth="6" /><path d="M10 0v20M0 10h20" stroke="#c8102e" strokeWidth="3.4" /></g></svg>
+  );
+  if (kind === "ph") return (
+    <svg className="rmt-flag" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><clipPath id="rmt-flag-ph"><circle cx="10" cy="10" r="10" /></clipPath><g clipPath="url(#rmt-flag-ph)"><rect width="20" height="10" fill="#0038a8" /><rect y="10" width="20" height="10" fill="#ce1126" /><path d="M0 0l10 10L0 20z" fill="#fff" /><circle cx="3.6" cy="10" r="1.4" fill="#fcd116" /></g></svg>
+  );
   return kind === "us" ? (
     <svg className="rmt-flag" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><clipPath id="rmt-flag-us"><circle cx="10" cy="10" r="10" /></clipPath><g clipPath="url(#rmt-flag-us)"><rect width="20" height="20" fill="#fff" />{[0, 4, 8, 12, 16].map((y) => <rect key={y} y={y} width="20" height="2" fill="#c8102e" />)}<rect width="10" height="10" fill="#1f3a93" /></g></svg>
   ) : (
@@ -526,6 +545,9 @@ function Flag({ kind }: { kind: "us" | "mx" }) {
   );
 }
 
+function StatusIcons() {
+  return <svg className="rmt-phone-icons" viewBox="0 0 36 10" aria-hidden="true"><path d="M1 4.5a8 8 0 0 1 10 0L6 9.5z" fill="currentColor" /><path d="M15 9.5h8v-8z" fill="currentColor" /><rect x="27" y="1" width="5" height="8.5" rx="1" fill="currentColor" /></svg>;
+}
 function Chevron() {
   return <svg className="rmt-chevron" viewBox="0 0 16 10" width="14" height="9" aria-hidden="true"><path d="M1.5 1.5 8 8l6.5-6.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>;
 }
