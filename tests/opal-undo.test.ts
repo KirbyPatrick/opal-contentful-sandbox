@@ -96,7 +96,7 @@ describe("revert_entry", () => {
     const result = await revertEntry(ctxFor(cma), { brand, entry_id: "ex-he-home", version: 5, to: "original" });
     assert.equal(result.status, "changed");
     const hero = cma.entries.get("ex-he-home")!;
-    assert.equal((hero.fields.headline as Record<string, string>)[L], "Send money. Make progress.");
+    assert.equal((hero.fields.headline as Record<string, string>)[L], "The Patio Enclosures® Sunroom Collection");
     assert.equal((hero.fields.internalName as Record<string, string>)[L], "Edited name", "read-only fields are untouched");
     assert.equal((hero.fields.brand as Record<string, { sys: { id: string } }>)[L]?.sys.id, "brand-harborline", "the brand is untouched");
     assert.equal((hero.fields.layout as Record<string, string>)[L], "split");

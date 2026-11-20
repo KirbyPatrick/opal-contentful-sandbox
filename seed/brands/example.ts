@@ -4,222 +4,155 @@ const s = defineBrand("example", "ex");
 
 /**
  * Example: a sandbox brand with one page, rendered at /example by src/app/example.
- * It currently recreates a money transfer company's US home page for a demo. The layout lives in
+ * It currently recreates a sunroom company's home page for a demo. The layout lives in
  * src/app/example; the copy below lives in Contentful so Opal can edit it, and npm run reset puts it back
- * after a demo. The copy is written for this sandbox and the page is a mockup.
+ * after a demo. The page is a mockup.
  *
  * Conventions the layout reads:
- * - In rich text sections drawn as cards (ways to move money, reviews, blog), each level 3 heading starts a
- *   card. Text before the first card is the section's lead line (or its footnote, for reviews).
- * - Card photos come from the Example image pool in order (img-example-03 onward).
- * - The page's primary CTA is the button inside the rate calculator.
+ * - The product grid's cards are card grid items: title, photo, and the two links come from the layout by title.
+ * - In the "How to get started" section, each level 3 heading starts a column and the list under it is its links.
+ * - In the "Our products" section, the first list is the main product row and the second list is the smaller row.
+ * - The intro section's paragraph is the line under the hero (#hero-subhead).
+ * - The hero CTA is the "Schedule Now" button in the sticky bar at the bottom of the screen; its heading and
+ *   body are the bar's two text lines. The page's primary CTA is the "View Offers" button in the header.
  */
 
-const HOME = "https://www.remitly.com/";
-const BUSINESS = "https://www.remitly.com/us/en/business";
-const BLOG = "https://blog.remitly.com/";
+const SITE = "https://www.patioenclosures.com";
+const link = (label: string, path: string) => `- [${label}](${SITE}${path})`;
 
-// ---------- Hero and calculator ----------
-const sendCta = s.cta("send-money", {
-  internalName: "Example - Home - Hero send money", label: "Send money", goalType: "link", destinationUrl: HOME, style: "primary",
+// ---------- CTAs ----------
+const schedule = s.cta("schedule", {
+  internalName: "Example - Home - Sticky bar schedule", label: "Schedule Now", goalType: "book_appointment",
+  destinationUrl: `${SITE}/schedule-design-consultation.aspx`, style: "primary",
+  heading: "In-Home Estimates", body: "Call: 800-230-8301",
 });
 
-const createAccount = s.cta("create-account", {
-  internalName: "Example - Home - Calculator create account", label: "Create your account", goalType: "link", destinationUrl: HOME, style: "primary",
+const offers = s.cta("offers", {
+  internalName: "Example - Home - Header view offers", label: "View Offers", goalType: "link",
+  destinationUrl: `${SITE}/special-offers-and-financing.aspx`, style: "primary",
 });
 
-const calculator = s.richText("calculator", {
-  internalName: "Example - Home - Rate calculator", heading: "Send money fast worldwide",
-  body: md(`Great everyday rates, low fees, and no hidden fees ever.
-
-Serving over 175 countries and more than 100 currencies worldwide.`),
+// ---------- Intro ----------
+const intro = s.richText("intro", {
+  internalName: "Example - Home - Intro",
+  body: md("Don't just remodel your home, refresh the way you live with a Patio Enclosures brand sunroom, screen room or enclosed porch. From simple to spectacular, every room is custom designed and custom built to fit your needs, budget and lifestyle."),
 });
 
-// ---------- Ways to move money ----------
-const ways = s.richText("ways", {
-  internalName: "Example - Home - Ways to move money", heading: "Move money your way",
-  body: md(`Simple ways to send, manage and receive money
+// ---------- Product grid ----------
+const product = (key: string, title: string, image: string) => s.item(`prod-${key}`, { title, image: assetLink(image) });
 
-### I want to send money
-
-Send money to support the people you love, and to invest in your future.
-
-[Start sending](${HOME})
-
-### I want to pay my team or vendors
-
-Simple business payments worldwide. Pay partners, vendors and contractors directly.
-
-[Send business payments](${BUSINESS})
-
-### I want to receive money
-
-Get fast, secure transfers straight to your bank account or mobile wallet, or pick up cash. Available in 130+ countries.
-
-[Request money](${HOME})`),
-});
-
-// ---------- Trust ----------
-const trust = s.cardGrid("trust", {
-  internalName: "Example - Home - Trust", heading: "Trusted by millions of people worldwide",
-  intro: "*Transfers arrive on time, or we refund the applicable transfer fee.",
-  source: "manual", layout: "icons", columns: 3,
+const products = s.cardGrid("products", {
+  internalName: "Example - Home - Product grid", heading: "Our sunroom collection",
+  source: "manual", layout: "cards", columns: 4,
   items: [
-    s.item("trust-track", { title: "Track your money transfers", text: "Know where your money is, every step of the way." }),
-    s.item("trust-value", { title: "Great rates and value", text: "Competitive exchange rates, low fees and no hidden fees." }),
-    s.item("trust-delivery", { title: "Guaranteed delivery times", text: "Your transfer arrives on time, or we refund your fees*." }),
+    product("sunrooms", "Sunrooms", "img-example-02"),
+    product("three-season", "Three Season Rooms", "img-example-03"),
+    product("four-season", "Four Season Rooms", "img-example-04"),
+    product("screen", "Screen Rooms", "img-example-05"),
+    product("porches", "Enclosed Porches", "img-example-06"),
+    product("covers", "Porch & Patio Covers", "img-example-07"),
+    product("kits", "Sunroom Kits", "img-example-08"),
+    product("windows", "Windows & Doors", "img-example-09"),
   ],
 });
 
-// ---------- Map ----------
-const map = s.mediaText("map", {
-  internalName: "Example - Home - Money in motion", heading: "Life grows as money flows",
-  body: "Every day, people keep life moving by sending money to their loved ones around the world, across 175+ countries in over 100 currencies.\n\nMap activity is illustrative only and does not show real transactions or volumes.",
-  image: assetLink("img-example-10"), imagePosition: "left",
+// ---------- How to get started ----------
+const getStarted = s.richText("get-started", {
+  internalName: "Example - Home - How to get started", heading: "How to Get Started",
+  body: md(`### 1. Get Inspired
+
+${link("Photo Gallery", "/photo-gallery.aspx")}
+${link("Video Gallery", "/sunroom-video-gallery.aspx")}
+${link("Sunroom Catalog", "/sunroom-catalog.aspx")}
+${link("Sunroom Design Tips Blog", "/sunroom-design-tips-blog.aspx")}
+${link("E-newsletter Signup", "/enewsletter-signup.aspx")}
+
+### 2. Plan Your Sunroom
+
+${link("Our Sunroom Collection", "/sunrooms.aspx")}
+${link("Sunroom Types & Options", "/sunroom-types-options.aspx")}
+${link("Specials & Financing", "/special-offers-and-financing.aspx")}
+${link("Frequently Asked Questions", "/sunroom-frequently-asked-questions.aspx")}
+${link("What to Expect: Our Process", "/patio-enclosures-process.aspx")}
+${link("Sunroom Construction Guide", "/sunroom-construction-guide.aspx")}
+${link("Glossary & Terms", "/sunroom-glossary-terms.aspx")}
+
+### 3. Why Choose Us
+
+${link("Customer Reviews", "/satisfied-customers.aspx")}
+${link("What Makes Us Different", "/patio-enclosures-difference.aspx")}
+${link("Our Story", "/about-patio-enclosures.aspx")}
+${link("Specials & Financing", "/special-offers-and-financing.aspx")}
+${link("What's New", "/whats-new.aspx")}
+
+### 4. Free Consultation
+
+${link("Schedule In-Home Estimate", "/schedule-design-consultation.aspx")}
+${link("Find Your Location", "/design-center-locator.aspx")}
+${link("General Contact Form", "/general-contact-form.aspx")}`),
 });
 
-// ---------- Safety ----------
-const safety = s.cardGrid("safety", {
-  internalName: "Example - Home - Safety", heading: "Send money abroad safely",
-  source: "manual", layout: "cards", columns: 2,
-  items: [
-    s.item("safety-regulated", { title: "Safe to use worldwide", text: "We meet regulations everywhere we operate to keep you safe online." }),
-    s.item("safety-data", { title: "Secure data protection", text: "Your personal details and data stay private, so you stay protected online." }),
-    s.item("safety-support", { title: "Support in 18 languages", text: "Whatever the time of day, we are here to help with your money transfers abroad." }),
-  ],
-});
+// ---------- Our products ----------
+const ourProducts = s.richText("our-products", {
+  internalName: "Example - Home - Our products", heading: "Our Products",
+  body: md(`${link("Three Season Rooms", "/three-season-rooms.aspx")}
+${link("Four Season Rooms", "/four-season-rooms.aspx")}
+${link("Screen Rooms", "/screen-rooms.aspx")}
+${link("Enclosed Porches", "/porch-enclosures.aspx")}
+${link("Florida Rooms", "/florida-rooms.aspx")}
+${link("Retractable Screens", "/retractable-screens.aspx")}
+${link("Porch & Patio Covers", "/porch-patio-covers.aspx")}
+${link("Windows & Doors", "/replacement-windows-doors.aspx")}
 
-// ---------- App ----------
-const app = s.richText("app", {
-  internalName: "Example - Home - App", heading: "Make global money moves with our app",
-  body: md(`**App Store 4.9 stars** 4.5M+ ratings
+More rooms and options
 
-**Google Play 4.8 stars** 1.4M+ ratings
-
-App ratings are based on all countries and regions (App Store) and recent ratings across all countries (Google Play), and may vary by location and device.`),
-});
-
-// ---------- Reviews ----------
-const reviews = s.richText("reviews", {
-  internalName: "Example - Home - Reviews", heading: "See what our customers are saying",
-  body: md(`Sample reviews written for this demo page. Individual experiences vary, including by destination.
-
-### Quick and easy every month
-
-I send money to my parents every month and it arrives within minutes. The app makes it simple.
-
-**Daniela R., sending to Mexico**
-
-### Rates I can plan around
-
-The rate is shown up front, so I always know exactly what my family will receive.
-
-**Joseph A., sending to the Philippines**
-
-### Helpful support
-
-I had a question about a first transfer and the support team sorted it out in my language.
-
-**Priya S., sending to India**`),
-});
-
-// ---------- Blog ----------
-const blog = s.richText("blog", {
-  internalName: "Example - Home - Blog", heading: "Beyond Borders",
-  body: md(`The official Remitly blog
-
-### The 2026 U.S. Federal Remittance Tax Guide: What We Know So Far, and Why There's No Tax on Remitly Transfers
-
-[Read more](${BLOG})
-
-### How Do I Change the Address for My Green Card?
-
-[Read more](${BLOG})
-
-### What Is Dual Citizenship, and How Does It Work?
-
-[Read more](${BLOG})
-
-### How to Send Money for Lunar New Year 2026
-
-[Read more](${BLOG})`),
-});
-
-// ---------- Countries ----------
-const countries = s.richText("countries", {
-  internalName: "Example - Home - Countries", heading: "Where can you send money with Remitly?",
-  body: md(`Select a country to get started with international money transfers.
-
-- [Albania](${HOME})
-- [Algeria](${HOME})
-- [Andorra](${HOME})
-- [Angola](${HOME})
-- [Anguilla](${HOME})
-- [Antigua and Barbuda](${HOME})
-- [Argentina](${HOME})
-- [Armenia](${HOME})
-- [Australia](${HOME})
-- [Austria](${HOME})
-- [Azerbaijan](${HOME})
-- [Bahamas](${HOME})
-
-[View more](${HOME})`),
-});
-
-// ---------- FAQ ----------
-const faq = s.faq("help", {
-  internalName: "Example - Home - FAQ", heading: "Get help with questions about using Remitly in the United States",
-  items: [
-    s.item("faq-what", { title: "What is Remitly and does it work in the United States?", text: "Remitly is an online money transfer service. You can use our website or app to send money from the United States to more than 175 countries." }),
-    s.item("faq-where", { title: "Where can I send money from with Remitly?", text: "You can send from the United States and many other countries. Pick your country at the top of the page to see what is available to you." }),
-    s.item("faq-safe", { title: "Is Remitly safe and trustworthy?", text: "Yes. We are licensed and regulated where we operate, we encrypt your data, and our teams monitor transfers to help prevent fraud." }),
-    s.item("faq-bank", { title: "Is it safe to link your bank account to Remitly?", text: "Bank connections use secure, encrypted links, and we never share your bank login details." }),
-    s.item("faq-signup", { title: "How do I sign up for Remitly in the United States?", text: "Create an account with your email address, verify your identity, then add a payment method and your recipient's details." }),
-    s.item("faq-business", { title: "Can I use Remitly for business payments?", text: "Yes. A business account lets you pay suppliers, contractors and partners around the world." }),
-    s.item("faq-large", { title: "Can I send large amounts of money with Remitly?", text: "Yes. Limits depend on your destination and verification level, and you can ask for higher limits in your account." }),
-  ],
+${link("Florida Room Additions", "/florida-room-additions.aspx")}
+${link("Commercial Patio Enclosures", "/commercial-patio-enclosures.aspx")}
+${link("Traditional Sunrooms", "/traditional-sunroom-additions.aspx")}
+${link("Sunroom Blinds & Shades", "/sunroom-blinds-shades.aspx")}
+${link("Solariums", "/solariums.aspx")}
+${link("Sunroom Kits", "/sunroom-kits.aspx")}`),
 });
 
 // ---------- Page and brand ----------
 const hero = s.hero("home", {
-  internalName: "Example - Home - Hero", eyebrow: "Personal",
-  headline: "Send money. Make progress.",
-  subheadline: "Send and receive money, and make payments worldwide. Reliably fast, easy, safe and affordable. Let's get moving.",
-  image: assetLink("img-example-01"), layout: "split", cta: sendCta,
+  internalName: "Example - Home - Hero",
+  headline: "The Patio Enclosures® Sunroom Collection",
+  image: assetLink("img-example-01"), layout: "full_bleed", cta: schedule,
 });
 
 const home = s.page("home", {
-  title: "Send money online", slug: "home", pageType: "home", funnelStep: 0, hero, primaryCta: createAccount,
-  sections: [calculator, ways, trust, map, safety, app, reviews, blog, countries, faq],
-  seoTitle: "Send money online",
-  seoDescription: "Send money to more than 175 countries with great rates, low fees and guaranteed delivery times.",
+  title: "Sunrooms, Three Season Rooms, Solariums, Screen Rooms", slug: "home", pageType: "home", funnelStep: 0, hero, primaryCta: offers,
+  sections: [intro, products, getStarted, ourProducts],
+  seoTitle: "Sunrooms, Three Season Rooms, Solariums, Screen Rooms",
+  seoDescription: "Custom designed sunrooms, three and four season rooms, screen rooms and enclosed porches, with free in-home estimates.",
 });
 
 s.brand({
   name: "Example",
   slug: "example",
-  vertical: "financial_services",
-  shortDescription: "Sandbox page for recreating a prospect's web page in a demo. Currently a money transfer company's home page.",
+  vertical: "insurance",
+  shortDescription: "Sandbox page for recreating a prospect's web page in a demo. Currently a sunroom company's home page.",
   // A logo is required, but the Example page draws its own header, so it borrows an existing one.
   logo: assetLink("logo-ledgerwood-bank"),
-  colorBrand: "#2C415A", colorButton: "#2C415A", colorButtonText: "#FFFFFF", colorAccent: "#B2C8E9",
-  colorBackground: "#FFFFFF", colorSurface: "#FAF8F5", colorText: "#242620", colorMuted: "#5B5E57",
-  fontHeading: "DM Sans", fontBody: "DM Sans", buttonRadius: 999, buttonTextCase: "normal",
-  voiceDescription: "Warm, direct and encouraging. Speaks to people sending money to family and to small businesses paying abroad, in short plain sentences that stress speed, value and safety.",
+  colorBrand: "#00A7B7", colorButton: "#00A7B7", colorButtonText: "#FFFFFF", colorAccent: "#FA9D1C",
+  colorBackground: "#FFFFFF", colorSurface: "#E5F4F4", colorText: "#494949", colorMuted: "#767676",
+  fontHeading: "Inter", fontBody: "Inter", buttonRadius: 4, buttonTextCase: "normal",
+  voiceDescription: "Friendly, practical and proud of craftsmanship. Speaks to homeowners planning a sunroom, screen room or porch, in plain words that stress custom design, quality and a free in-home estimate.",
   voiceDos: [
-    "Lead with what the customer can do",
+    "Lead with the room and how the family will use it",
     "Keep sentences short and plain",
-    "Be specific about speed, fees and coverage",
-    "Sound warm and supportive",
+    "Point to the free in-home estimate",
+    "Sound warm and confident",
   ],
   voiceDonts: [
-    "No jargon or legal language in headlines",
-    "No promises the terms do not back up",
+    "No construction jargon in headlines",
+    "No pricing promises the offer terms do not back up",
     "No em dashes",
   ],
-  address: "1111 Placeholder Avenue, Suite 400\nSeattle, WA 98101",
-  phone: "(206) 555-0142",
-  legalDisclaimer: "Fictional company. Sample content for illustration only. This sandbox page recreates a prospect's home page for a product demo.",
+  address: "2500 E Enterprise Pkwy\nTwinsburg, OH 44087",
+  phone: "(330) 555-0142",
+  legalDisclaimer: "Fictional company. Sample content for illustration only. This sandbox page recreates a prospect's home page for a product demo and is not operated by the company shown.",
   homePage: home,
 });
 
