@@ -1026,6 +1026,8 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
   background: #fff; color: var(--lgd-ink); font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; line-height: 1.5; overflow-x: clip;
 }
 :where(.lgd) :is(h1, h2, h3, h4, p, ul, table) { margin: 0; padding: 0; font-family: inherit; letter-spacing: 0; }
+/* The site's shared heading styles (ink color, balanced wrapping) would change the source page's line breaks and white headings. */
+.lgd :is(h1, h2, h3, h4) { color: inherit; text-wrap: wrap; }
 :where(.lgd) ul { list-style: none; }
 :where(.lgd) a { color: inherit; }
 :where(.lgd) :focus-visible { outline: 2px solid var(--lgd-green); outline-offset: 2px; }
@@ -1033,8 +1035,8 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
 .lgd-wrap { width: min(1280px, 100% - 2 * var(--lgd-gutter)); margin: 0 auto; }
 .lgd-h2 { font-size: 44px; line-height: 1.2; font-weight: 700; text-align: center; }
 .lgd-h3 { font-size: 40px; line-height: 1.2; font-weight: 700; }
-.lgd-left { text-align: left; }
 .lgd-lead { margin-top: 16px !important; font-size: 20px; line-height: 30px; text-align: center; }
+.lgd-left, .lgd-lead.lgd-left { text-align: left; }
 .lgd-section { padding: 48px 0; }
 
 /* Buttons and zip rows */
@@ -1137,7 +1139,8 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
 .lgd-compare-section { padding: 80px 0; }
 .lgd-compare { background: var(--lgd-navy); color: #fff; border-radius: 25px; padding: 40px; }
 .lgd-compare h2 { text-align: center; }
-.lgd-compare table { width: min(1024px, 100%); margin: 80px auto 0; border-collapse: collapse; }
+.lgd-compare table { width: min(1024px, 100%); margin: 80px auto 0; border-collapse: collapse; table-layout: fixed; }
+.lgd-compare thead th:nth-child(2), .lgd-compare thead th:nth-child(3) { width: 293px; }
 .lgd-compare th, .lgd-compare td { border: 1px solid rgb(255 255 255 / 0.75); border-width: 0 1px 1px 0; }
 .lgd-compare :is(th, td):last-child { border-right: 0; }
 .lgd-compare thead th { height: 96px; vertical-align: middle; }
@@ -1150,7 +1153,7 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
 .lgd-compare tbody tr:last-child :is(th, td) { border-bottom: 0; }
 
 /* FAQ */
-.lgd-faq { padding: 80px 0; }
+.lgd-faq { padding: 80px 0 0; }
 .lgd-faq-lead { max-width: 560px; margin-left: auto !important; margin-right: auto !important; }
 .lgd-faq-list { width: min(1024px, 100%); margin: 80px auto 0; border-bottom: 1px solid #000; }
 .lgd-faq details { border-top: 1px solid #000; }
@@ -1161,7 +1164,7 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
 .lgd-faq details p { padding: 0 0 24px; font-size: 16px; line-height: 24px; }
 
 /* Closing offer */
-.lgd-offer { padding: 80px 0; text-align: center; }
+.lgd-offer { padding: 25px 0 80px; text-align: center; }
 .lgd-offer-kicker { font-size: 16px; line-height: 22.4px; font-weight: 700; text-transform: uppercase; }
 .lgd-offer .lgd-h2 { max-width: 560px; margin: 0 auto; }
 
@@ -1244,14 +1247,15 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
   .lgd-compare { padding: 40px 20px; }
   .lgd-compare table { margin-top: 48px; }
   .lgd-compare thead th { height: 76px; }
-  .lgd-compare thead th:first-child { width: 46%; padding: 0 12px 16px; }
+  .lgd-compare thead th:first-child { width: auto; padding: 0 12px 16px; }
+  .lgd-compare thead th:nth-child(2), .lgd-compare thead th:nth-child(3) { width: 28%; }
   .lgd-compare-logo { width: 90px; }
   .lgd-others { font-size: 20px; }
   .lgd-compare tbody th { padding: 16px 12px; height: auto; }
-  .lgd-faq { padding: 48px 0; }
+  .lgd-faq { padding: 48px 0 0; }
   .lgd-faq-list { margin-top: 48px; }
   .lgd-faq summary { font-size: 16px; line-height: 24px; padding: 16px 0; }
-  .lgd-offer { padding: 48px 0; }
+  .lgd-offer { padding: 48px 0 48px; }
   .lgd-footer { padding: 48px 0; }
   .lgd-footer-top { flex-direction: column-reverse; align-items: flex-start; }
   .lgd-legal { flex-direction: column; gap: 12px; }
