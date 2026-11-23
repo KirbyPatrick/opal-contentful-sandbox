@@ -1190,6 +1190,15 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
   .lgd-why-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; }
   .lgd-worry-grid { gap: 24px; }
   .lgd-worry-grid p { font-size: 20px; }
+  .lgd-stats li { padding-left: 16px; }
+  .lgd-stat-value { font-size: 40px; line-height: 52px; }
+  .lgd-compare thead th:first-child { width: auto; }
+  .lgd-compare thead th:nth-child(2), .lgd-compare thead th:nth-child(3) { width: 26%; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .lgd-warranty-grid { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .lgd-warranty-badge img { width: 220px; }
+  .lgd-compare-logo { width: 150px; }
 }
 
 /* Phones and small tablets: one column, as on the source page */
