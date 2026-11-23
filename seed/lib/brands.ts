@@ -20,12 +20,17 @@ export const BRAND_INFO = [
 ] as const;
 
 /**
- * Sandbox brands: a single off-funnel page with no logo, photos, or funnel of its own, seeded with the six
- * brands so Opal can edit it and npm run reset restores it. The Example brand holds the /example page, used
- * to recreate a prospect's page during a demo. Its URL is a fixed route (src/app/example), not /[brand].
+ * Sandbox brands: a single off-funnel page with no funnel of its own, seeded with the six brands so Opal can
+ * edit it and npm run reset restores it. Each recreates a prospect's page for a demo, and each URL is a fixed
+ * route named after its slug, not /[brand]:
+ * - Example (/example, src/app/example): rebuilt for each new prospect.
+ * - Placeholder (/placeholder, src/app/placeholder): a second prospect page, kept apart from Example. It
+ *   currently recreates a gutter company's home page with the prospect's own images (assets/prospects/placeholder,
+ *   uploaded by npm run assets:prospect -- placeholder).
  */
 export const SANDBOX_BRAND_INFO = [
   { key: "example", slug: "example", name: "Example" },
+  { key: "placeholder", slug: "placeholder", name: "Placeholder" },
 ] as const;
 
 export type BrandKey = (typeof BRAND_INFO)[number]["key"] | (typeof SANDBOX_BRAND_INFO)[number]["key"];

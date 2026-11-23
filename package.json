@@ -23,6 +23,7 @@
     "logos:prepare": "node scripts/brand-assets/prepare-mark.mjs",
     "logos:generate": "node scripts/brand-assets/generate-logos.mjs",
     "assets:upload": "tsx --env-file=.env scripts/images/upload-assets.ts",
+    "assets:prospect": "tsx --env-file=.env scripts/images/upload-prospect-assets.ts",
     "seed": "tsx --env-file=.env scripts/seed.ts",
     "seed:check": "tsx scripts/seed.ts --dry-run",
     "verify:funnels": "tsx --env-file=.env scripts/verify-funnels.ts",

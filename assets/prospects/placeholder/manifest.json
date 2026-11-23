@@ -1,0 +1,24 @@
+{
+  "brand": "placeholder",
+  "source": "https://leafguard.homes/",
+  "notes": [
+    "The prospect's own logo and images, downloaded from their home page on 2026-11-23 for the /placeholder demo mockup (currently a Leafguard home page).",
+    "Uploaded by npm run assets:prospect -- placeholder. The title is the alt text."
+  ],
+  "assets": [
+    { "id": "logo-placeholder", "file": "leafguard-logo.webp", "title": "Leafguard" },
+    { "id": "img-placeholder-logo-white", "file": "leafguard-t.svg", "title": "Leafguard" },
+    { "id": "img-placeholder-01", "file": "herobg.webp", "title": "Autumn leaves on a roof above a gutter" },
+    { "id": "img-placeholder-02", "file": "our-promise-1.webp", "title": "Gutter corner under autumn trees" },
+    { "id": "img-placeholder-03", "file": "our-promise-2.webp", "title": "Seamless gutter along a roof edge" },
+    { "id": "img-placeholder-04", "file": "our-promise-3.webp", "title": "Leafguard gutter on a home, seen from below" },
+    { "id": "img-placeholder-05", "file": "lifetime-warranty.webp", "title": "Lifetime warranty badge" },
+    { "id": "img-placeholder-06", "file": "benefits-1.webp", "title": "Gutter clogged with pine needles and leaves" },
+    { "id": "img-placeholder-07", "file": "benefits-2.webp", "title": "Pressure washing a dirty gutter" },
+    { "id": "img-placeholder-08", "file": "benefits-3.webp", "title": "Downspout leaking down a stucco wall" },
+    { "id": "img-placeholder-09", "file": "benefits-4.webp", "title": "Overflowing gutter with plants and roof damage" },
+    { "id": "img-placeholder-10", "file": "benefits-5.webp", "title": "Person on a ladder reaching a gutter" },
+    { "id": "img-placeholder-11", "file": "installation.webp", "title": "Two Leafguard installers on ladders at a house" },
+    { "id": "img-placeholder-12", "file": "hero2bg.webp", "title": "Leafguard crew carrying gutter sections across a lawn" }
+  ]
+}

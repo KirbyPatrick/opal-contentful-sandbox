@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Img } from "@/components/site/primitives";
-import { EXAMPLE_BRAND_SLUG, getBrandList } from "@/lib/site/contentful";
+import { SANDBOX_BRAND_SLUGS, getBrandList } from "@/lib/site/contentful";
 import { getOptimizelyBrands } from "@/lib/site/optimizely";
 import type { OptimizelyBrand } from "@/lib/site/optimizely-parse";
 import { isPreview, nonce } from "@/lib/site/load";
@@ -27,7 +27,7 @@ async function optimizelyBrandsOrNothing(): Promise<OptimizelyBrand[] | null> {
 
 export default async function Directory() {
   const [allBrands, optimizely, styleNonce] = await Promise.all([getBrandList(await isPreview()), optimizelyBrandsOrNothing(), nonce()]);
-  const brands = allBrands.filter((brand) => brand.slug !== EXAMPLE_BRAND_SLUG);
+  const brands = allBrands.filter((brand) => !SANDBOX_BRAND_SLUGS.has(brand.slug));
   // Each card shows its brand's colors. Inline styles are blocked by the CSP, so they go in a nonce'd
   // style element; slugs and colors are validated before they are written into it.
   const css = [
@@ -76,6 +76,17 @@ export default async function Directory() {
                   <span className="eyebrow">Sandbox</span>
                   <span className="directory-name">Example</span>
                   <span className="directory-desc">A sandbox page for recreating a prospect's page during a demo.</span>
+                  <span className="directory-visit" aria-hidden="true">Open page</span>
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link href="/placeholder" className="directory-card directory-card-example">
+                <span className="directory-logo"><span className="directory-example-mark">Placeholder</span></span>
+                <span className="directory-info">
+                  <span className="eyebrow">Sandbox</span>
+                  <span className="directory-name">Placeholder</span>
+                  <span className="directory-desc">A second sandbox page for recreating a prospect's page during a demo.</span>
                   <span className="directory-visit" aria-hidden="true">Open page</span>
                 </span>
               </Link>
