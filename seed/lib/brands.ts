@@ -29,8 +29,8 @@ export const BRAND_INFO = [
  *   uploaded by npm run assets:prospect -- placeholder).
  */
 export const SANDBOX_BRAND_INFO = [
-  { key: "example", slug: "example", name: "Example" },
-  { key: "placeholder", slug: "placeholder", name: "Placeholder" },
+  { key: "example", slug: "example", name: "Patio Enclosures" },
+  { key: "placeholder", slug: "placeholder", name: "Leafguard" },
 ] as const;
 
 export type BrandKey = (typeof BRAND_INFO)[number]["key"] | (typeof SANDBOX_BRAND_INFO)[number]["key"];

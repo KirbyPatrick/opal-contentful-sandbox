@@ -185,7 +185,7 @@ const home = s.page("home", {
 });
 
 s.brand({
-  name: "Placeholder",
+  name: "Leafguard",
   slug: "placeholder",
   vertical: "insurance",
   shortDescription: "Second sandbox page for recreating a prospect's web page in a demo. Currently a gutter company's home page.",

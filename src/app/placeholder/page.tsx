@@ -9,7 +9,7 @@ import type { SiteEntry } from "@/lib/site/types";
 import { Carousel } from "./carousel";
 
 export const metadata: Metadata = {
-  title: "Give up gutter cleaning for good | Placeholder",
+  title: "Give up gutter cleaning for good | Leafguard",
   robots: { index: false, follow: false },
 };
 
@@ -39,7 +39,7 @@ export default async function PlaceholderPage() {
   if (!g || !page) {
     return (
       <main id="main" className="example-page">
-        <h1 className="sr-only">Placeholder</h1>
+        <h1 className="sr-only">Leafguard</h1>
       </main>
     );
   }

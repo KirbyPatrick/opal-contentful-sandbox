@@ -71,22 +71,22 @@ export default async function Directory() {
             ))}
             <li>
               <Link href="/example" className="directory-card directory-card-example">
-                <span className="directory-logo"><span className="directory-example-mark">Example</span></span>
+                <span className="directory-logo"><span className="directory-example-mark">Patio Enclosures</span></span>
                 <span className="directory-info">
                   <span className="eyebrow">Sandbox</span>
-                  <span className="directory-name">Example</span>
-                  <span className="directory-desc">A sandbox page for recreating a prospect's page during a demo.</span>
+                  <span className="directory-name">Patio Enclosures</span>
+                  <span className="directory-desc">A recreated sunroom company home page for a demo, at /example.</span>
                   <span className="directory-visit" aria-hidden="true">Open page</span>
                 </span>
               </Link>
             </li>
             <li>
               <Link href="/placeholder" className="directory-card directory-card-example">
-                <span className="directory-logo"><span className="directory-example-mark">Placeholder</span></span>
+                <span className="directory-logo"><span className="directory-example-mark">Leafguard</span></span>
                 <span className="directory-info">
                   <span className="eyebrow">Sandbox</span>
-                  <span className="directory-name">Placeholder</span>
-                  <span className="directory-desc">A second sandbox page for recreating a prospect's page during a demo.</span>
+                  <span className="directory-name">Leafguard</span>
+                  <span className="directory-desc">A recreated gutter company home page for a demo, at /placeholder.</span>
                   <span className="directory-visit" aria-hidden="true">Open page</span>
                 </span>
               </Link>

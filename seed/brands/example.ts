@@ -129,7 +129,7 @@ const home = s.page("home", {
 });
 
 s.brand({
-  name: "Example",
+  name: "Patio Enclosures",
   slug: "example",
   vertical: "insurance",
   shortDescription: "Sandbox page for recreating a prospect's web page in a demo. Currently a sunroom company's home page.",

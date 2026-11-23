@@ -90,7 +90,7 @@ Handy when you want to point the agent at a specific entry (for example `Update 
 
 Token rotation and the full tool reference are in [docs/opal-api.md](docs/opal-api.md).
 
-## The Example page (recreating a prospect's page for a demo)
+## The Example page: Patio Enclosures (recreating a prospect's page for a demo)
 
 `/example` is a sandbox page that looks like a prospect's own page. Its copy lives in Contentful (the `example` brand, entry IDs `ex-...`, defined in `seed/brands/example.ts`) so Opal can read and edit it, and `src/app/example/page.tsx` plus the `.pe-*` block in `src/app/globals.css` draw the layout. The page header, nav and footer are fixed labels in the layout, not content.
 
@@ -109,7 +109,7 @@ To rebuild it for another prospect:
 
 `npm run reset` restores the Example page to its seeded copy after a demo (it also deletes articles Opal created, so check `npm run baseline:check` first if you want to keep any).
 
-## The Placeholder page (a second prospect page)
+## The Placeholder page: Leafguard (a second prospect page)
 
 `/placeholder` is a second sandbox page, kept apart from `/example` so two prospect pages can be live at once. It works the same way: the `placeholder` brand (entry IDs `ph-...`, defined in `seed/brands/placeholder.ts`) holds the copy, and `src/app/placeholder/page.tsx` plus the `.lgd-*` block in `src/app/globals.css` draw the layout. It currently recreates a gutter company's home page (leafguard.homes). Headings, labels, button text, FAQ questions and short card lines match the prospect; longer paragraphs, FAQ answers and the offer terms are reworded, and the reviews are samples.
 

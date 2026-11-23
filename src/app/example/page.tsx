@@ -8,7 +8,7 @@ import { isPreview, loadBrand, nonce } from "@/lib/site/load";
 import type { SiteEntry } from "@/lib/site/types";
 
 export const metadata: Metadata = {
-  title: "Sunrooms, Three Season Rooms, Solariums, Screen Rooms | Example",
+  title: "Sunrooms, Three Season Rooms, Solariums, Screen Rooms | Patio Enclosures",
   robots: { index: false, follow: false },
 };
 
@@ -35,7 +35,7 @@ export default async function ExamplePage() {
   if (!g || !page) {
     return (
       <main id="main" className="example-page">
-        <h1 className="sr-only">Example</h1>
+        <h1 className="sr-only">Patio Enclosures</h1>
       </main>
     );
   }
