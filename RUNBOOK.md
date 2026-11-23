@@ -107,5 +107,15 @@ To rebuild it for another prospect:
 5. Remove entries the new seed no longer uses: `npm run prune:example` (dry run), then `npm run prune:example -- --confirm` (deletes) or `npm run prune:example -- --confirm --unpublish-only` (keeps them as restorable drafts). Do this after deploying the new layout, so the live page never points at missing content.
 6. `npm run baseline:export`, run `npm run check`, commit, and deploy (`vercel deploy --prod`, or push if auto-deploys work).
 
+## The Placeholder page (a second prospect page)
+
+`/placeholder` is a second sandbox page, kept apart from `/example` so two prospect pages can be live at once. It works the same way: the `placeholder` brand (entry IDs `ph-...`, defined in `seed/brands/placeholder.ts`) holds the copy, and `src/app/placeholder/page.tsx` plus the `.lgd-*` block in `src/app/globals.css` draw the layout. It currently recreates a gutter company's home page (leafguard.homes). Headings, labels, button text, FAQ questions and short card lines match the prospect; longer paragraphs, FAQ answers and the offer terms are reworded, and the reviews are samples.
+
+Unlike Example, it uses the prospect's own images: `assets/prospects/placeholder/` holds the files and a manifest (asset IDs `logo-placeholder`, `img-placeholder-logo-white`, `img-placeholder-01` to `13`), uploaded with `npm run assets:prospect -- placeholder` (one asset: add its ID). The hero is its own entry (`ph-he-home`), so an agent can edit it as a draft; its CTA (`ph-ct-get-prices`) holds the estimate box's title lines and button. Phones get `img-placeholder-13` as the hero photo, like the source page.
+
+Stable IDs: `#call-banner`, `#call-cta`, `#hero-banner`, `#hero-headline`, `#hero-subhead`, `#hero-form`, `#hero-cta`, `#promise`, `#warranty`, `#worries`, `#testimonials`, `#why-choose`, `#estimate-band`, `#estimate-cta`, `#comparison`, `#faq`, `#closing-offer` and `#offer-cta`. It loads the same Optimizely Web snippet as `/example`.
+
+To rebuild it for another prospect, follow the Example steps above with `--brand placeholder` and the `ph-` prefix. There is no prune script for `ph-` entries yet; unpublish stale ones by hand or extend `scripts/prune-example.ts`.
+
 `npm run reset` restores the Example page to its seeded copy after a demo (it also deletes articles Opal created, so check `npm run baseline:check` first if you want to keep any).
 
