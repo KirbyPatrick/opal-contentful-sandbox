@@ -1063,8 +1063,10 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
 .lgd-hero { position: relative; isolation: isolate; background: #000; color: #fff; padding: 48px 0; }
 .lgd-hero-bg { position: absolute; inset: 0; z-index: -1; }
 .lgd-hero-bg img { width: 100%; height: 100% !important; object-fit: cover; }
+.lgd-hero-narrow { display: none; }
 .lgd-hero-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(rgb(51 51 51 / 0.667), rgb(51 51 51 / 0.733)); }
 .lgd-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 533px; gap: 80px; align-items: center; }
+.lgd-hero-copy { padding-bottom: 24px; }
 .lgd-hero-copy h1 { font-size: 60.8px; line-height: 1; font-weight: 700; max-width: 667px; }
 .lgd-hero-copy p { margin-top: 20px; font-size: 38.4px; line-height: 1; font-weight: 700; }
 .lgd-estimate-box { background: var(--lgd-green); border-radius: 8px; padding: 20px; text-align: center; }
@@ -1143,7 +1145,7 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
 .lgd-compare thead th:nth-child(2), .lgd-compare thead th:nth-child(3) { width: 293px; }
 .lgd-compare th, .lgd-compare td { border: 1px solid rgb(255 255 255 / 0.75); border-width: 0 1px 1px 0; }
 .lgd-compare :is(th, td):last-child { border-right: 0; }
-.lgd-compare thead th { height: 96px; vertical-align: middle; }
+.lgd-compare thead th { height: 96px; vertical-align: top; padding-top: 24px; }
 .lgd-compare thead th:first-child { width: 438px; vertical-align: bottom; padding: 0 24px 24px; text-align: left; font-size: 16px; font-weight: 400; }
 .lgd-compare-logo { display: block; width: 198px; height: auto; margin: 0 auto; }
 .lgd-others { font-size: 24px; font-weight: 700; }
@@ -1154,7 +1156,7 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
 
 /* FAQ */
 .lgd-faq { padding: 80px 0 0; }
-.lgd-faq-lead { max-width: 560px; margin-left: auto !important; margin-right: auto !important; }
+.lgd-faq-lead { margin-top: 24px !important; max-width: 560px; margin-left: auto !important; margin-right: auto !important; }
 .lgd-faq-list { width: min(1024px, 100%); margin: 80px auto 0; border-bottom: 1px solid #000; }
 .lgd-faq details { border-top: 1px solid #000; }
 .lgd-faq summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 0; cursor: pointer; font-size: 20px; line-height: 30px; font-weight: 700; }
@@ -1164,7 +1166,7 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
 .lgd-faq details p { padding: 0 0 24px; font-size: 16px; line-height: 24px; }
 
 /* Closing offer */
-.lgd-offer { padding: 25px 0 80px; text-align: center; }
+.lgd-offer { padding: 97px 0 80px; text-align: center; }
 .lgd-offer-kicker { font-size: 16px; line-height: 22.4px; font-weight: 700; text-transform: uppercase; }
 .lgd-offer .lgd-h2 { max-width: 560px; margin: 0 auto; }
 
@@ -1202,6 +1204,10 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
   .lgd-call-text { font-size: 11px; line-height: 13.2px; }
   .lgd-call-btn { font-size: 16px; line-height: 24px; }
   .lgd-hero { padding: 32px 0; }
+  .lgd-hero-wide { display: none; }
+  .lgd-hero-narrow { display: block; }
+  .lgd-hero-bg::after { background: rgb(0 0 0 / 0.8); }
+  .lgd-hero-copy { padding-bottom: 0; }
   .lgd-hero-grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
   .lgd-hero-copy { text-align: center; }
   .lgd-hero-copy h1 { font-size: 35.2px; line-height: 35.2px; }
@@ -1246,7 +1252,7 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
   .lgd-compare-section { padding: 48px 0; }
   .lgd-compare { padding: 40px 20px; }
   .lgd-compare table { margin-top: 48px; }
-  .lgd-compare thead th { height: 76px; }
+  .lgd-compare thead th { height: 76px; padding-top: 16px; }
   .lgd-compare thead th:first-child { width: auto; padding: 0 12px 16px; }
   .lgd-compare thead th:nth-child(2), .lgd-compare thead th:nth-child(3) { width: 28%; }
   .lgd-compare-logo { width: 90px; }
@@ -1255,7 +1261,7 @@ main:has(> .cta-band:last-child) + .site-footer { margin-top: 0; }
   .lgd-faq { padding: 48px 0 0; }
   .lgd-faq-list { margin-top: 48px; }
   .lgd-faq summary { font-size: 16px; line-height: 24px; padding: 16px 0; }
-  .lgd-offer { padding: 48px 0 48px; }
+  .lgd-offer { padding: 64px 0 48px; }
   .lgd-footer { padding: 48px 0; }
   .lgd-footer-top { flex-direction: column-reverse; align-items: flex-start; }
   .lgd-legal { flex-direction: column; gap: 12px; }

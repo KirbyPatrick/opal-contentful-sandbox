@@ -19,6 +19,8 @@ const PHONE = "(866) 822 - 7228";
 /** The prospect's page fills these from the visitor's location; the demo shows what it showed during capture. */
 const LOCATION = "Dripping Springs, TX";
 const ZIP = "78620";
+/** The phone-width hero photo, from the brand's image pool (assets/prospects/placeholder). */
+const MOBILE_HERO = "img-placeholder-13";
 /** Optimizely Web Experimentation snippet for the demo project. src/proxy.ts allows it on this page. */
 const OPTIMIZELY_SNIPPET = "https://cdn.optimizely.com/js/6231585842790400.js";
 
@@ -93,7 +95,11 @@ function Hero({ g, hero }: { g: BrandGraph; hero?: SiteEntry }) {
   const cta = g.entry(hero?.fields.cta);
   return (
     <section id="hero-banner" className="lgd-hero">
-      <div className="lgd-hero-bg" aria-hidden="true"><Img asset={g.asset(hero?.fields.image)} sizes="100vw" priority decorative /></div>
+      <div className="lgd-hero-bg" aria-hidden="true">
+        <Img asset={g.asset(hero?.fields.image)} sizes="100vw" priority decorative className="lgd-hero-wide" />
+        {/* Like the source page, phones get a different photo (a house front) when the image pool has one. */}
+        {g.asset({ sys: { id: MOBILE_HERO } }) && <Img asset={g.asset({ sys: { id: MOBILE_HERO } })} sizes="100vw" decorative className="lgd-hero-narrow" />}
+      </div>
       <div className="lgd-wrap lgd-hero-grid">
         <div className="lgd-hero-copy">
           <h1 id="hero-headline">{text(hero, "headline")}</h1>
