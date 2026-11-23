@@ -372,7 +372,7 @@ function CheckIcon() {
   return <svg viewBox="0 0 34 34" width="34" height="34" aria-hidden="true"><path d="M3 18l9 9L31 8" fill="none" stroke="#1fa76f" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" /></svg>;
 }
 function CrossIcon() {
-  return <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M3 3l18 18M21 3L3 21" stroke="#f03a2e" strokeWidth="2.6" strokeLinecap="round" /></svg>;
+  return <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M3.5 3.5l17 17M20.5 3.5l-17 17" stroke="#f03a2e" strokeWidth="3.2" strokeLinecap="round" /></svg>;
 }
 
 // ---------- Helpers ----------
