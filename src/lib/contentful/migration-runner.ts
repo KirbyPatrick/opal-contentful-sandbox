@@ -15,7 +15,8 @@ import { getSandboxClient } from "./management";
 export interface MigrationModule {
   id: string;
   description: string;
-  isApplied(existingContentTypes: ReadonlySet<string>): boolean;
+  /** existingContentTypes: content type IDs in the sandbox. fields: each type's field IDs, for migrations that add fields. */
+  isApplied(existingContentTypes: ReadonlySet<string>, fields?: ReadonlyMap<string, ReadonlySet<string>>): boolean;
   default: MigrationFunction;
 }
 
@@ -35,7 +36,8 @@ export async function applyMigrations(
   for (const migration of migrations) {
     const contentTypes = await client.contentType.getMany({ query: { limit: 1000 } });
     const existing = new Set(contentTypes.items.map((ct) => ct.sys.id));
-    if (migration.isApplied(existing)) {
+    const fields = new Map(contentTypes.items.map((ct) => [ct.sys.id, new Set(ct.fields.map((field) => field.id))]));
+    if (migration.isApplied(existing, fields)) {
       skipped.push(migration.id);
       log(`Skipping ${migration.id}: already applied.`);
       continue;

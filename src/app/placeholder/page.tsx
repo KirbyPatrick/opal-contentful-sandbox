@@ -4,7 +4,8 @@ import { DraftBanner } from "@/components/site/chrome";
 import { Img } from "@/components/site/primitives";
 import { PLACEHOLDER_BRAND_SLUG } from "@/lib/site/contentful";
 import { text, type BrandGraph } from "@/lib/site/graph";
-import { isPreview, loadBrand, nonce } from "@/lib/site/load";
+import { heroDesign, heroDesignCss, quoteLabel, type HeroDesign } from "@/lib/site/hero-design";
+import { isPreview, loadBrandIn, nonce, previewRequested } from "@/lib/site/load";
 import type { SiteEntry } from "@/lib/site/types";
 import { Carousel } from "./carousel";
 
@@ -21,6 +22,8 @@ const LOCATION = "Dripping Springs, TX";
 const ZIP = "78620";
 /** The phone-width hero photo, from the brand's image pool (assets/prospects/placeholder). */
 const MOBILE_HERO = "img-placeholder-13";
+/** The Lifetime Warranty seal, shown as the hero badge when a Quote-first hero puts the badge top right. */
+const WARRANTY_SEAL = "img-placeholder-05";
 /** Optimizely Web Experimentation snippet for the demo project. src/proxy.ts allows it on this page. */
 const OPTIMIZELY_SNIPPET = "https://cdn.optimizely.com/js/6231585842790400.js";
 
@@ -32,9 +35,13 @@ const OPTIMIZELY_SNIPPET = "https://cdn.optimizely.com/js/6231585842790400.js";
  * It currently recreates a gutter company's home page. Stable IDs for experiments: #call-banner, #call-cta,
  * #hero-banner, #hero-headline, #hero-subhead, #hero-form, #hero-cta, #promise, #warranty, #worries,
  * #testimonials, #why-choose, #estimate-band, #estimate-cta, #comparison, #faq, #closing-offer and #offer-cta.
+ * The Quote-first hero design (a draft hero's designLayout field) adds #hero-proof-points.
+ *
+ * ?preview=true shows drafts (for Contentful Live Preview); see previewRequested in src/lib/site/load.ts.
  */
-export default async function PlaceholderPage() {
-  const [g, preview, scriptNonce] = await Promise.all([loadBrand(PLACEHOLDER_BRAND_SLUG), isPreview(), nonce()]);
+export default async function PlaceholderPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const [preview, draftCookie, scriptNonce] = await Promise.all([previewRequested(searchParams), isPreview(), nonce()]);
+  const g = await loadBrandIn(PLACEHOLDER_BRAND_SLUG, preview);
   const page = g?.homePage;
   if (!g || !page) {
     return (
@@ -60,10 +67,10 @@ export default async function PlaceholderPage() {
     <div className="lgd">
       {/* Loaded synchronously and first, as Optimizely recommends, so variations apply before the page paints. */}
       <script src={OPTIMIZELY_SNIPPET} nonce={scriptNonce} />
-      {preview && <DraftBanner />}
+      {draftCookie && <DraftBanner />}
       <Header g={g} />
       <main id="main">
-        <Hero g={g} hero={hero} />
+        <Hero g={g} hero={hero} styleNonce={scriptNonce} />
         {blocks.map(({ main, extra }) => <Section key={main.id} g={g} entry={main} extra={extra} />)}
       </main>
       <Footer g={g} />
@@ -91,8 +98,10 @@ function Header({ g }: { g: BrandGraph }) {
   );
 }
 
-function Hero({ g, hero }: { g: BrandGraph; hero?: SiteEntry }) {
+function Hero({ g, hero, styleNonce }: { g: BrandGraph; hero?: SiteEntry; styleNonce?: string }) {
   const cta = g.entry(hero?.fields.cta);
+  const design = heroDesign(hero);
+  if (design.layout === "quote-first") return <QuoteFirstHero g={g} hero={hero} cta={cta} design={design} styleNonce={styleNonce} />;
   return (
     <section id="hero-banner" className="lgd-hero">
       <div className="lgd-hero-bg" aria-hidden="true">
@@ -119,6 +128,42 @@ function Hero({ g, hero }: { g: BrandGraph; hero?: SiteEntry }) {
       </div>
     </section>
   );
+}
+
+/**
+ * The Quote-first hero (the hero's designLayout field): a full-width photo with a color gradient on the left,
+ * left-aligned headline, subheadline, proof points with check marks and one large quote button. With Badge
+ * position set to Top right, the brand's Lifetime Warranty seal sits in the top-right corner.
+ */
+function QuoteFirstHero({ g, hero, cta, design, styleNonce }: { g: BrandGraph; hero?: SiteEntry; cta?: SiteEntry; design: HeroDesign; styleNonce?: string }) {
+  const css = heroDesignCss("#hero-banner", design);
+  const seal = design.badge === "top-right" ? g.asset({ sys: { id: WARRANTY_SEAL } }) : undefined;
+  return (
+    <section id="hero-banner" className="lgd-qf">
+      {css && <style nonce={styleNonce}>{css}</style>}
+      <div className="lgd-qf-media" aria-hidden="true">
+        <Img asset={g.asset(hero?.fields.image)} sizes="100vw" priority decorative className="lgd-hero-wide" />
+        {g.asset({ sys: { id: MOBILE_HERO } }) && <Img asset={g.asset({ sys: { id: MOBILE_HERO } })} sizes="100vw" decorative className="lgd-hero-narrow" />}
+      </div>
+      <div className="lgd-wrap lgd-qf-inner">
+        <div className="lgd-qf-copy">
+          <h1 id="hero-headline">{text(hero, "headline")}</h1>
+          {text(hero, "subheadline") && <p id="hero-subhead" className="lgd-qf-sub">{text(hero, "subheadline")}</p>}
+          {design.proofPoints.length > 0 && (
+            <ul id="hero-proof-points" className="lgd-qf-proof">
+              {design.proofPoints.map((point) => <li key={point}><CheckMark />{point}</li>)}
+            </ul>
+          )}
+          {cta && <a id="hero-cta" className="lgd-qf-btn" href={safeUrl(text(cta, "destinationUrl"))}>{quoteLabel(text(cta, "label"), "Get Prices")}</a>}
+        </div>
+      </div>
+      {seal && <div className="lgd-qf-badge" aria-hidden="true"><Img asset={seal} sizes="160px" decorative /></div>}
+    </section>
+  );
+}
+
+function CheckMark() {
+  return <svg className="lgd-qf-check" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><path d="M3.5 10.5l4.2 4.2L16.5 5.5" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>;
 }
 
 // ---------- Sections ----------

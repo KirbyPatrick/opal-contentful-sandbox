@@ -31,6 +31,8 @@ const Manifest = z.object({
     // A bare file name in the manifest's folder, never a path.
     file: z.string().regex(/^[a-z0-9-]+\.(webp|jpe?g|png|svg)$/),
     title: z.string().min(3).max(125),
+    // Attribution for images that are not the prospect's own, such as stock photos.
+    credit: z.string().min(3).max(300).optional(),
   })).min(1),
 });
 
@@ -90,7 +92,7 @@ async function main(): Promise<void> {
     const upload = await client.upload.create({}, { file: bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength) as ArrayBuffer });
     const fields = {
       title: { [LOCALE]: item.title },
-      description: { [LOCALE]: `From ${manifest.source} (the prospect's own image), used in a demo mockup.` },
+      description: { [LOCALE]: item.credit ?? `From ${manifest.source} (the prospect's own image), used in a demo mockup.` },
       file: {
         [LOCALE]: {
           contentType: TYPES[item.file.split(".").pop()!] ?? "application/octet-stream",

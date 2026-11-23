@@ -148,6 +148,13 @@ export interface HeroFields extends Block {
   layout: "split" | "full_bleed" | "text_only";
   cta?: EntryLink;
   secondaryCta?: EntryLink;
+  /** Design fields (migration 0002). Leave empty for the page's usual hero. */
+  designLayout?: "Standard" | "Quote-first";
+  overlayColor?: string;
+  buttonBackgroundColor?: string;
+  buttonTextColor?: string;
+  badgePosition?: "Center" | "Top right";
+  proofPoints?: string[];
 }
 
 export type GoalType = "book_demo" | "add_to_cart" | "get_quote" | "book_appointment" | "start_application" | "request_booking" | "next_step" | "link";

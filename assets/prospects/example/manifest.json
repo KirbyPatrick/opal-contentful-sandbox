@@ -1,0 +1,11 @@
+{
+  "brand": "example",
+  "source": "https://unsplash.com/",
+  "notes": [
+    "Extra hero photos for the Patio Enclosures page (/example) that are not from Pixabay. Uploaded by npm run assets:prospect -- example.",
+    "img-example-quote-hero is the Quote-first hero background from the winning experiment variation (Unsplash photo-1773847469674-189153e5e32d, Unsplash License), added 2026-11-23."
+  ],
+  "assets": [
+    { "id": "img-example-quote-hero", "file": "quote-first-hero.jpg", "title": "Bright sunroom with a wooden table, chairs and a chess set", "credit": "Photo from Unsplash (photo-1773847469674-189153e5e32d), Unsplash License." }
+  ]
+}

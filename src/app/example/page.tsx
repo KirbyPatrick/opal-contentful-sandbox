@@ -4,7 +4,8 @@ import { DraftBanner } from "@/components/site/chrome";
 import { Img } from "@/components/site/primitives";
 import { EXAMPLE_BRAND_SLUG } from "@/lib/site/contentful";
 import { text, type BrandGraph } from "@/lib/site/graph";
-import { isPreview, loadBrand, nonce } from "@/lib/site/load";
+import { heroDesign, heroDesignCss, quoteLabel, type HeroDesign } from "@/lib/site/hero-design";
+import { isPreview, loadBrandIn, nonce, previewRequested } from "@/lib/site/load";
 import type { SiteEntry } from "@/lib/site/types";
 
 export const metadata: Metadata = {
@@ -27,10 +28,14 @@ const OPTIMIZELY_SNIPPET = "https://cdn.optimizely.com/js/6231585842790400.js";
  * It currently recreates a sunroom company's home page. Elements an experiment is likely to change carry
  * stable IDs: #hero-banner, #hero-headline, #hero-subhead, #hero-cta (the sticky bar's Schedule Now button),
  * #sticky-cta-bar, #offers-cta, #phone-cta, #zip-locator, #product-grid, #product-<name> for each card,
- * #get-started, #our-products and #chat-button.
+ * #get-started, #our-products and #chat-button. The Quote-first hero design (a draft hero's designLayout field)
+ * adds #hero-subheadline, #hero-proof-points and #hero-quote-cta.
+ *
+ * ?preview=true shows drafts (for Contentful Live Preview); see previewRequested in src/lib/site/load.ts.
  */
-export default async function ExamplePage() {
-  const [g, preview, scriptNonce] = await Promise.all([loadBrand(EXAMPLE_BRAND_SLUG), isPreview(), nonce()]);
+export default async function ExamplePage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const [preview, draftCookie, scriptNonce] = await Promise.all([previewRequested(searchParams), isPreview(), nonce()]);
+  const g = await loadBrandIn(EXAMPLE_BRAND_SLUG, preview);
   const page = g?.homePage;
   if (!g || !page) {
     return (
@@ -47,10 +52,10 @@ export default async function ExamplePage() {
     <div className="pe">
       {/* Loaded synchronously and first, as Optimizely recommends, so variations apply before the page paints. */}
       <script src={OPTIMIZELY_SNIPPET} nonce={scriptNonce} />
-      {preview && <DraftBanner />}
+      {draftCookie && <DraftBanner />}
       <Header offers={g.entry(page.fields.primaryCta)} />
       <main id="main">
-        <Hero g={g} hero={hero} />
+        <Hero g={g} hero={hero} styleNonce={scriptNonce} />
         {sections.map((entry) => <Section key={entry.id} g={g} entry={entry} />)}
       </main>
       <Footer g={g} />
@@ -143,13 +148,15 @@ function Locator({ className }: { className?: string }) {
 
 // ---------- Hero ----------
 
-function Hero({ g, hero }: { g: BrandGraph; hero?: SiteEntry }) {
+function Hero({ g, hero, styleNonce }: { g: BrandGraph; hero?: SiteEntry; styleNonce?: string }) {
+  const design = heroDesign(hero);
+  if (design.layout === "quote-first") return <QuoteFirstHero g={g} hero={hero} design={design} styleNonce={styleNonce} />;
   return (
     <>
       <section id="hero-banner" className="pe-hero">
         <div className="pe-hero-media">
           <Img asset={g.asset(hero?.fields.image)} sizes="100vw" priority />
-          <AnniversaryBadge />
+          <AnniversaryBadge topRight={design.badge === "top-right"} />
         </div>
         <div className="pe-hero-band">
           <h1 id="hero-headline">{text(hero, "headline")}</h1>
@@ -160,10 +167,43 @@ function Hero({ g, hero }: { g: BrandGraph; hero?: SiteEntry }) {
   );
 }
 
-/** The anniversary seal over the hero photo, drawn here rather than baked into the photo. */
-function AnniversaryBadge() {
+/**
+ * The Quote-first hero (the hero's designLayout field): a full-width photo with a color gradient on the left,
+ * left-aligned headline, subheadline, proof points with check marks, one large quote button, and the seal in
+ * the top-right corner. No title band; the intro paragraph follows directly.
+ */
+function QuoteFirstHero({ g, hero, design, styleNonce }: { g: BrandGraph; hero?: SiteEntry; design: HeroDesign; styleNonce?: string }) {
+  const cta = g.entry(hero?.fields.cta);
+  const css = heroDesignCss("#hero-banner", design);
   return (
-    <svg className="pe-badge" viewBox="0 0 240 240" aria-hidden="true">
+    <section id="hero-banner" className="pe-qf">
+      {css && <style nonce={styleNonce}>{css}</style>}
+      <div className="pe-qf-media" aria-hidden="true"><Img asset={g.asset(hero?.fields.image)} sizes="100vw" priority decorative /></div>
+      <div className="pe-qf-inner">
+        <div className="pe-qf-copy">
+          <h1 id="hero-headline">{text(hero, "headline")}</h1>
+          {text(hero, "subheadline") && <p id="hero-subheadline" className="pe-qf-sub">{text(hero, "subheadline")}</p>}
+          {design.proofPoints.length > 0 && (
+            <ul id="hero-proof-points" className="pe-qf-proof">
+              {design.proofPoints.map((point) => <li key={point}><CheckMark />{point}</li>)}
+            </ul>
+          )}
+          {cta && <a id="hero-quote-cta" className="pe-qf-btn" href={safeUrl(text(cta, "destinationUrl"), "/schedule-design-consultation.aspx")}>{quoteLabel(text(cta, "label"), "Get a Free Quote")}</a>}
+        </div>
+      </div>
+      <AnniversaryBadge topRight={design.badge === "top-right"} />
+    </section>
+  );
+}
+
+function CheckMark() {
+  return <svg className="pe-qf-check" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><path d="M3.5 10.5l4.2 4.2L16.5 5.5" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>;
+}
+
+/** The anniversary seal over the hero photo, drawn here rather than baked into the photo. */
+function AnniversaryBadge({ topRight = false }: { topRight?: boolean }) {
+  return (
+    <svg className={topRight ? "pe-badge pe-badge-tr" : "pe-badge"} viewBox="0 0 240 240" aria-hidden="true">
       <defs>
         <path id="pe-badge-arc" d="M48 112a72 72 0 0 1 144 0" />
         <linearGradient id="pe-gold" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stopColor="#f6e3a1" /><stop offset=".5" stopColor="#c99a2e" /><stop offset="1" stopColor="#8a6514" /></linearGradient>

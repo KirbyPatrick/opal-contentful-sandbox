@@ -40,7 +40,16 @@ export function contentModel(): Map<string, RecordedType> {
   if (!modelCache) {
     modelCache = new Map();
     for (const migration of MIGRATIONS) {
-      for (const [id, type] of recordMigration((m) => migration.default(m))) modelCache.set(id, type);
+      for (const [id, type] of recordMigration((m) => migration.default(m))) {
+        // A later migration that edits a type adds to it rather than replacing it.
+        const earlier = modelCache.get(id);
+        if (!earlier) {
+          modelCache.set(id, type);
+          continue;
+        }
+        for (const [fieldId, field] of type.fields) earlier.fields.set(fieldId, { ...earlier.fields.get(fieldId), ...field });
+        for (const [fieldId, help] of type.helpText) earlier.helpText.set(fieldId, help);
+      }
     }
   }
   return modelCache;
