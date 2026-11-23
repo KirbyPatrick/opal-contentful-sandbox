@@ -333,6 +333,8 @@ function Footer({ g }: { g: BrandGraph }) {
 function StickyBar({ cta }: { cta?: SiteEntry }) {
   const body = text(cta, "body") ?? `Call: ${PHONE}`;
   const phone = body.match(/[\d-]{12}/)?.[0];
+  // The button draws its own chevron, so a label that already ends in one (a Quote-first CTA) drops it here.
+  const label = (text(cta, "label") ?? "Schedule Now").replace(/\s*[›>]\s*$/, "");
   return (
     <div id="sticky-cta-bar" className="pe-sticky">
       <a id="chat-button" className="pe-chat" href={`${SITE}/general-contact-form.aspx`}><ChatIcon /><span>Chat</span></a>
@@ -341,7 +343,7 @@ function StickyBar({ cta }: { cta?: SiteEntry }) {
           <span>{text(cta, "heading") ?? "In-Home Estimates"}</span>
           <span>{phone ? <>{body.slice(0, body.indexOf(phone))}<a href={`tel:${phone.replace(/\D/g, "")}`}>{phone}</a>{body.slice(body.indexOf(phone) + phone.length)}</> : body}</span>
         </p>
-        <a id="hero-cta" className="pe-schedule" href={safeUrl(text(cta, "destinationUrl"), "/schedule-design-consultation.aspx")}>{text(cta, "label") ?? "Schedule Now"}<ChevronRight /></a>
+        <a id="hero-cta" className={label.length > 14 ? "pe-schedule pe-schedule-long" : "pe-schedule"} href={safeUrl(text(cta, "destinationUrl"), "/schedule-design-consultation.aspx")}>{label}<ChevronRight /></a>
       </div>
     </div>
   );
