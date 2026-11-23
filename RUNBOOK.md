@@ -109,6 +109,12 @@ To rebuild it for another prospect:
 
 `npm run reset` restores the Example page to its seeded copy after a demo (it also deletes articles Opal created, so check `npm run baseline:check` first if you want to keep any).
 
+### Hero design and draft preview (both prospect pages)
+
+Heroes have optional design fields (migration `0002-hero-design`): Design layout (Standard or Quote-first), Overlay color, Button background color, Button text color, Badge position (Center or Top right) and Proof points (up to 3). Empty fields render today's hero, so a published hero without them looks the same as before. Quote-first is a full-width photo with a color gradient on the left, left-aligned text, check-marked proof points, one large quote button and the badge top right (Patio: the 60-year seal; Leafguard: the Lifetime Warranty seal).
+
+Open `/example?preview=true` or `/placeholder?preview=true` to see drafts (Contentful Preview API). This works inside Contentful's Live Preview iframe, where the draft cookie from `/api/draft` is often blocked. Anyone with the link can see those two pages' drafts, so keep sensitive content out of them. Every other page still needs the signed `/api/draft` link.
+
 ## The Placeholder page: Leafguard (a second prospect page)
 
 `/placeholder` is a second sandbox page, kept apart from `/example` so two prospect pages can be live at once. It works the same way: the `placeholder` brand (entry IDs `ph-...`, defined in `seed/brands/placeholder.ts`) holds the copy, and `src/app/placeholder/page.tsx` plus the `.lgd-*` block in `src/app/globals.css` draw the layout. It currently recreates a gutter company's home page (leafguard.homes). Headings, labels, button text, FAQ questions and short card lines match the prospect; longer paragraphs, FAQ answers and the offer terms are reworded, and the reviews are samples.
